@@ -5,9 +5,12 @@ export interface WeddingDetails {
   quranVerseArabic: string;
   quranVerseEnglish: string;
   quranReference: string;
-  eventDateFormatted: string; // e.g., "Saturday, October 3, 2026"
-  eventTimeFormatted: string; // e.g., "7:00 PM – 10:00 PM"
-  islamicDateFormatted: string; // e.g., "20 Rabi' al-Awwal 1448 AH"
+  subVerseArabic: string;
+  subVerseEnglish: string;
+  invitationText: string;
+  eventDateFormatted: string;
+  eventTimeFormatted: string;
+  islamicDateFormatted: string;
   venueName: string;
   venueHall: string;
   venueAddress: string;
@@ -21,7 +24,10 @@ export const WEDDING_DATA: WeddingDetails = {
   bismillahArabic: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
   quranVerseArabic: 'وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً',
   quranVerseEnglish: '"And among His signs is that He created for you mates from among yourselves, that you may find peace in them; and He placed between you affection and mercy."',
-  quranReference: 'Surah Ar-Rum 30:21',
+  quranReference: 'Surah Ar-Rum [30:21]',
+  subVerseArabic: 'وَخَلَقْنَاكُمْ أَزْوَاجًا',
+  subVerseEnglish: '"And We created you in pairs"',
+  invitationText: 'Under the grace of Almighty Allah and with the blessings of our beloved parents, we cordially invite you to share in the joy of our Nikkah ceremony & wedding celebration.',
   eventDateFormatted: 'Saturday, October 3, 2026',
   eventTimeFormatted: '7:00 PM – 10:00 PM',
   islamicDateFormatted: '20 Rabi\' al-Awwal 1448 AH',
@@ -29,6 +35,6 @@ export const WEDDING_DATA: WeddingDetails = {
   venueHall: 'Hall 2 (2nd Floor)',
   venueAddress: 'Sector H-11, Islamabad',
   mapsUrl: 'https://maps.google.com/?q=NESCOM+Officers+Mess+H-11+Islamabad',
-  // Soothing, delicate classical acoustic strings/oud audio stream
+  // Atmospheric, royal instrumental oud & strings
   audioUrl: 'https://cdn.freesound.org/previews/573/573381_11861866-lq.mp3',
 };

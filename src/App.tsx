@@ -3,9 +3,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { RotateCcw } from 'lucide-react';
 import { WEDDING_DATA } from './config/weddingData';
 import { getGuestNameFromUrl } from './utils/urlHelper';
-import { StationeryEnvelope } from './components/stationery/StationeryEnvelope';
-import { StationeryCard } from './components/stationery/StationeryCard';
-import { MinimalAudioControl } from './components/stationery/MinimalAudioControl';
+import { PalaceGateCover } from './components/palace/PalaceGateCover';
+import { PalaceInvitationCard } from './components/palace/PalaceInvitationCard';
+import { PalaceAudioPlayer } from './components/palace/PalaceAudioPlayer';
+import { ParticleCanvas } from './components/ui/ParticleCanvas';
 
 export function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -30,12 +31,12 @@ export function App() {
 
   const handleOpenComplete = () => {
     setIsOpened(true);
-    // Unmute & play audio upon user interaction (breaking seal)
+    // Unmute & play atmospheric audio smoothly upon gate open
     if (audioRef.current) {
       audioRef.current.play().then(() => {
         setIsPlayingAudio(true);
       }).catch(() => {
-        // Handled silently
+        // Silently handled by browser policies
       });
     }
   };
@@ -49,7 +50,7 @@ export function App() {
       audioRef.current.play().then(() => {
         setIsPlayingAudio(true);
       }).catch(() => {
-        // Handled silently
+        // Silently handled
       });
     }
   };
@@ -59,35 +60,30 @@ export function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#f5f0e8] text-[#2c2724] selection:bg-[#dfcaa8]/40 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
+    <div className="relative min-h-screen bg-[#060907] text-[#faeed1] selection:bg-gold-500/40 selection:text-gold-100 overflow-x-hidden flex flex-col justify-between">
       
-      {/* Soft Ambient Radial Studio Glow */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-60"
-        style={{
-          background: 'radial-gradient(circle at 50% 25%, #ffffff 0%, #f5f0e8 70%, #ebe3d5 100%)',
-        }}
-      />
+      {/* Ambient Floating Gold Dust Particles */}
+      <ParticleCanvas />
 
-      {/* Discreet Luxury Audio Toggle */}
-      <MinimalAudioControl
+      {/* Discreet Royal Audio Controls */}
+      <PalaceAudioPlayer
         isPlaying={isPlayingAudio}
         onToggle={handleToggleAudio}
       />
 
-      {/* Main Luxury Stationery Stage */}
-      <main className="relative z-20 flex-1 flex items-center justify-center py-6">
+      {/* Main Palace Stage */}
+      <main className="relative z-20 flex-1 flex items-center justify-center py-4 sm:py-6">
         <AnimatePresence mode="wait">
           {!isOpened ? (
             <motion.div
-              key="envelope"
+              key="gate"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 1.04 }}
-              transition={{ duration: 0.6 }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              transition={{ duration: 0.7 }}
               className="w-full"
             >
-              <StationeryEnvelope
+              <PalaceGateCover
                 wedding={WEDDING_DATA}
                 guestName={guestName}
                 onOpenComplete={handleOpenComplete}
@@ -96,27 +92,30 @@ export function App() {
           ) : (
             <motion.div
               key="card"
-              initial={{ opacity: 0, scale: 0.96 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               className="w-full"
             >
-              <StationeryCard wedding={WEDDING_DATA} guestName={guestName} />
+              <PalaceInvitationCard
+                wedding={WEDDING_DATA}
+                guestName={guestName}
+              />
             </motion.div>
           )}
         </AnimatePresence>
       </main>
 
-      {/* Discreet Replay Button if in Card View */}
+      {/* Discreet Replay Button (When card is open) */}
       {isOpened && (
         <aside aria-label="Replay Controls" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30">
           <button
             type="button"
             onClick={handleReset}
-            className="px-3.5 py-1.5 rounded-full bg-[#fdfbf7]/80 border border-[#c5a880]/40 shadow-sm backdrop-blur-sm text-[#8e8271] hover:text-[#2c2724] text-[10px] font-serif uppercase tracking-[0.2em] flex items-center gap-1.5 transition-all cursor-pointer"
+            className="px-4 py-1.5 rounded-full bg-[#081f15]/90 border border-gold-500/40 shadow-lg backdrop-blur-md text-gold-300 hover:text-gold-100 text-[10px] font-serif uppercase tracking-[0.2em] flex items-center gap-1.5 transition-all cursor-pointer hover:border-gold-400"
           >
-            <RotateCcw className="w-3 h-3" />
-            <span>Replay Unboxing</span>
+            <RotateCcw className="w-3 h-3 text-gold-400" />
+            <span>Replay Gate Opening</span>
           </button>
         </aside>
       )}
