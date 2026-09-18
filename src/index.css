@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;500;600;700;800&family=Cinzel+Decorative:wght@400;700;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-emerald-950: #04120d;
+  --color-emerald-900: #072218;
+  --color-emerald-800: #0d3829;
+  --color-emerald-700: #144f3b;
+  --color-gold-200: #faeed1;
+  --color-gold-300: #f3e0a6;
+  --color-gold-400: #e7ca6d;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #aa841e;
+  --color-gold-700: #7e5f12;
+  --color-parchment-50: #fcfbf7;
+  --color-parchment-100: #f7f4ec;
+  --color-parchment-200: #efe9dc;
+
+  --font-serif: 'Cinzel', 'Playfair Display', serif;
+  --font-display: 'Cinzel Decorative', serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-arabic: 'Amiri', serif;
+  --font-sans: 'Montserrat', sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: #04120d;
+  color: #fcfbf7;
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Gold Shimmer Gradient utility */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #faeed1 0%, #d4af37 40%, #aa841e 70%, #faeed1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-border {
+  border-image: linear-gradient(135deg, #faeed1 0%, #d4af37 50%, #7e5f12 100%) 1;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #faeed1 0%, #d4af37 40%, #aa841e 70%, #d4af37 100%);
+}
