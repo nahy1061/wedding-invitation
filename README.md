@@ -1,28 +1,30 @@
-# 💍 Haute Couture Nikkah & Wedding Digital Stationery
+# 💍 Luxury Nikkah Digital Gatefold Invitation
 
-A digital wedding invitation web experience designed with bespoke stationery aesthetics, warm champagne & ivory palette, blind-debossed typography, delicate hairline botanical ornaments, and tactile 3D envelope unsealing.
-
----
-
-## ✨ Features & Aesthetic Highlights
-
-- ✉️ **Bespoke Envelope Unboxing:** Muted linen-textured envelope with a tactile antique wax seal ("H & A"), soft wax-break animation, and 3D flap opening.
-- 📜 **350gsm Deckle-Edge Stationery Card:** Handmade paper texture, blind-debossed letterpress typography (*Italiana* & *Cormorant Garamond*), and classical Bismillah & Quranic verse (*Surah Ar-Rum 30:21*).
-- 🎵 **Atmospheric Sound Design:** Ambient acoustic instrumental melody fades in gracefully upon unsealing, with a discreet brass audio toggle.
-- 📍 **Interactive Stationery Enclosure Tags:**
-  - **Add to Calendar:** 1-tap Google / Apple Calendar event with time and location.
-  - **Venue Directions:** 1-tap Google Maps directions for **NESCOM Officers Mess, Sector H-11, Islamabad**.
-- 🏷️ **Personalized Guest Links:** Add `?to=Uncle+Tariq` to the URL to letter the guest's name on the envelope and greeting card.
-- 📱 **100% Mobile-First Luxury:** Crafted specifically for WhatsApp distribution, scaling gracefully to desktop screens.
+A digital Nikkah invitation modeled directly after luxury physical stationery folios: full-screen sage green vertical gatefold with sculpted 3D embossed botanicals, an ornate scalloped gold plaque (*"TAP TO OPEN"*), 3D double door reveal animation, and an elegant warm cream letterpress inner card.
 
 ---
 
-## 📅 Wedding Details Configured
+## ✨ Features
 
-- **Bride & Groom:** Hafsa Salman & Abdul Rehman
-- **Date & Time:** Saturday, October 3, 2026 | 7:00 PM – 10:00 PM
-- **Islamic Date:** 20 Rabi' al-Awwal 1448 AH
-- **Venue:** Hall 2 (2nd Floor), NESCOM Officers Mess, Sector H-11, Islamabad
+- 🌿 **Full-Screen Edge-to-Edge Gatefold Folio (`GatefoldCover.tsx`):**
+  - Fills 100% of the mobile screen (100vw, 100dvh).
+  - Rich olive/sage green textured paper with embossed 3D botanical leaves.
+  - Hairline gold vertical dividing seam.
+  - Die-cut scalloped Baroque gold plaque with **"TAP TO OPEN"** and filigree flourishes.
+
+- 🚪 **3D Double Door Reveal Animation:**
+  - Tapping the plaque triggers golden sparkle bursts (`canvas-confetti`).
+  - Left and right panels swing open outwards in 3D perspective (`rotateY(-105deg)` & `rotateY(105deg)`).
+  - Ambient instrumental music fades in smoothly.
+
+- 📜 **Warm Cream Inner Card (`CreamInnerCard.tsx`):**
+  - Staggered cascade entrance animation.
+  - Warm cream/ivory handmade paper with gold hairline borders and corner accents.
+  - Classical Arabic *Bismillah* & *"And We created you in pairs"* (*Surah An-Naba 78:8*).
+  - Main Heading: **"Nikkah Ceremony"**.
+  - **Hafsa Salman & Abdul Rehman** in spacious serif typography.
+  - Clean, minimal sections for Date (*Saturday, October 3, 2026* • *7:00 PM – 10:00 PM* • *20 Rabi' al-Awwal 1448 AH*) and Venue (*Hall 2, 2nd Floor, NESCOM Officers Mess, Sector H-11, Islamabad*).
+  - Enclosure tags: **Add to Calendar** & **Venue Directions (Google Maps)**.
 
 ---
 
@@ -33,9 +35,4 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` to test the unboxing, audio, and stationery card.
-
----
-
-## 📚 Technical Documentation
-For full architectural details and design tokens, see [DOCUMENTATION.md](./DOCUMENTATION.md).
+Open `http://localhost:5173` to test the full-screen gatefold unboxing, sound, and inner card!

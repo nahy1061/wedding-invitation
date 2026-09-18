@@ -2,10 +2,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-palace-dark: #080a09;
-  --color-palace-emerald: #05140e;
-  --color-door-wood: #181310;
-  --color-door-panel: #120e0c;
+  --color-sage-base: #758668;
+  --color-sage-dark: #5e6f51;
+  --color-sage-deep: #4d5c41;
+  --color-cream-base: #faf6ef;
+  --color-cream-warm: #f4eee1;
+  --color-cream-card: #fdfbf7;
   --color-gold-200: #faeed1;
   --color-gold-300: #f3e0a6;
   --color-gold-400: #e7ca6d;
@@ -13,51 +15,42 @@
   --color-gold-600: #aa841e;
   --color-gold-700: #7e5f12;
 
-  --font-serif: 'Cinzel', 'Cormorant Garamond', serif;
+  --font-serif: 'Cormorant Garamond', 'Cinzel', serif;
   --font-display: 'Italiana', 'Cinzel Decorative', serif;
   --font-script: 'Alex Brush', cursive;
   --font-arabic: 'Amiri', serif;
   --font-sans: 'Montserrat', sans-serif;
 }
 
-html, body {
+html, body, #root {
   margin: 0;
   padding: 0;
-  min-height: 100%;
-  background-color: #060907;
-  color: #faeed1;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #5e6f51;
+  color: #2c2724;
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* 3D Perspective Container */
-.perspective-1200 {
-  perspective: 1200px;
+/* Embossed Botanical Leaves relief illusion */
+.embossed-botanical {
+  filter: drop-shadow(1px 2px 1px rgba(255, 255, 255, 0.45)) drop-shadow(-1px -1px 2px rgba(40, 50, 35, 0.5));
 }
 
-.transform-style-3d {
-  transform-style: preserve-3d;
-}
-
-/* Glowing Gold Gradient Text */
-.gold-foil-text {
-  background: linear-gradient(135deg, #fff2d6 0%, #f3e0a6 25%, #d4af37 50%, #aa841e 75%, #faeed1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.35));
-}
-
-/* Gold Foil Border */
-.gold-foil-border {
-  border-image: linear-gradient(135deg, #faeed1 0%, #d4af37 50%, #7e5f12 100%) 1;
-}
-
-/* Royal Door Mashrabiya Lattice Texture */
-.mashrabiya-pattern {
+/* Cream Handmade Paper Texture */
+.cream-paper-texture {
+  background-color: #faf6ef;
   background-image: 
-    radial-gradient(#d4af37 0.75px, transparent 0.75px),
-    radial-gradient(#aa841e 0.75px, #120e0c 0.75px);
+    radial-gradient(#dfd5c5 0.75px, transparent 0.75px),
+    radial-gradient(#ebe3d5 0.75px, #faf6ef 0.75px);
   background-size: 20px 20px;
   background-position: 0 0, 10px 10px;
+}
+
+/* Scalloped Crest Gold Frame */
+.crest-shadow {
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.35)) drop-shadow(0 2px 6px rgba(212, 175, 55, 0.4));
 }
