@@ -1,32 +1,48 @@
-# React + TypeScript + Vite
+# 💍 Luxury Nikkah & Digital Wedding Invitation
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A digital wedding invitation web experience designed with haute-couture stationery aesthetics, smooth 3D motion physics, ambient audio, personalized guest links, and an instant WhatsApp invitation generator.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
 
-## React Compiler
+- 💌 **Cinematic Envelope Unboxing:** 3D perspective flap opening, wax seal breaking physics, and smooth card extraction.
+- 👑 **Flagship "Royal Andalusian" Theme:** Deep emerald velvet backgrounds, gold-foil embossing, and Islamic arch geometry.
+- 📱 **Mobile-First Experience:** Built specifically for smartphones (WhatsApp sharing), scaling up gracefully to desktop.
+- 🎵 **Spatial Audio Experience:** Ambient wedding instrumentals with volume fading and preview track switcher.
+- 🏷️ **Dynamic Guest Personalization:** Add `?to=Guest+Name` to the URL to personalize the envelope and greeting card dynamically.
+- 📅 **Interactive Guest Utilities:** Live ceremony countdown, 1-tap "Add to Google/Apple Calendar", and direct Google Maps navigation.
+- ⚙️ **Admin Customizer Drawer:** Customize bride & groom names, wedding date, venue, audio track, and fan out personalized WhatsApp links.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## 🚀 Quick Start
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### 1. Install Dependencies
+```bash
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### 2. Start Development Server
+```bash
+npm run dev
+```
+
+### 3. Build for Production
+```bash
+npm run build
+```
+
+---
+
+## 🛠️ Tech Stack
+- **Framework:** React + TypeScript + Vite
+- **Styling:** Tailwind CSS v4 (`@tailwindcss/vite`)
+- **Animation Engine:** Framer Motion
+- **Audio Engine:** Howler.js
+- **Icons & Micro-interactions:** Lucide React & Canvas-Confetti
+
+---
+
+## 📚 Documentation
+For in-depth architectural details, design tokens, component hierarchy, and roadmap, see [DOCUMENTATION.md](./DOCUMENTATION.md).
