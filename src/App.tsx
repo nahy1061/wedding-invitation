@@ -1,76 +1,81 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Settings, RotateCcw } from 'lucide-react';
-import { DEFAULT_WEDDING_CONFIG } from './config/weddingConfig';
+import { RotateCcw } from 'lucide-react';
+import { WEDDING_DATA } from './config/weddingData';
 import { getGuestNameFromUrl } from './utils/urlHelper';
-import { EnvelopeCover } from './components/cover/EnvelopeCover';
-import { InvitationCard } from './components/card/InvitationCard';
-import { AudioPlayer } from './components/audio/AudioPlayer';
-import { AdminDrawer } from './components/customizer/AdminDrawer';
-import { ParticleCanvas } from './components/ui/ParticleCanvas';
-import type { AudioTrack, WeddingConfig } from './types/invitation';
+import { StationeryEnvelope } from './components/stationery/StationeryEnvelope';
+import { StationeryCard } from './components/stationery/StationeryCard';
+import { MinimalAudioControl } from './components/stationery/MinimalAudioControl';
 
 export function App() {
-  const [config, setConfig] = useState<WeddingConfig>(() => {
-    const saved = localStorage.getItem('nikkah_wedding_config');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return DEFAULT_WEDDING_CONFIG;
-      }
-    }
-    return DEFAULT_WEDDING_CONFIG;
-  });
-
-  const [guestName, setGuestName] = useState<string | null>(null);
   const [isOpened, setIsOpened] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-  const [selectedTrackId, setSelectedTrackId] = useState(config.selectedAudioId);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [guestName, setGuestName] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const extractedGuest = getGuestNameFromUrl();
     setGuestName(extractedGuest);
+
+    // Prepare audio instance
+    audioRef.current = new Audio(WEDDING_DATA.audioUrl);
+    audioRef.current.loop = true;
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
   }, []);
 
   const handleOpenComplete = () => {
     setIsOpened(true);
-    setIsPlayingAudio(true); // Automatically begin audio on unseal interaction
+    // Unmute & play audio upon user interaction (breaking seal)
+    if (audioRef.current) {
+      audioRef.current.play().then(() => {
+        setIsPlayingAudio(true);
+      }).catch(() => {
+        // Handled silently
+      });
+    }
   };
 
-  const handleTogglePlay = () => {
-    setIsPlayingAudio(!isPlayingAudio);
+  const handleToggleAudio = () => {
+    if (!audioRef.current) return;
+    if (isPlayingAudio) {
+      audioRef.current.pause();
+      setIsPlayingAudio(false);
+    } else {
+      audioRef.current.play().then(() => {
+        setIsPlayingAudio(true);
+      }).catch(() => {
+        // Handled silently
+      });
+    }
   };
 
-  const handleSelectTrack = (track: AudioTrack) => {
-    setSelectedTrackId(track.id);
-    setIsPlayingAudio(true);
-  };
-
-  const handleUpdateConfig = (updated: WeddingConfig) => {
-    setConfig(updated);
-    setSelectedTrackId(updated.selectedAudioId);
-  };
-
-  const handleResetInvitation = () => {
+  const handleReset = () => {
     setIsOpened(false);
   };
 
   return (
-    <div className="relative min-h-screen bg-emerald-950 text-parchment-50 selection:bg-gold-500/30 selection:text-gold-200 overflow-x-hidden flex flex-col justify-between">
-      {/* Ambient Gold Particle Dust */}
-      <ParticleCanvas />
-
-      {/* Persistent Audio Controls (Top-Right) */}
-      <AudioPlayer
-        isPlaying={isPlayingAudio}
-        selectedTrackId={selectedTrackId}
-        onTogglePlay={handleTogglePlay}
-        onSelectTrack={handleSelectTrack}
+    <div className="relative min-h-screen bg-[#f5f0e8] text-[#2c2724] selection:bg-[#dfcaa8]/40 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
+      
+      {/* Soft Ambient Radial Studio Glow */}
+      <div
+        className="fixed inset-0 pointer-events-none opacity-60"
+        style={{
+          background: 'radial-gradient(circle at 50% 25%, #ffffff 0%, #f5f0e8 70%, #ebe3d5 100%)',
+        }}
       />
 
-      {/* Main Content Area */}
+      {/* Discreet Luxury Audio Toggle */}
+      <MinimalAudioControl
+        isPlaying={isPlayingAudio}
+        onToggle={handleToggleAudio}
+      />
+
+      {/* Main Luxury Stationery Stage */}
       <main className="relative z-20 flex-1 flex items-center justify-center py-6">
         <AnimatePresence mode="wait">
           {!isOpened ? (
@@ -78,12 +83,12 @@ export function App() {
               key="envelope"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
+              exit={{ opacity: 0, scale: 1.04 }}
               transition={{ duration: 0.6 }}
               className="w-full"
             >
-              <EnvelopeCover
-                config={config}
+              <StationeryEnvelope
+                wedding={WEDDING_DATA}
                 guestName={guestName}
                 onOpenComplete={handleOpenComplete}
               />
@@ -91,48 +96,30 @@ export function App() {
           ) : (
             <motion.div
               key="card"
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="w-full"
             >
-              <InvitationCard config={config} guestName={guestName} />
+              <StationeryCard wedding={WEDDING_DATA} guestName={guestName} />
             </motion.div>
           )}
         </AnimatePresence>
       </main>
 
-      {/* Floating Bottom Bar: Customize & Replay Controls */}
-      <aside aria-label="Invitation Controls" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 p-1.5 rounded-full bg-emerald-950/80 border border-gold-500/40 shadow-2xl backdrop-blur-md">
-        {isOpened && (
+      {/* Discreet Replay Button if in Card View */}
+      {isOpened && (
+        <aside aria-label="Replay Controls" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30">
           <button
             type="button"
-            onClick={handleResetInvitation}
-            className="p-2 rounded-full text-gold-400/80 hover:text-gold-200 hover:bg-gold-500/10 transition-colors"
-            title="Replay Envelope Unsealing"
+            onClick={handleReset}
+            className="px-3.5 py-1.5 rounded-full bg-[#fdfbf7]/80 border border-[#c5a880]/40 shadow-sm backdrop-blur-sm text-[#8e8271] hover:text-[#2c2724] text-[10px] font-serif uppercase tracking-[0.2em] flex items-center gap-1.5 transition-all cursor-pointer"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-3 h-3" />
+            <span>Replay Unboxing</span>
           </button>
-        )}
-
-        <button
-          type="button"
-          onClick={() => setIsAdminOpen(true)}
-          className="px-4 py-1.5 rounded-full bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-emerald-950 font-serif text-xs font-semibold tracking-wider uppercase flex items-center gap-1.5 hover:shadow-[0_0_15px_rgba(212,175,55,0.5)] transition-all cursor-pointer"
-        >
-          <Settings className="w-3.5 h-3.5" />
-          <span>Customize & Share</span>
-        </button>
-      </aside>
-
-      {/* Admin / Customizer Slide-Over */}
-      <AdminDrawer
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        config={config}
-        onUpdateConfig={handleUpdateConfig}
-        onResetInvitation={handleResetInvitation}
-      />
+        </aside>
+      )}
     </div>
   );
 }

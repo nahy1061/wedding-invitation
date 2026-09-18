@@ -1,24 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;500;600;700;800&family=Cinzel+Decorative:wght@400;700;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Italiana&family=Montserrat:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-emerald-950: #04120d;
-  --color-emerald-900: #072218;
-  --color-emerald-800: #0d3829;
-  --color-emerald-700: #144f3b;
-  --color-gold-200: #faeed1;
-  --color-gold-300: #f3e0a6;
-  --color-gold-400: #e7ca6d;
-  --color-gold-500: #d4af37;
-  --color-gold-600: #aa841e;
-  --color-gold-700: #7e5f12;
-  --color-parchment-50: #fcfbf7;
-  --color-parchment-100: #f7f4ec;
-  --color-parchment-200: #efe9dc;
+  --color-canvas-base: #f5f0e8;
+  --color-canvas-dark: #ebe3d5;
+  --color-paper-light: #fdfbf7;
+  --color-paper-warm: #f7f3ec;
+  --color-paper-taupe: #eee8de;
+  --color-envelope-outer: #38322c;
+  --color-envelope-flap: #2d2823;
+  --color-envelope-liner: #e8ded1;
+  --color-foil-gold: #c5a880;
+  --color-foil-bright: #dfcaa8;
+  --color-foil-deep: #9d815d;
+  --color-ink-charcoal: #2c2724;
+  --color-ink-muted: #6e645a;
+  --color-ink-light: #9e9387;
+  --color-wax-burgundy: #7a221a;
+  --color-wax-ruby: #942d24;
 
-  --font-serif: 'Cinzel', 'Playfair Display', serif;
-  --font-display: 'Cinzel Decorative', serif;
-  --font-script: 'Great Vibes', cursive;
+  --font-serif: 'Cormorant Garamond', 'Cinzel', serif;
+  --font-display: 'Italiana', 'Cormorant Garamond', serif;
+  --font-script: 'Alex Brush', cursive;
   --font-arabic: 'Amiri', serif;
   --font-sans: 'Montserrat', sans-serif;
 }
@@ -27,24 +30,39 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background-color: #04120d;
-  color: #fcfbf7;
+  background-color: #f5f0e8;
+  color: #2c2724;
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Gold Shimmer Gradient utility */
-.gold-gradient-text {
-  background: linear-gradient(135deg, #faeed1 0%, #d4af37 40%, #aa841e 70%, #faeed1 100%);
+/* Subtle handmade paper texture overlay */
+.paper-texture {
+  background-color: #fdfbf7;
+  background-image: 
+    radial-gradient(#d6cbba 0.75px, transparent 0.75px),
+    radial-gradient(#e5dcce 0.75px, #fdfbf7 0.75px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+}
+
+/* Blind Deboss Effect for Letterpress printing */
+.letterpress-deboss {
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8), 0 -1px 1px rgba(0, 0, 0, 0.15);
+}
+
+/* Matte Champagne Gold Foil text */
+.foil-text {
+  background: linear-gradient(135deg, #dfcaa8 0%, #c5a880 50%, #9d815d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.gold-gradient-border {
-  border-image: linear-gradient(135deg, #faeed1 0%, #d4af37 50%, #7e5f12 100%) 1;
-}
-
-.gold-gradient-bg {
-  background: linear-gradient(135deg, #faeed1 0%, #d4af37 40%, #aa841e 70%, #d4af37 100%);
+/* Deckle edge paper border illusion */
+.deckle-border {
+  box-shadow: 
+    0 0 0 1px rgba(197, 168, 128, 0.3),
+    0 20px 45px -10px rgba(56, 50, 44, 0.15),
+    0 10px 20px -5px rgba(56, 50, 44, 0.08);
 }
