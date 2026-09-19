@@ -3,7 +3,9 @@ import { motion } from 'framer-motion';
 import gateLeft from '../../assets/images/gate2_left.webp';
 import gateRight from '../../assets/images/gate2_right.webp';
 import sealImage from '../../assets/images/tap_to_open_seal.webp';
-import { PalaceStageBackdrop } from '../backdrop/PalaceStageBackdrop';
+import { RoyalTitleScreen } from './RoyalTitleScreen';
+import { RoyalVelvetCurtains } from './RoyalVelvetCurtains';
+import { WEDDING_DATA } from '../../config/weddingData';
 
 interface GatefoldCoverProps {
   guestName: string | null;
@@ -35,7 +37,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
       img.onerror = () => {
         loadedCount++;
         if (loadedCount === imageSources.length) {
-          setImagesLoaded(true); // Show cover even if an image fails
+          setImagesLoaded(true);
         }
       };
       img.src = src;
@@ -44,14 +46,19 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
 
   const handleOpen = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (openingState !== 'closed') return;
+    if (openingState === 'opening') {
+      // Allow user to tap to skip directly to inner card
+      onOpenComplete();
+      return;
+    }
 
     onOpenStart?.();
     setOpeningState('opening');
 
+    // 4.5s total showcase: gates swing open (0-2.5s) -> curtains part (0.6-3.4s) -> title shines -> card reveals
     setTimeout(() => {
       onOpenComplete();
-    }, 3000);
+    }, 4500);
   };
 
   // Elegant loading state while images preload
@@ -80,15 +87,22 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   return (
     <div
       onClick={handleOpen}
-      className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#5e6f51] z-30"
+      className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#141e12] z-30"
       style={{ perspective: '2600px' }}
     >
-      {/* 3D Illuminated Palace Stage Backdrop (Archway, Lanterns & Parting Velvet Curtains) */}
-      <PalaceStageBackdrop
-        isOpened={false}
+      {/* 1. ROYAL TITLE SCREEN (Unveiled as velvet curtains part) */}
+      <RoyalTitleScreen
+        wedding={WEDDING_DATA}
+        guestName={guestName}
+        isVisible={openingState === 'opening'}
+      />
+
+      {/* 2. REALISTIC ROYAL VELVET CURTAINS (Parting smoothly to sides) */}
+      <RoyalVelvetCurtains
         isOpening={openingState === 'opening'}
       />
-      {/* AMBIENT PULSING GOLDEN HALO (Breathes during idle, softly expands & fades out during slow-mo opening) */}
+
+      {/* AMBIENT PULSING GOLDEN HALO (Breathes during idle, softly expands & fades out during opening) */}
       <motion.div
         initial={false}
         animate={
@@ -101,7 +115,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
         }
         transition={
           openingState === 'opening'
-            ? { duration: 1.8, ease: 'easeOut' }
+            ? { duration: 1.5, ease: 'easeOut' }
             : {
                 duration: 3.5,
                 repeat: Infinity,
