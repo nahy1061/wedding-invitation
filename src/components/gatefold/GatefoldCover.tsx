@@ -3,16 +3,15 @@ import { motion } from 'framer-motion';
 import gateLeft from '../../assets/images/gate2_left.webp';
 import gateRight from '../../assets/images/gate2_right.webp';
 import sealImage from '../../assets/images/tap_to_open_seal.webp';
+import { PalaceStageBackdrop } from '../backdrop/PalaceStageBackdrop';
 
 interface GatefoldCoverProps {
   guestName: string | null;
-  onOpenStart?: () => void;
   onOpenComplete: () => void;
 }
 
 export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   guestName,
-  onOpenStart,
   onOpenComplete,
 }) => {
   const [openingState, setOpeningState] = useState<'closed' | 'opening'>('closed');
@@ -45,7 +44,6 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
     e.stopPropagation();
     if (openingState !== 'closed') return;
 
-    onOpenStart?.();
     setOpeningState('opening');
 
     setTimeout(() => {
@@ -56,7 +54,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   // Elegant loading state while images preload
   if (!imagesLoaded) {
     return (
-      <div className="fixed inset-0 w-full h-full min-h-dvh flex items-center justify-center bg-[#182315] z-30">
+      <div className="fixed inset-0 w-full h-full min-h-dvh flex items-center justify-center bg-[#5e6f51] z-30">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -79,9 +77,14 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   return (
     <div
       onClick={handleOpen}
-      className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-transparent z-30"
+      className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#5e6f51] z-30"
       style={{ perspective: '2600px' }}
     >
+      {/* 3D Illuminated Palace Stage Backdrop (Archway, Lanterns & Parting Velvet Curtains) */}
+      <PalaceStageBackdrop
+        isOpened={false}
+        isOpening={openingState === 'opening'}
+      />
       {/* AMBIENT PULSING GOLDEN HALO (Breathes during idle, softly expands & fades out during slow-mo opening) */}
       <motion.div
         initial={false}
