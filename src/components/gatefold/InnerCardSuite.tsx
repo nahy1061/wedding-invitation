@@ -52,7 +52,6 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
         <InvitationFrontCard
           wedding={wedding}
           guestName={guestName}
-          onNext={nextCard}
         />
       ),
     },
@@ -61,8 +60,6 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       component: (
         <CountdownCard
           wedding={wedding}
-          onPrev={prevCard}
-          onNext={nextCard}
         />
       ),
     },
@@ -71,8 +68,6 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       component: (
         <VenueCard
           wedding={wedding}
-          onPrev={prevCard}
-          onNext={nextCard}
         />
       ),
     },
@@ -81,8 +76,6 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       component: (
         <DuaCard
           guestName={guestName}
-          onPrev={prevCard}
-          onGoToFirst={() => goTo(0)}
         />
       ),
     },
@@ -239,7 +232,7 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       </div>
 
       {/* Bottom Pagination Dots */}
-      <div className="mt-3.5 flex items-center justify-center gap-1.5 pointer-events-none">
+      <div className="mt-3 flex items-center justify-center gap-1.5 pointer-events-none">
         {tabs.map((tab) => (
           <button
             key={tab.index}
@@ -252,15 +245,6 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
           />
         ))}
       </div>
-
-      {/* Floating Animated Swipe Prompt */}
-      <motion.p
-        animate={{ opacity: [0.4, 0.85, 0.4], y: [0, -2, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-        className="mt-2 text-[9.5px] font-serif uppercase tracking-[0.2em] text-[#faeed1]/75 pointer-events-none"
-      >
-        ✦ Swipe or tap cards to navigate ✦
-      </motion.p>
 
     </div>
   );

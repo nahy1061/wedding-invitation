@@ -1,49 +1,47 @@
 import React from 'react';
-import { MapPin, ExternalLink, ChevronLeft, ChevronRight, Navigation } from 'lucide-react';
+import { MapPin, ExternalLink, Navigation } from 'lucide-react';
 import type { WeddingDetails } from '../../../config/weddingData';
 
 interface VenueCardProps {
   wedding: WeddingDetails;
-  onPrev: () => void;
-  onNext: () => void;
 }
 
-export const VenueCard: React.FC<VenueCardProps> = ({ wedding, onPrev, onNext }) => {
+export const VenueCard: React.FC<VenueCardProps> = ({ wedding }) => {
   return (
     <div className="relative w-full h-full flex flex-col justify-between p-6 sm:p-8 text-center select-none overflow-hidden">
-      
-      {/* Fine Gold Inner Hairline Frame */}
-      <div className="absolute inset-3.5 border border-[#c5a880]/60 rounded-xl pointer-events-none" />
-      <div className="absolute inset-4.5 border border-[#c5a880]/30 border-dashed rounded-lg pointer-events-none" />
 
-      {/* Gilded Corner Accents */}
-      <div className="absolute top-4 left-4 w-3.5 h-3.5 border-t-2 border-l-2 border-[#8c6b2d]" />
-      <div className="absolute top-4 right-4 w-3.5 h-3.5 border-t-2 border-r-2 border-[#8c6b2d]" />
-      <div className="absolute bottom-4 left-4 w-3.5 h-3.5 border-b-2 border-l-2 border-[#8c6b2d]" />
-      <div className="absolute bottom-4 right-4 w-3.5 h-3.5 border-b-2 border-r-2 border-[#8c6b2d]" />
+      {/* Earthy Tint */}
+      <div className="absolute inset-0 tint-venue pointer-events-none" />
+
+      {/* Pin Watermark */}
+      <div className="card-watermark">♩</div>
+
+      {/* Ornate Frame + Corners */}
+      <div className="absolute inset-3 border border-[#c5a880]/70 rounded-xl ornate-card-frame pointer-events-none" />
+      <div className="absolute inset-0 filigree-corners pointer-events-none" />
+      <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
 
       {/* TOP: Venue Header */}
-      <div className="relative z-10 pt-2">
-        <p className="text-[11px] sm:text-xs font-serif tracking-[0.28em] uppercase text-[#2c4227] font-bold">
-          Venue & Directions
-        </p>
+      <div className="relative z-10 pt-2 card-content-enter">
+        <div className="flex items-center justify-center gap-1.5 text-[#2c4227]">
+          <p className="text-[11px] sm:text-xs font-display tracking-[0.22em] uppercase font-bold">
+            Venue & Directions
+          </p>
+        </div>
 
-        {/* Delicate Golden Divider */}
-        <div className="flex items-center justify-center gap-2.5 my-2">
-          <div className="h-[0.5px] w-8 bg-[#bfa378]" />
+        <div className="gold-ornament my-2">
           <span className="text-[#855e1a] text-[10px]">✦</span>
-          <div className="h-[0.5px] w-8 bg-[#bfa378]" />
         </div>
       </div>
 
-      {/* CENTER: Hall Details & Map Pill */}
-      <div className="relative z-10 my-2 space-y-4 max-w-[320px] mx-auto w-full">
-        <div className="p-4 rounded-2xl bg-[#f5efe4] border border-[#c5a880]/50 shadow-xs space-y-1.5">
-          <div className="w-8 h-8 rounded-full bg-[#e9decb] text-[#6e4f1c] flex items-center justify-center mx-auto mb-2">
-            <MapPin className="w-4 h-4" />
+      {/* CENTER: Venue Details */}
+      <div className="relative z-10 my-2 space-y-4 max-w-[320px] mx-auto w-full card-content-enter card-content-enter-delay-1">
+        <div className="p-5 rounded-2xl bg-[#f5efe4]/70 border border-[#c5a880]/50 shadow-xs space-y-2 backdrop-blur-xs">
+          <div className="w-10 h-10 rounded-full bg-[#e9decb] text-[#6e4f1c] flex items-center justify-center mx-auto mb-2 border border-[#c5a880]/40">
+            <MapPin className="w-5 h-5" />
           </div>
 
-          <h2 className="font-serif text-lg sm:text-xl font-bold text-[#12200f]">
+          <h2 className="font-display text-xl sm:text-2xl font-semibold text-[#12200f]">
             {wedding.venueHall}
           </h2>
           <p className="font-serif text-sm font-semibold text-[#24381f]">
@@ -54,7 +52,7 @@ export const VenueCard: React.FC<VenueCardProps> = ({ wedding, onPrev, onNext })
           </p>
         </div>
 
-        {/* Direct Google Maps Action Button */}
+        {/* Google Maps Button */}
         <a
           href={wedding.mapsUrl}
           target="_blank"
@@ -66,32 +64,21 @@ export const VenueCard: React.FC<VenueCardProps> = ({ wedding, onPrev, onNext })
           <ExternalLink className="w-3 h-3 text-gold-400" />
         </a>
 
-        <p className="text-[11px] font-serif italic text-[#384e32] mt-3">
+        <p className="text-[11px] font-serif italic text-[#384e32] mt-2">
           Under the graceful presence of<br />
           <span className="font-semibold text-[#142312] not-italic">The Salman & Rehman Families</span>
         </p>
       </div>
 
-      {/* BOTTOM: Navigation */}
-      <div className="relative z-10 pt-2 border-t border-[#c5a880]/40 flex items-center justify-between w-full max-w-[320px] mx-auto px-2 text-[10.5px] font-serif uppercase tracking-wider">
-        <button
-          type="button"
-          onClick={onPrev}
-          className="flex items-center gap-1 text-[#2c4227] hover:text-[#12200f] font-semibold cursor-pointer py-1"
-        >
-          <ChevronLeft className="w-3.5 h-3.5 text-[#855e1a]" />
-          <span>Date & Time</span>
-        </button>
-        <button
-          type="button"
-          onClick={onNext}
-          className="flex items-center gap-1 text-[#2c4227] hover:text-[#12200f] font-semibold cursor-pointer py-1"
-        >
-          <span>Prayers & Dua</span>
-          <ChevronRight className="w-3.5 h-3.5 text-[#855e1a]" />
-        </button>
+      {/* BOTTOM: Swipe Hint */}
+      <div className="relative z-10 pt-2 card-content-enter card-content-enter-delay-2">
+        <div className="gold-ornament mb-2">
+          <span className="text-[#855e1a] text-[9px]">✦ ✦ ✦</span>
+        </div>
+        <p className="text-[9px] font-serif uppercase tracking-[0.2em] text-[#8a9985]">
+          Swipe for blessings →
+        </p>
       </div>
-
     </div>
   );
 };

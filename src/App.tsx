@@ -6,6 +6,7 @@ import { getGuestNameFromUrl } from './utils/urlHelper';
 import { GatefoldCover } from './components/gatefold/GatefoldCover';
 import { InnerCardSuite } from './components/gatefold/InnerCardSuite';
 import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
+import bgPic from './assets/images/pic10.jpg';
 
 const MAIN_TARGET_VOLUME = 0.7;
 
@@ -151,7 +152,8 @@ export function App() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full py-2 sm:py-6 flex items-center justify-center"
+              className="w-full py-2 sm:py-6 flex items-center justify-center bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${bgPic})` }}
             >
               <InnerCardSuite
                 wedding={WEDDING_DATA}

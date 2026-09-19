@@ -55,10 +55,10 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
     onOpenStart?.();
     setOpeningState('opening');
 
-    // 4.5s total showcase: gates swing open (0-2.5s) -> curtains part (0.6-3.4s) -> title shines -> card reveals
+    // 2.6s total showcase: gates swing open (0-1.6s) -> curtains gather (0.15-1.8s) -> suite reveals
     setTimeout(() => {
       onOpenComplete();
-    }, 4500);
+    }, 2600);
   };
 
   // Elegant loading state while images preload
@@ -88,7 +88,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
     <div
       onClick={handleOpen}
       className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#141e12] z-30"
-      style={{ perspective: '2600px' }}
+      style={{ perspective: '2000px' }}
     >
       {/* 1. ROYAL TITLE SCREEN (Unveiled as velvet curtains part) */}
       <RoyalTitleScreen
@@ -115,7 +115,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
         }
         transition={
           openingState === 'opening'
-            ? { duration: 1.5, ease: 'easeOut' }
+            ? { duration: 0.4, ease: 'easeOut' }
             : {
                 duration: 3.5,
                 repeat: Infinity,
@@ -130,13 +130,16 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
         initial={false}
         animate={
           openingState === 'opening'
-            ? { rotateY: -105, x: '-8%', opacity: 0.1 }
-            : { rotateY: 0, x: 0, opacity: 1 }
+            ? { rotateY: -100, x: '-6%', opacity: 0 }
+            : { rotateY: 0, x: '0%', opacity: 1 }
         }
-        transition={{ duration: 3, ease: [0.25, 1, 0.5, 1] }}
+        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         style={{
           transformOrigin: 'left center',
           transformStyle: 'preserve-3d',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          willChange: 'transform, opacity',
           backgroundImage: `url(${gateLeft})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -164,13 +167,16 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
         initial={false}
         animate={
           openingState === 'opening'
-            ? { rotateY: 105, x: '8%', opacity: 0.1 }
-            : { rotateY: 0, x: 0, opacity: 1 }
+            ? { rotateY: 100, x: '6%', opacity: 0 }
+            : { rotateY: 0, x: '0%', opacity: 1 }
         }
-        transition={{ duration: 3, ease: [0.25, 1, 0.5, 1] }}
+        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         style={{
           transformOrigin: 'right center',
           transformStyle: 'preserve-3d',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          willChange: 'transform, opacity',
           backgroundImage: `url(${gateRight})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -181,11 +187,11 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
         <div className="absolute inset-0 bg-linear-to-l from-black/50 via-transparent to-black/30 pointer-events-none" />
       </motion.div>
 
-      {/* CENTER HAIRLINE GOLD VERTICAL SEAM (Smoothly fades out on tap) */}
+      {/* CENTER HAIRLINE GOLD VERTICAL SEAM */}
       <motion.div
         initial={false}
         animate={openingState === 'opening' ? { opacity: 0 } : { opacity: 1 }}
-        transition={{ duration: 1.0, ease: 'easeOut' }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
         className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-linear-to-b from-gold-200 via-gold-400 to-gold-200 shadow-[0_0_15px_rgba(212,175,55,0.95)] z-20 pointer-events-none"
       />
 
@@ -194,14 +200,17 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
         initial={false}
         animate={
           openingState === 'opening'
-            ? { scale: [1, 1.15, 0.9], opacity: [1, 0.85, 0] }
+            ? { scale: 1.12, opacity: 0, pointerEvents: 'none' as const }
             : { scale: [0.94, 1.08, 0.96, 1.04, 0.94], opacity: 1 }
         }
         transition={
           openingState === 'opening'
-            ? { duration: 1.8, ease: 'easeOut' }
+            ? { duration: 0.35, ease: 'easeOut' }
             : { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }
         }
+        style={{
+          willChange: 'transform, opacity',
+        }}
         className="relative z-30 w-44 sm:w-52 aspect-square flex items-center justify-center cursor-pointer select-none [filter:drop-shadow(0_20px_35px_rgba(0,0,0,0.85))_drop-shadow(0_0_15px_rgba(212,175,55,0.4))]"
       >
         <img
