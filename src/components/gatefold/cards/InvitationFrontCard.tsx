@@ -3,12 +3,10 @@ import type { WeddingDetails } from '../../../config/weddingData';
 
 interface InvitationFrontCardProps {
   wedding: WeddingDetails;
-  guestName: string | null;
 }
 
 export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({
   wedding,
-  guestName,
 }) => {
   return (
     <div className="relative w-full h-full flex flex-col justify-between p-6 sm:p-8 text-center select-none overflow-hidden">
@@ -45,18 +43,6 @@ export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({
 
       {/* CENTER: Couple Names */}
       <div className="relative z-10 my-2 card-content-enter card-content-enter-delay-1">
-        {/* Guest Pill */}
-        {guestName && (
-          <div className="mb-3 inline-block py-1.5 px-4 rounded-full bg-[#f0e8d8] border border-[#c5a880]/70 shadow-xs">
-            <span className="text-[9px] font-sans italic text-[#384e32] font-medium block leading-tight">
-              Cordially Invited
-            </span>
-            <span className="font-serif text-xs sm:text-sm font-bold text-[#142312] tracking-wide">
-              {guestName}
-            </span>
-          </div>
-        )}
-
         <p className="text-[10px] sm:text-[11px] font-serif tracking-[0.3em] uppercase text-[#2c4227] font-semibold mb-2">
           Cordially Inviting You To The Nikkah Of
         </p>

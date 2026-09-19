@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapPin, ExternalLink, Navigation } from 'lucide-react';
-import venueImg from '../../../assets/images/venue5.jpg';
+import venueImg from '../../../assets/images/venue5.webp';
 import type { WeddingDetails } from '../../../config/weddingData';
 
 interface VenueCardProps {
@@ -9,8 +9,7 @@ interface VenueCardProps {
 
 export const VenueCard: React.FC<VenueCardProps> = ({ wedding }) => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-6 sm:p-8 text-center select-none overflow-hidden">
-
+    <div className="relative w-full h-full flex flex-col justify-between p-5 sm:p-7 text-center select-none overflow-hidden">
       {/* Earthy Tint */}
       <div className="absolute inset-0 tint-venue pointer-events-none" />
 
@@ -23,29 +22,31 @@ export const VenueCard: React.FC<VenueCardProps> = ({ wedding }) => {
       <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
 
       {/* TOP: Venue Header */}
-      <div className="relative z-10 pt-2 card-content-enter">
+      <div className="relative z-10 pt-1 card-content-enter">
         <p className="text-[11px] sm:text-xs font-display tracking-[0.22em] uppercase text-[#2c4227] font-bold">
           Venue & Directions
         </p>
-        <div className="gold-ornament my-2">
+        <div className="gold-ornament my-1.5">
           <span className="text-[#855e1a] text-[10px]">✦</span>
         </div>
       </div>
 
       {/* CENTER: Venue Details Container */}
-      <div className="relative z-10 my-2 space-y-3 max-w-[320px] mx-auto w-full card-content-enter card-content-enter-delay-1">
-        <div className="rounded-2xl bg-[#f5efe4]/80 border border-[#c5a880]/50 shadow-xs overflow-hidden backdrop-blur-xs">
+      <div className="relative z-10 my-1 space-y-2.5 max-w-[320px] mx-auto w-full card-content-enter card-content-enter-delay-1">
+        <div className="rounded-2xl bg-[#f5efe4]/85 border border-[#c5a880]/50 shadow-xs overflow-hidden backdrop-blur-xs">
           {/* Venue Image */}
-          <div className="w-full h-36 sm:h-40 overflow-hidden">
+          <div className="w-full h-36 sm:h-40 overflow-hidden bg-[#1b2b18]">
             <img
               src={venueImg}
               alt={wedding.venueName}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
           </div>
 
           {/* Venue Details */}
-          <div className="px-4 py-2 space-y-0.5">
+          <div className="px-3.5 py-2 space-y-0.5">
             <div className="flex items-center justify-center gap-1">
               <MapPin className="w-2.5 h-2.5 text-[#855e1a]" />
               <p className="text-[9px] font-serif uppercase tracking-[0.12em] text-[#3d5238] font-semibold">
@@ -66,7 +67,7 @@ export const VenueCard: React.FC<VenueCardProps> = ({ wedding }) => {
           href={wedding.mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 w-full max-w-[240px] py-2.5 px-4 rounded-full bg-gradient-to-r from-[#243620] to-[#162413] hover:from-[#2e4429] hover:to-[#1e301a] text-[#faeed1] border border-gold-500/50 text-xs font-serif font-semibold tracking-[0.15em] uppercase shadow-sm active:scale-95 transition-all"
+          className="inline-flex items-center justify-center gap-2 w-full max-w-[240px] py-2 px-4 rounded-full bg-gradient-to-r from-[#243620] to-[#162413] hover:from-[#2e4429] hover:to-[#1e301a] text-[#faeed1] border border-gold-500/50 text-xs font-serif font-semibold tracking-[0.15em] uppercase shadow-sm active:scale-95 transition-all cursor-pointer"
         >
           <Navigation className="w-3.5 h-3.5 text-gold-300" />
           <span>Open in Google Maps</span>
@@ -75,8 +76,8 @@ export const VenueCard: React.FC<VenueCardProps> = ({ wedding }) => {
       </div>
 
       {/* BOTTOM: Swipe Hint */}
-      <div className="relative z-10 pt-2 card-content-enter card-content-enter-delay-2">
-        <div className="gold-ornament mb-2">
+      <div className="relative z-10 pt-1 card-content-enter card-content-enter-delay-2">
+        <div className="gold-ornament mb-1">
           <span className="text-[#855e1a] text-[9px]">✦ ✦ ✦</span>
         </div>
         <p className="text-[9px] font-serif uppercase tracking-[0.2em] text-[#8a9985]">

@@ -7,7 +7,7 @@ import { GatefoldCover } from './components/gatefold/GatefoldCover';
 import { InnerCardSuite } from './components/gatefold/InnerCardSuite';
 import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
 import { SplashOverlay } from './components/gatefold/SplashOverlay';
-import bgPic from './assets/images/pic10.jpg';
+import bgPic from './assets/images/pic10.webp';
 
 const MAIN_TARGET_VOLUME = 0.7;
 

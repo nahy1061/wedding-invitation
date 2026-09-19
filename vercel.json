@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/duas",
+      "destination": "/api/duas"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

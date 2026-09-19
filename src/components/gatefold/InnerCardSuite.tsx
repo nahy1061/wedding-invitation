@@ -51,7 +51,6 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       component: (
         <InvitationFrontCard
           wedding={wedding}
-          guestName={guestName}
         />
       ),
     },
@@ -204,6 +203,8 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
               style={{
                 transformStyle: 'preserve-3d',
                 transformOrigin: 'center center',
+                touchAction: 'pan-y',
+                willChange: 'transform, opacity',
               }}
               className={`absolute top-0 bottom-0 w-[305px] sm:w-[365px] h-full rounded-2xl shadow-[0_25px_60px_-15px_rgba(4,20,12,0.5),0_0_0_1px_rgba(197,168,128,0.55)] cream-paper-texture overflow-hidden flex flex-col justify-between select-none ${
                 isActive ? 'cursor-grab active:cursor-grabbing pointer-events-auto' : 'cursor-pointer'
