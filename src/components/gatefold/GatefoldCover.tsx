@@ -7,11 +7,13 @@ import { PalaceStageBackdrop } from '../backdrop/PalaceStageBackdrop';
 
 interface GatefoldCoverProps {
   guestName: string | null;
+  onOpenStart?: () => void;
   onOpenComplete: () => void;
 }
 
 export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   guestName,
+  onOpenStart,
   onOpenComplete,
 }) => {
   const [openingState, setOpeningState] = useState<'closed' | 'opening'>('closed');
@@ -44,6 +46,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
     e.stopPropagation();
     if (openingState !== 'closed') return;
 
+    onOpenStart?.();
     setOpeningState('opening');
 
     setTimeout(() => {

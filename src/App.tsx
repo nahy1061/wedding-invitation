@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RotateCcw } from 'lucide-react';
 import { WEDDING_DATA } from './config/weddingData';
@@ -7,9 +7,6 @@ import { GatefoldCover } from './components/gatefold/GatefoldCover';
 import { CreamInnerCard } from './components/gatefold/CreamInnerCard';
 import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
 
-const CROSSFADE_DURATION = 3500;
-const CROSSFADE_STEPS = 70;
-const CROSSFADE_INTERVAL = CROSSFADE_DURATION / CROSSFADE_STEPS;
 const MAIN_TARGET_VOLUME = 0.7;
 
 export function App() {
@@ -42,58 +39,44 @@ export function App() {
     };
   }, []);
 
-  const crossfade = useCallback(() => {
-    const intro = introAudioRef.current;
-    const main = mainAudioRef.current;
-    if (!intro || !main) return;
-
-    // Main track already playing (silent) — just start the crossfade
-
-    let step = 0;
-    const timer = setInterval(() => {
-      step++;
-      const progress = step / CROSSFADE_STEPS;
-
-      // Intro stays at full volume for first 40%, then fades out quickly
-      // Main fades in smoothly over the full duration
-      intro.volume = progress < 0.4 ? 1.0 : Math.cos(((progress - 0.4) / 0.6) * Math.PI / 2);
-      main.volume = MAIN_TARGET_VOLUME * Math.sin(progress * Math.PI / 2);
-
-      if (step >= CROSSFADE_STEPS) {
-        clearInterval(timer);
-        intro.pause();
-        intro.volume = 1.0;
-        main.volume = MAIN_TARGET_VOLUME;
-        activeTrackRef.current = 'main';
-      }
-    }, CROSSFADE_INTERVAL);
-  }, []);
-
-  const handleOpenComplete = () => {
-    setIsOpened(true);
-
+  const handleOpenStart = () => {
     const intro = introAudioRef.current;
     const main = mainAudioRef.current;
 
-    // Play intro immediately on first user gesture
-    if (intro) {
-      intro.currentTime = 0;
-      intro.play().then(() => {
+    // Start main track immediately at full volume on tap
+    if (main) {
+      main.currentTime = 0;
+      main.volume = MAIN_TARGET_VOLUME;
+      main.play().then(() => {
         setIsPlayingAudio(true);
       }).catch(() => {});
     }
 
-    // Start main track immediately (silent) so it's ready when crossfade hits
-    if (main) {
-      main.currentTime = 0;
-      main.volume = 0;
-      main.play().catch(() => {});
-    }
+    // Play intro briefly, then fade it out quickly
+    if (intro) {
+      intro.currentTime = 0;
+      intro.volume = 1.0;
+      intro.play().catch(() => {});
 
-    // Crossfade to main track after 4 seconds
-    setTimeout(() => {
-      crossfade();
-    }, 4000);
+      // Fade intro out over 2 seconds while main is already playing
+      let step = 0;
+      const fadeSteps = 40;
+      const fadeInterval = 2000 / fadeSteps;
+      const timer = setInterval(() => {
+        step++;
+        const progress = step / fadeSteps;
+        intro.volume = Math.max(0, 1 - progress);
+        if (step >= fadeSteps) {
+          clearInterval(timer);
+          intro.pause();
+          intro.volume = 1.0;
+        }
+      }, fadeInterval);
+    }
+  };
+
+  const handleOpenComplete = () => {
+    setIsOpened(true);
   };
 
   const handleToggleAudio = () => {
@@ -136,11 +119,13 @@ export function App() {
   return (
     <div className="relative min-h-[100dvh] w-full bg-[#5e6f51] text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
       
-      {/* Audio Controls (Top-Right) */}
-      <GatefoldAudioPlayer
-        isPlaying={isPlayingAudio}
-        onToggle={handleToggleAudio}
-      />
+      {/* Audio Controls (Top-Right) — hidden after gatefold opens */}
+      {!isOpened && (
+        <GatefoldAudioPlayer
+          isPlaying={isPlayingAudio}
+          onToggle={handleToggleAudio}
+        />
+      )}
 
       {/* Main Full-Screen Experience */}
       <main className="relative z-20 flex-1 flex items-center justify-center min-h-[100dvh] w-full">
@@ -156,6 +141,7 @@ export function App() {
             >
               <GatefoldCover
                 guestName={guestName}
+                onOpenStart={handleOpenStart}
                 onOpenComplete={handleOpenComplete}
               />
             </motion.div>
