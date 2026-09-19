@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { InvitationFrontCard } from './cards/InvitationFrontCard';
 import { CountdownCard } from './cards/CountdownCard';
 import { VenueCard } from './cards/VenueCard';
@@ -11,53 +11,32 @@ interface InnerCardSuiteProps {
   guestName: string | null;
 }
 
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? 120 : -120,
-    opacity: 0,
-    scale: 0.94,
-    rotateZ: direction > 0 ? 3 : -3,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    rotateZ: 0,
-    transition: {
-      type: 'spring' as const,
-      stiffness: 350,
-      damping: 28,
-      mass: 0.8,
-    },
-  },
-  exit: (direction: number) => ({
-    x: direction > 0 ? -120 : 120,
-    opacity: 0,
-    scale: 0.94,
-    rotateZ: direction > 0 ? -3 : 3,
-    transition: {
-      type: 'spring' as const,
-      stiffness: 350,
-      damping: 28,
-      mass: 0.8,
-    },
-  }),
-};
-
 export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestName }) => {
-  const [[page, direction], setPage] = useState<[number, number]>([0, 0]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const paginate = (newDirection: number) => {
-    const nextIndex = page + newDirection;
-    if (nextIndex >= 0 && nextIndex <= 3) {
-      setPage([nextIndex, newDirection]);
+  const goTo = (index: number) => {
+    if (index >= 0 && index <= 3) {
+      setActiveIndex(index);
     }
   };
 
-  const goToPage = (index: number) => {
-    if (index === page) return;
-    setPage([index, index > page ? 1 : -1]);
+  const nextCard = () => {
+    if (activeIndex < 3) setActiveIndex(activeIndex + 1);
   };
+
+  const prevCard = () => {
+    if (activeIndex > 0) setActiveIndex(activeIndex - 1);
+  };
+
+  // Keyboard navigation support (ArrowLeft / ArrowRight)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') nextCard();
+      if (e.key === 'ArrowLeft') prevCard();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeIndex]);
 
   const tabs = [
     { label: 'Invitation', index: 0 },
@@ -66,19 +45,65 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
     { label: 'Dua', index: 3 },
   ];
 
+  const cards = [
+    {
+      id: 'invitation',
+      component: (
+        <InvitationFrontCard
+          wedding={wedding}
+          guestName={guestName}
+          onNext={nextCard}
+        />
+      ),
+    },
+    {
+      id: 'countdown',
+      component: (
+        <CountdownCard
+          wedding={wedding}
+          onPrev={prevCard}
+          onNext={nextCard}
+        />
+      ),
+    },
+    {
+      id: 'venue',
+      component: (
+        <VenueCard
+          wedding={wedding}
+          onPrev={prevCard}
+          onNext={nextCard}
+        />
+      ),
+    },
+    {
+      id: 'dua',
+      component: (
+        <DuaCard
+          guestName={guestName}
+          onPrev={prevCard}
+          onGoToFirst={() => goTo(0)}
+        />
+      ),
+    },
+  ];
+
   return (
-    <div className="relative w-full max-w-[440px] sm:max-w-[480px] mx-auto px-3 select-none flex flex-col items-center">
+    <div className="relative w-full max-w-[100vw] sm:max-w-[560px] mx-auto px-2 select-none flex flex-col items-center overflow-hidden">
       
       {/* Top Deck Navigation Tabs */}
-      <nav aria-label="Invitation Sections" className="mb-2.5 flex items-center justify-center gap-1 p-1 rounded-full bg-[#182615]/85 border border-gold-400/45 shadow-md backdrop-blur-md z-30">
+      <nav
+        aria-label="Invitation Sections"
+        className="mb-3 flex items-center justify-center gap-1 p-1 rounded-full bg-[#182615]/85 border border-gold-400/45 shadow-md backdrop-blur-md z-30"
+      >
         {tabs.map((tab) => {
-          const isActive = page === tab.index;
+          const isActive = activeIndex === tab.index;
           return (
             <button
               key={tab.index}
               type="button"
-              onClick={() => goToPage(tab.index)}
-              className={`relative px-3 sm:px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.14em] transition-all cursor-pointer ${
+              onClick={() => goTo(tab.index)}
+              className={`relative px-3 sm:px-4 py-1 rounded-full text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.14em] transition-all cursor-pointer ${
                 isActive
                   ? 'text-gold-200 font-bold bg-[#2d4229] shadow-xs'
                   : 'text-gold-400/70 hover:text-gold-300 font-medium'
@@ -87,7 +112,7 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
               {tab.label}
               {isActive && (
                 <motion.div
-                  layoutId="active-indicator"
+                  layoutId="active-cover-indicator"
                   className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-0.5 rounded-full bg-gold-400"
                 />
               )}
@@ -96,102 +121,145 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
         })}
       </nav>
 
-      {/* 3D Stack Container with Peeking Card Base */}
-      <div className="relative w-full h-[540px] sm:h-[570px] max-h-[82dvh]">
-        
-        {/* Layer 2: Behind-Card Stack Shadow Peek (Physical 3D Deck illusion) */}
-        {page < 3 && (
-          <div
-            className="absolute inset-0 w-full h-full rounded-2xl bg-[#eee5d5] border border-[#c5a880]/40 shadow-lg pointer-events-none transition-all duration-300 transform translate-y-2 scale-[0.96] opacity-60 z-0"
+      {/* 3D Cover Flow Stage */}
+      <div
+        className="relative w-full h-[510px] sm:h-[550px] max-h-[78dvh] flex items-center justify-center"
+        style={{
+          perspective: '1200px',
+          transformStyle: 'preserve-3d',
+        }}
+      >
+        {cards.map((card, i) => {
+          const delta = i - activeIndex;
+          const isActive = delta === 0;
+          const isRight = delta === 1;
+          const isLeft = delta === -1;
+          const isFarRight = delta >= 2;
+          const isFarLeft = delta <= -2;
+
+          let targetX = '0%';
+          let targetRotateY = 0;
+          let targetScale = 1.0;
+          let targetZ = 0;
+          let targetOpacity = 1;
+          let targetZIndex = 20;
+
+          if (isRight) {
+            targetX = '58%';
+            targetRotateY = -35;
+            targetScale = 0.84;
+            targetZ = -120;
+            targetOpacity = 0.65;
+            targetZIndex = 10;
+          } else if (isLeft) {
+            targetX = '-58%';
+            targetRotateY = 35;
+            targetScale = 0.84;
+            targetZ = -120;
+            targetOpacity = 0.65;
+            targetZIndex = 10;
+          } else if (isFarRight) {
+            targetX = '115%';
+            targetRotateY = -45;
+            targetScale = 0.7;
+            targetZ = -250;
+            targetOpacity = 0;
+            targetZIndex = 0;
+          } else if (isFarLeft) {
+            targetX = '-115%';
+            targetRotateY = 45;
+            targetScale = 0.7;
+            targetZ = -250;
+            targetOpacity = 0;
+            targetZIndex = 0;
+          }
+
+          return (
+            <motion.div
+              key={card.id}
+              initial={false}
+              animate={{
+                x: targetX,
+                rotateY: targetRotateY,
+                scale: targetScale,
+                z: targetZ,
+                opacity: targetOpacity,
+                zIndex: targetZIndex,
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 320,
+                damping: 30,
+                mass: 0.85,
+              }}
+              onClick={() => {
+                if (!isActive) goTo(i);
+              }}
+              drag={isActive ? 'x' : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.25}
+              onDragEnd={(_, { offset, velocity }) => {
+                if (!isActive) return;
+                const swipeThreshold = 40;
+                const velocityThreshold = 250;
+                if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
+                  nextCard();
+                } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
+                  prevCard();
+                }
+              }}
+              style={{
+                transformStyle: 'preserve-3d',
+                transformOrigin: 'center center',
+              }}
+              className={`absolute top-0 bottom-0 w-[305px] sm:w-[365px] h-full rounded-2xl shadow-[0_25px_60px_-15px_rgba(4,20,12,0.5),0_0_0_1px_rgba(197,168,128,0.55)] cream-paper-texture overflow-hidden flex flex-col justify-between select-none ${
+                isActive ? 'cursor-grab active:cursor-grabbing pointer-events-auto' : 'cursor-pointer'
+              }`}
+            >
+              {/* Inner Card Component */}
+              <div className="w-full h-full relative">
+                {card.component}
+
+                {/* 3D Light Shading Overlay for Angled Peek Cards */}
+                {!isActive && (
+                  <div
+                    className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
+                      isRight
+                        ? 'bg-gradient-to-l from-black/25 via-black/10 to-transparent'
+                        : isLeft
+                        ? 'bg-gradient-to-r from-black/25 via-black/10 to-transparent'
+                        : 'bg-black/40'
+                    }`}
+                  />
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Bottom Pagination Dots */}
+      <div className="mt-3.5 flex items-center justify-center gap-1.5 pointer-events-none">
+        {tabs.map((tab) => (
+          <button
+            key={tab.index}
+            type="button"
+            onClick={() => goTo(tab.index)}
+            aria-label={`Go to ${tab.label}`}
+            className={`h-1.5 rounded-full transition-all duration-300 pointer-events-auto cursor-pointer ${
+              activeIndex === tab.index ? 'w-5 bg-gold-300' : 'w-1.5 bg-gold-400/40 hover:bg-gold-400/70'
+            }`}
           />
-        )}
-        {page < 2 && (
-          <div
-            className="absolute inset-0 w-full h-full rounded-2xl bg-[#e6dbca] border border-[#c5a880]/30 shadow-md pointer-events-none transition-all duration-300 transform translate-y-3.5 scale-[0.93] opacity-40 -z-10"
-          />
-        )}
-
-        {/* Layer 1: Active 350gsm Luxury Card Enclosure */}
-        <div className="relative w-full h-full rounded-2xl shadow-[0_25px_60px_-15px_rgba(4,20,12,0.5),0_0_0_1px_rgba(197,168,128,0.55)] cream-paper-texture overflow-hidden flex flex-col justify-between z-10">
-          
-          {/* Swipable / Drag Content Area with Elastic Physics */}
-          <div className="relative w-full h-full flex-1 overflow-hidden">
-            <AnimatePresence custom={direction} mode="wait">
-              <motion.div
-                key={page}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.4}
-                onDragEnd={(_, { offset, velocity }) => {
-                  const swipe = Math.abs(offset.x) * velocity.x;
-                  if (swipe < -8000 || offset.x < -35) {
-                    paginate(1);
-                  } else if (swipe > 8000 || offset.x > 35) {
-                    paginate(-1);
-                  }
-                }}
-                className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
-              >
-                {page === 0 && (
-                  <InvitationFrontCard
-                    wedding={wedding}
-                    guestName={guestName}
-                    onNext={() => paginate(1)}
-                  />
-                )}
-                {page === 1 && (
-                  <CountdownCard
-                    wedding={wedding}
-                    onPrev={() => paginate(-1)}
-                    onNext={() => paginate(1)}
-                  />
-                )}
-                {page === 2 && (
-                  <VenueCard
-                    wedding={wedding}
-                    onPrev={() => paginate(-1)}
-                    onNext={() => paginate(1)}
-                  />
-                )}
-                {page === 3 && (
-                  <DuaCard
-                    guestName={guestName}
-                    onPrev={() => paginate(-1)}
-                    onGoToFirst={() => goToPage(0)}
-                  />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Bottom Pagination Dots */}
-          <div className="relative z-20 pb-2.5 flex items-center justify-center gap-1.5 pointer-events-none">
-            {tabs.map((tab) => (
-              <div
-                key={tab.index}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  page === tab.index ? 'w-5 bg-[#6e4f1c]' : 'w-1.5 bg-[#c5a880]/50'
-                }`}
-              />
-            ))}
-          </div>
-
-        </div>
-
+        ))}
       </div>
 
       {/* Floating Animated Swipe Prompt */}
       <motion.p
-        animate={{ x: [-3, 3, -3], opacity: [0.5, 0.85, 0.5] }}
-        transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+        animate={{ opacity: [0.4, 0.85, 0.4], y: [0, -2, 0] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         className="mt-2 text-[9.5px] font-serif uppercase tracking-[0.2em] text-[#faeed1]/75 pointer-events-none"
       >
-        ✦ Swipe to flip cards ✦
+        ✦ Swipe or tap cards to navigate ✦
       </motion.p>
 
     </div>
