@@ -1,4 +1,4 @@
-import introMusic from '../assets/audio/indila_15s.mp3';
+import introMusic from '../assets/audio/indila_15s_intro.mp3';
 import mainMusic from '../assets/audio/indila_1min.mp3';
 
 export interface WeddingDetails {

@@ -6,11 +6,13 @@ import sealImage from '../../assets/images/tap_to_open_seal.webp';
 
 interface GatefoldCoverProps {
   guestName: string | null;
+  onOpenStart?: () => void;
   onOpenComplete: () => void;
 }
 
 export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   guestName,
+  onOpenStart,
   onOpenComplete,
 }) => {
   const [openingState, setOpeningState] = useState<'closed' | 'opening'>('closed');
@@ -43,6 +45,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
     e.stopPropagation();
     if (openingState !== 'closed') return;
 
+    onOpenStart?.();
     setOpeningState('opening');
 
     setTimeout(() => {
@@ -53,7 +56,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   // Elegant loading state while images preload
   if (!imagesLoaded) {
     return (
-      <div className="fixed inset-0 w-full h-full min-h-dvh flex items-center justify-center bg-[#5e6f51] z-30">
+      <div className="fixed inset-0 w-full h-full min-h-dvh flex items-center justify-center bg-[#182315] z-30">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -76,7 +79,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   return (
     <div
       onClick={handleOpen}
-      className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#5e6f51] z-30"
+      className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-transparent z-30"
       style={{ perspective: '2600px' }}
     >
       {/* AMBIENT PULSING GOLDEN HALO (Breathes during idle, softly expands & fades out during slow-mo opening) */}

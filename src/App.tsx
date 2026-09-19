@@ -6,15 +6,16 @@ import { getGuestNameFromUrl } from './utils/urlHelper';
 import { GatefoldCover } from './components/gatefold/GatefoldCover';
 import { CreamInnerCard } from './components/gatefold/CreamInnerCard';
 import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
+import { PalaceStageBackdrop } from './components/backdrop/PalaceStageBackdrop';
 
 const CROSSFADE_DURATION = 3500;
 const CROSSFADE_STEPS = 70;
 const CROSSFADE_INTERVAL = CROSSFADE_DURATION / CROSSFADE_STEPS;
-const MAIN_START_VOLUME = 0.3;
 const MAIN_TARGET_VOLUME = 0.7;
 
 export function App() {
   const [isOpened, setIsOpened] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [guestName, setGuestName] = useState<string | null>(null);
   const introAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -25,7 +26,7 @@ export function App() {
     const extractedGuest = getGuestNameFromUrl();
     setGuestName(extractedGuest);
 
-    // Intro track — plays immediately on load
+    // Intro track — preloaded, ready to play on first tap
     const intro = new Audio(WEDDING_DATA.introAudioUrl);
     intro.loop = true;
     intro.volume = 1.0;
@@ -36,12 +37,6 @@ export function App() {
     main.loop = true;
     main.volume = 0;
     mainAudioRef.current = main;
-
-    intro.play().then(() => {
-      setIsPlayingAudio(true);
-    }).catch(() => {
-      // Browser blocked autoplay
-    });
 
     return () => {
       intro.pause();
@@ -54,18 +49,17 @@ export function App() {
     const main = mainAudioRef.current;
     if (!intro || !main) return;
 
-    // Start main track from beginning
-    main.currentTime = 0;
-    main.volume = MAIN_START_VOLUME;
-    main.play().catch(() => {});
+    // Main track already playing (silent) — just start the crossfade
 
     let step = 0;
     const timer = setInterval(() => {
       step++;
       const progress = step / CROSSFADE_STEPS;
 
-      intro.volume = Math.max(0, 1 - progress);
-      main.volume = MAIN_START_VOLUME + (MAIN_TARGET_VOLUME - MAIN_START_VOLUME) * progress;
+      // Intro stays at full volume for first 40%, then fades out quickly
+      // Main fades in smoothly over the full duration
+      intro.volume = progress < 0.4 ? 1.0 : Math.cos(((progress - 0.4) / 0.6) * Math.PI / 2);
+      main.volume = MAIN_TARGET_VOLUME * Math.sin(progress * Math.PI / 2);
 
       if (step >= CROSSFADE_STEPS) {
         clearInterval(timer);
@@ -79,7 +73,29 @@ export function App() {
 
   const handleOpenComplete = () => {
     setIsOpened(true);
-    crossfade();
+
+    const intro = introAudioRef.current;
+    const main = mainAudioRef.current;
+
+    // Play intro immediately on first user gesture
+    if (intro) {
+      intro.currentTime = 0;
+      intro.play().then(() => {
+        setIsPlayingAudio(true);
+      }).catch(() => {});
+    }
+
+    // Start main track immediately (silent) so it's ready when crossfade hits
+    if (main) {
+      main.currentTime = 0;
+      main.volume = 0;
+      main.play().catch(() => {});
+    }
+
+    // Crossfade to main track after 4 seconds
+    setTimeout(() => {
+      crossfade();
+    }, 4000);
   };
 
   const handleToggleAudio = () => {
@@ -115,13 +131,20 @@ export function App() {
     intro.play().catch(() => {});
 
     activeTrackRef.current = 'intro';
+    setIsOpening(false);
     setIsOpened(false);
     setIsPlayingAudio(true);
   };
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-[#5e6f51] text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
+    <div className="relative min-h-[100dvh] w-full bg-[#182315] text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
       
+      {/* 3D Illuminated Palace Stage Backdrop (Archway Silhouette, Lanterns & Velvet Curtains) */}
+      <PalaceStageBackdrop
+        isOpened={isOpened}
+        isOpening={isOpening}
+      />
+
       {/* Audio Controls (Top-Right) */}
       <GatefoldAudioPlayer
         isPlaying={isPlayingAudio}
@@ -142,15 +165,16 @@ export function App() {
             >
               <GatefoldCover
                 guestName={guestName}
+                onOpenStart={() => setIsOpening(true)}
                 onOpenComplete={handleOpenComplete}
               />
             </motion.div>
           ) : (
             <motion.div
               key="cream-inner-card"
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
               className="w-full py-4 sm:py-8 flex items-center justify-center"
             >
               <CreamInnerCard
