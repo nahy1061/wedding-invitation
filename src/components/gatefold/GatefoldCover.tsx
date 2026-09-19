@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import confetti from 'canvas-confetti';
 import gateLeft from '../../assets/images/gate2_left.webp';
 import gateRight from '../../assets/images/gate2_right.webp';
 import sealImage from '../../assets/images/tap_to_open_seal.webp';
@@ -43,26 +42,6 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   const handleOpen = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (openingState !== 'closed') return;
-
-    // Trigger subtle celebratory gold micro-sparkles floating gently in slow-mo
-    try {
-      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      const x = (rect.left + rect.width / 2) / window.innerWidth;
-      const y = (rect.top + rect.height / 2) / window.innerHeight;
-
-      confetti({
-        particleCount: 35,
-        spread: 70,
-        origin: { x: x || 0.5, y: y || 0.5 },
-        colors: ['#faeed1', '#d4af37', '#aa841e', '#e7ca6d', '#ffffff'],
-        ticks: 180, // Extended lifetime for slow-mo float
-        gravity: 0.45, // Gentle slow floating drift
-        scalar: 0.8,
-        shapes: ['circle'],
-      });
-    } catch {
-      // Fallback safely
-    }
 
     setOpeningState('opening');
 
