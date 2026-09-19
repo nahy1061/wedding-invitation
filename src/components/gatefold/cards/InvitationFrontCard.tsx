@@ -26,12 +26,12 @@ export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({
 
       {/* TOP: Bismillah & Verse */}
       <div className="relative z-10 pt-2 card-content-enter">
-        <p className="font-arabic text-2xl sm:text-3xl text-[#6e4f1c] font-semibold leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
+        <p className="font-arabic text-xl sm:text-2xl text-[#6e4f1c] font-semibold leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
           {wedding.bismillahArabic}
         </p>
 
         {/* Ornamental Divider */}
-        <div className="gold-ornament my-2">
+        <div className="gold-ornament mt-4 mb-2">
           <span className="text-[#855e1a] text-[10px]">✦</span>
         </div>
 
