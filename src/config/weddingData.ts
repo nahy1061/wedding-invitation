@@ -1,4 +1,5 @@
-import myMusic from '../assets/audio/indila_1min.mp3';
+import introMusic from '../assets/audio/indila_15s.mp3';
+import mainMusic from '../assets/audio/indila_1min.mp3';
 
 export interface WeddingDetails {
   brideName: string;
@@ -17,6 +18,7 @@ export interface WeddingDetails {
   venueHall: string;
   venueAddress: string;
   mapsUrl: string;
+  introAudioUrl: string;
   audioUrl: string;
 }
 
@@ -38,5 +40,6 @@ export const WEDDING_DATA: WeddingDetails = {
   venueAddress: 'Sector H-11, Islamabad',
   mapsUrl: 'https://maps.google.com/?q=NESCOM+Officers+Mess+H-11+Islamabad',
   // Atmospheric, royal instrumental oud & strings
-  audioUrl: myMusic,
+  introAudioUrl: introMusic,
+  audioUrl: mainMusic,
 };

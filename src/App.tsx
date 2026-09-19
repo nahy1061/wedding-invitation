@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RotateCcw } from 'lucide-react';
 import { WEDDING_DATA } from './config/weddingData';
@@ -7,55 +7,116 @@ import { GatefoldCover } from './components/gatefold/GatefoldCover';
 import { CreamInnerCard } from './components/gatefold/CreamInnerCard';
 import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
 
+const CROSSFADE_DURATION = 3500;
+const CROSSFADE_STEPS = 70;
+const CROSSFADE_INTERVAL = CROSSFADE_DURATION / CROSSFADE_STEPS;
+const MAIN_START_VOLUME = 0.3;
+const MAIN_TARGET_VOLUME = 0.7;
+
 export function App() {
   const [isOpened, setIsOpened] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [guestName, setGuestName] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const introAudioRef = useRef<HTMLAudioElement | null>(null);
+  const mainAudioRef = useRef<HTMLAudioElement | null>(null);
+  const activeTrackRef = useRef<'intro' | 'main'>('intro');
 
   useEffect(() => {
     const extractedGuest = getGuestNameFromUrl();
     setGuestName(extractedGuest);
 
-    // Prepare audio instance
-    audioRef.current = new Audio(WEDDING_DATA.audioUrl);
-    audioRef.current.loop = true;
+    // Intro track — plays immediately on load
+    const intro = new Audio(WEDDING_DATA.introAudioUrl);
+    intro.loop = true;
+    intro.volume = 1.0;
+    introAudioRef.current = intro;
+
+    // Main track — preloaded, starts muted
+    const main = new Audio(WEDDING_DATA.audioUrl);
+    main.loop = true;
+    main.volume = 0;
+    mainAudioRef.current = main;
+
+    intro.play().then(() => {
+      setIsPlayingAudio(true);
+    }).catch(() => {
+      // Browser blocked autoplay
+    });
 
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      intro.pause();
+      main.pause();
     };
+  }, []);
+
+  const crossfade = useCallback(() => {
+    const intro = introAudioRef.current;
+    const main = mainAudioRef.current;
+    if (!intro || !main) return;
+
+    // Start main track from beginning
+    main.currentTime = 0;
+    main.volume = MAIN_START_VOLUME;
+    main.play().catch(() => {});
+
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      const progress = step / CROSSFADE_STEPS;
+
+      intro.volume = Math.max(0, 1 - progress);
+      main.volume = MAIN_START_VOLUME + (MAIN_TARGET_VOLUME - MAIN_START_VOLUME) * progress;
+
+      if (step >= CROSSFADE_STEPS) {
+        clearInterval(timer);
+        intro.pause();
+        intro.volume = 1.0;
+        main.volume = MAIN_TARGET_VOLUME;
+        activeTrackRef.current = 'main';
+      }
+    }, CROSSFADE_INTERVAL);
   }, []);
 
   const handleOpenComplete = () => {
     setIsOpened(true);
-    // Unmute & play ambient melody upon opening the gatefold
-    if (audioRef.current) {
-      audioRef.current.play().then(() => {
-        setIsPlayingAudio(true);
-      }).catch(() => {
-        // Silently handled
-      });
-    }
+    crossfade();
   };
 
   const handleToggleAudio = () => {
-    if (!audioRef.current) return;
+    const active = activeTrackRef.current === 'intro'
+      ? introAudioRef.current
+      : mainAudioRef.current;
+
+    if (!active) return;
+
     if (isPlayingAudio) {
-      audioRef.current.pause();
+      active.pause();
       setIsPlayingAudio(false);
     } else {
-      audioRef.current.play().then(() => {
+      active.play().then(() => {
         setIsPlayingAudio(true);
-      }).catch(() => {
-        // Silently handled
-      });
+      }).catch(() => {});
     }
   };
 
   const handleReset = () => {
+    const intro = introAudioRef.current;
+    const main = mainAudioRef.current;
+    if (!intro || !main) return;
+
+    // Stop both
+    main.pause();
+    main.volume = 0;
+    main.currentTime = 0;
+
+    // Restart intro
+    intro.volume = 1.0;
+    intro.currentTime = 0;
+    intro.play().catch(() => {});
+
+    activeTrackRef.current = 'intro';
     setIsOpened(false);
+    setIsPlayingAudio(true);
   };
 
   return (
@@ -87,9 +148,9 @@ export function App() {
           ) : (
             <motion.div
               key="cream-inner-card"
-              initial={{ opacity: 0, scale: 0.96 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="w-full py-4 sm:py-8 flex items-center justify-center"
             >
               <CreamInnerCard
