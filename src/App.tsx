@@ -6,7 +6,6 @@ import { getGuestNameFromUrl } from './utils/urlHelper';
 import { GatefoldCover } from './components/gatefold/GatefoldCover';
 import { CreamInnerCard } from './components/gatefold/CreamInnerCard';
 import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
-import { PalaceStageBackdrop } from './components/backdrop/PalaceStageBackdrop';
 
 const CROSSFADE_DURATION = 3500;
 const CROSSFADE_STEPS = 70;
@@ -15,7 +14,6 @@ const MAIN_TARGET_VOLUME = 0.7;
 
 export function App() {
   const [isOpened, setIsOpened] = useState(false);
-  const [isOpening, setIsOpening] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [guestName, setGuestName] = useState<string | null>(null);
   const introAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -131,20 +129,13 @@ export function App() {
     intro.play().catch(() => {});
 
     activeTrackRef.current = 'intro';
-    setIsOpening(false);
     setIsOpened(false);
     setIsPlayingAudio(true);
   };
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-[#182315] text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
+    <div className="relative min-h-[100dvh] w-full bg-[#5e6f51] text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
       
-      {/* 3D Illuminated Palace Stage Backdrop (Archway Silhouette, Lanterns & Velvet Curtains) */}
-      <PalaceStageBackdrop
-        isOpened={isOpened}
-        isOpening={isOpening}
-      />
-
       {/* Audio Controls (Top-Right) */}
       <GatefoldAudioPlayer
         isPlaying={isPlayingAudio}
@@ -165,7 +156,6 @@ export function App() {
             >
               <GatefoldCover
                 guestName={guestName}
-                onOpenStart={() => setIsOpening(true)}
                 onOpenComplete={handleOpenComplete}
               />
             </motion.div>
