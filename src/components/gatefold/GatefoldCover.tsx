@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import gateLeft from '../../assets/images/gate2_left.png';
-import gateRight from '../../assets/images/gate2_right.png';
-import sealImage from '../../assets/images/tap_to_open_seal.png';
+import gateLeft from '../../assets/images/gate2_left.webp';
+import gateRight from '../../assets/images/gate2_right.webp';
+import sealImage from '../../assets/images/tap_to_open_seal.webp';
 
 interface GatefoldCoverProps {
   guestName: string | null;
@@ -14,6 +14,30 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   onOpenComplete,
 }) => {
   const [openingState, setOpeningState] = useState<'closed' | 'opening'>('closed');
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload all cover images before showing the gatefold
+  useEffect(() => {
+    const imageSources = [gateLeft, gateRight, sealImage];
+    let loadedCount = 0;
+
+    imageSources.forEach((src) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === imageSources.length) {
+          setImagesLoaded(true);
+        }
+      };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === imageSources.length) {
+          setImagesLoaded(true); // Show cover even if an image fails
+        }
+      };
+      img.src = src;
+    });
+  }, []);
 
   const handleOpen = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -26,11 +50,34 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
     }, 1100);
   };
 
+  // Elegant loading state while images preload
+  if (!imagesLoaded) {
+    return (
+      <div className="fixed inset-0 w-full h-full min-h-dvh flex items-center justify-center bg-[#5e6f51] z-30">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center gap-4"
+        >
+          {/* Subtle gold spinner */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+            className="w-8 h-8 rounded-full border-2 border-gold-400/30 border-t-gold-400"
+          />
+          <p className="text-[11px] font-serif text-gold-300/80 tracking-[0.25em] uppercase">
+            Preparing Your Invitation
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div
       onClick={handleOpen}
       className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#5e6f51] z-30"
-      style={{ perspective: '900px' }}
+      style={{ perspective: '2600px' }}
     >
 
       {/* LEFT GATEFOLD PANEL */}
@@ -116,3 +163,5 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
     </div>
   );
 };
+
+
