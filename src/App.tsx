@@ -139,7 +139,7 @@ export function App() {
   };
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-[#5e6f51] text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
+    <div className="relative min-h-[100dvh] w-full bg-cover bg-center bg-no-repeat text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between" style={{ backgroundImage: `url(${bgPic})` }}>
       
       {/* Splash Overlay — blocks everything until user taps */}
       <AnimatePresence>
@@ -180,8 +180,7 @@ export function App() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full py-2 sm:py-6 flex items-center justify-center bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${bgPic})` }}
+              className="w-full py-2 sm:py-6 flex items-center justify-center"
             >
               <InnerCardSuite
                 wedding={WEDDING_DATA}

@@ -87,7 +87,7 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       {/* Top Deck Navigation Tabs */}
       <nav
         aria-label="Invitation Sections"
-        className="mb-3 flex items-center justify-center gap-1 p-1 rounded-full bg-[#182615]/85 border border-gold-400/45 shadow-md backdrop-blur-md z-30"
+        className="mb-3 flex items-center justify-center gap-1.5 p-1.5 rounded-full bg-[#0e1a0b]/90 border border-gold-400/70 shadow-[0_4px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,175,55,0.15)] backdrop-blur-md z-30"
       >
         {tabs.map((tab) => {
           const isActive = activeIndex === tab.index;
@@ -96,17 +96,17 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
               key={tab.index}
               type="button"
               onClick={() => goTo(tab.index)}
-              className={`relative px-3 sm:px-4 py-1 rounded-full text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.14em] transition-all cursor-pointer ${
+              className={`relative px-3.5 sm:px-4.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.14em] transition-all cursor-pointer ${
                 isActive
-                  ? 'text-gold-200 font-bold bg-[#2d4229] shadow-xs'
-                  : 'text-gold-400/70 hover:text-gold-300 font-medium'
+                  ? 'text-gold-100 font-bold bg-[#2d4229] shadow-[0_0_10px_rgba(212,175,55,0.2)]'
+                  : 'text-gold-400/80 hover:text-gold-200 hover:bg-[#1a2d16]/60 font-medium'
               }`}
             >
               {tab.label}
               {isActive && (
                 <motion.div
                   layoutId="active-cover-indicator"
-                  className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-0.5 rounded-full bg-gold-400"
+                  className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-2 h-0.5 rounded-full bg-gold-300 shadow-[0_0_6px_rgba(212,175,55,0.5)]"
                 />
               )}
             </button>
@@ -232,15 +232,17 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       </div>
 
       {/* Bottom Pagination Dots */}
-      <div className="mt-3 flex items-center justify-center gap-1.5 pointer-events-none">
+      <div className="mt-3 flex items-center justify-center gap-2 pointer-events-none">
         {tabs.map((tab) => (
           <button
             key={tab.index}
             type="button"
             onClick={() => goTo(tab.index)}
             aria-label={`Go to ${tab.label}`}
-            className={`h-1.5 rounded-full transition-all duration-300 pointer-events-auto cursor-pointer ${
-              activeIndex === tab.index ? 'w-5 bg-gold-300' : 'w-1.5 bg-gold-400/40 hover:bg-gold-400/70'
+            className={`rounded-full transition-all duration-300 pointer-events-auto cursor-pointer ${
+              activeIndex === tab.index
+                ? 'w-6 h-2 bg-gold-300 shadow-[0_0_8px_rgba(212,175,55,0.45)]'
+                : 'w-2 h-2 bg-gold-400/60 hover:bg-gold-300/80 hover:shadow-[0_0_6px_rgba(212,175,55,0.3)]'
             }`}
           />
         ))}
