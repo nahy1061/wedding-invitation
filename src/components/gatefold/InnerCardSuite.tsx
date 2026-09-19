@@ -232,7 +232,7 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       </div>
 
       {/* Bottom Pagination Dots */}
-      <div className="mt-3 flex items-center justify-center gap-2 pointer-events-none">
+      <div className="mt-5 flex items-center justify-center gap-2 pointer-events-none">
         {tabs.map((tab) => (
           <button
             key={tab.index}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Send, CheckCircle2 } from 'lucide-react';
+import { Heart, Send, CheckCircle2, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface DuaCardProps {
@@ -8,20 +8,28 @@ interface DuaCardProps {
 
 export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
   const [duaInput, setDuaInput] = useState('');
-  const [sentMessage, setSentMessage] = useState<string | null>(null);
+  const [pendingMessage, setPendingMessage] = useState<string | null>(null);
+  const [showNameModal, setShowNameModal] = useState(false);
+  const [nameInput, setNameInput] = useState('');
+  const [justSubmitted, setJustSubmitted] = useState(false);
 
   const quickChips = [
-    'Barakallahu Lakuma 🤲',
+    'بارك الله لكما 🤲',
     'Mabrook & Endless Joy! ✨',
     'May Allah bless this union ❤️',
   ];
 
-  const handleSendDua = (messageToSend?: string) => {
-    const text = (messageToSend || duaInput).trim();
+  const handleSendDua = (message?: string) => {
+    const text = (message || duaInput).trim();
     if (!text) return;
-
-    setSentMessage(text);
+    setPendingMessage(text);
     setDuaInput('');
+    setShowNameModal(true);
+  };
+
+  const handleSubmitDua = () => {
+    if (!pendingMessage) return;
+    const senderName = nameInput.trim() || guestName || 'Anonymous';
 
     try {
       confetti({
@@ -31,6 +39,15 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
         colors: ['#faeed1', '#d4af37', '#aa841e', '#5e6f51'],
       });
     } catch { /* fallback */ }
+
+    // TODO: send { message: pendingMessage, name: senderName } to backend
+    console.log('Dua submitted by:', senderName);
+
+    setShowNameModal(false);
+    setPendingMessage(null);
+    setNameInput('');
+    setJustSubmitted(true);
+    setTimeout(() => setJustSubmitted(false), 3000);
   };
 
   return (
@@ -67,18 +84,14 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
 
       {/* CENTER: Guestbook */}
       <div className="relative z-10 my-1 max-w-[320px] mx-auto w-full card-content-enter card-content-enter-delay-1">
-        {sentMessage ? (
-          <div className="p-4 rounded-2xl bg-[#eef5eb]/80 border border-[#86a87e]/60 text-center shadow-xs backdrop-blur-xs animate-in fade-in zoom-in duration-300">
+
+        {/* Just Submitted Confirmation */}
+        {justSubmitted ? (
+          <div className="p-4 rounded-2xl bg-[#eef5eb]/80 border border-[#86a87e]/60 text-center shadow-xs backdrop-blur-xs">
             <div className="flex items-center justify-center gap-1.5 text-[#24421f] text-sm font-serif font-bold">
               <CheckCircle2 className="w-4 h-4 text-[#3b6d33]" />
-              <span>Dua Received with Gratitude!</span>
+              <span>Dua Received!</span>
             </div>
-            <p className="text-xs font-serif italic text-[#12200f] mt-2 leading-snug">
-              "{sentMessage}"
-            </p>
-            <span className="text-[10px] font-sans text-[#4d6a47] font-medium block mt-2">
-              — {guestName || 'Honored Guest'}
-            </span>
           </div>
         ) : (
           <div className="space-y-3">
@@ -133,6 +146,53 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
           JazakAllahu Khairan
         </p>
       </div>
+
+      {/* NAME MODAL */}
+      {showNameModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="w-full max-w-xs bg-[#faf6ef] border border-[#c5a880]/70 rounded-2xl shadow-2xl p-5 space-y-3">
+            {/* Close button */}
+            <div className="flex justify-between items-center">
+              <p className="font-display text-sm font-semibold text-[#12200f] tracking-wide">
+                Write Your Name
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowNameModal(false);
+                  setPendingMessage(null);
+                  setNameInput('');
+                }}
+                className="text-[#8a9985] hover:text-[#12200f] transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <p className="text-[10px] font-serif italic text-[#3d5238]">
+              So we know who made this dua
+            </p>
+
+            <input
+              type="text"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              placeholder={guestName || "Your name"}
+              autoFocus
+              className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-[#c5a880]/60 text-[#12200f] placeholder:text-[#8a9985] focus:outline-hidden focus:border-[#855e1a] shadow-inner font-sans"
+            />
+
+            <button
+              type="button"
+              onClick={handleSubmitDua}
+              className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#243620] to-[#162413] hover:from-[#2e4429] hover:to-[#1e301a] text-[#faeed1] border border-gold-500/50 text-xs font-serif font-semibold tracking-[0.15em] uppercase flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-95 transition-all"
+            >
+              <Send className="w-3.5 h-3.5 text-gold-300" />
+              <span>Submit Dua</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

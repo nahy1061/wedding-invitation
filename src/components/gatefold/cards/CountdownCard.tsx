@@ -125,18 +125,20 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
         </div>
 
         {/* Calendar Button */}
-        <button
-          type="button"
-          onClick={handleCalendar}
-          className="mt-5 w-full max-w-[240px] py-2.5 px-4 rounded-full bg-gradient-to-r from-[#243620] to-[#162413] hover:from-[#2e4429] hover:to-[#1e301a] text-[#faeed1] border border-gold-500/50 text-xs font-serif font-semibold tracking-[0.15em] uppercase flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95 transition-all"
-        >
-          {calendarAdded ? (
-            <Check className="w-3.5 h-3.5 text-gold-300" />
-          ) : (
-            <Calendar className="w-3.5 h-3.5 text-gold-300" />
-          )}
-          <span>{calendarAdded ? 'Calendar Opened' : 'Add to Google Calendar'}</span>
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={handleCalendar}
+            className="mt-5 w-full max-w-[240px] py-2.5 px-4 rounded-full bg-gradient-to-r from-[#243620] to-[#162413] hover:from-[#2e4429] hover:to-[#1e301a] text-[#faeed1] border border-gold-500/50 text-xs font-serif font-semibold tracking-[0.15em] uppercase flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95 transition-all"
+          >
+            {calendarAdded ? (
+              <Check className="w-3.5 h-3.5 text-gold-300" />
+            ) : (
+              <Calendar className="w-3.5 h-3.5 text-gold-300" />
+            )}
+            <span>{calendarAdded ? 'Calendar Opened' : 'Add to Google Calendar'}</span>
+          </button>
+        </div>
       </div>
 
       {/* BOTTOM: Swipe Hint */}
