@@ -87,9 +87,9 @@ export function App() {
           ) : (
             <motion.div
               key="cream-inner-card"
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
               className="w-full py-4 sm:py-8 flex items-center justify-center"
             >
               <CreamInnerCard
