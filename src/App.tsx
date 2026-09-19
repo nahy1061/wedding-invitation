@@ -159,7 +159,7 @@ export function App() {
       {/* Main Full-Screen Experience */}
       <main className="relative z-20 flex-1 flex items-center justify-center min-h-[100dvh] w-full">
         <AnimatePresence mode="wait">
-          {hasEntered && !isOpened ? (
+          {!isOpened ? (
             <motion.div
               key="gatefold-cover"
               initial={{ opacity: 0 }}
@@ -174,7 +174,7 @@ export function App() {
                 onOpenComplete={handleOpenComplete}
               />
             </motion.div>
-          ) : hasEntered && isOpened ? (
+          ) : (
             <motion.div
               key="inner-card-suite"
               initial={{ opacity: 0, scale: 0.96 }}
@@ -187,7 +187,7 @@ export function App() {
                 guestName={guestName}
               />
             </motion.div>
-          ) : null}
+          )}
         </AnimatePresence>
       </main>
 

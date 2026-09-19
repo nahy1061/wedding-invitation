@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Sparkles, Music } from 'lucide-react';
+import { WEDDING_DATA } from '../../config/weddingData';
 
 interface SplashOverlayProps {
   onEnter: () => void;
@@ -11,79 +13,81 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.4 }}
       onClick={onEnter}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center cursor-pointer select-none bg-[#1a2617]"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs select-none cursor-pointer"
     >
-      {/* Ambient Gold Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-radial from-gold-500/15 via-gold-500/5 to-transparent blur-3xl pointer-events-none" />
-
-      {/* Decorative Top Flourish */}
+      {/* Centered Modal Card */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className="text-gold-400/60 text-lg tracking-[0.5em] font-serif mb-6"
+        initial={{ opacity: 0, scale: 0.9, y: 14 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.93, y: 8 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onEnter();
+        }}
+        className="relative w-full max-w-[330px] sm:max-w-[360px] cream-paper-texture rounded-2xl p-6 sm:p-7 text-center shadow-2xl overflow-hidden cursor-pointer active:scale-[0.99] transition-transform"
       >
-        ✦ ✦ ✦
-      </motion.div>
+        {/* Ornate Frame & Corner Filigrees */}
+        <div className="absolute inset-2.5 border border-[#c5a880]/70 rounded-xl ornate-card-frame pointer-events-none" />
+        <div className="absolute inset-0 filigree-corners pointer-events-none" />
+        <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
 
-      {/* Bismillah */}
-      <motion.p
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
-        className="font-arabic text-xl sm:text-2xl text-gold-300/80 mb-8 leading-relaxed"
-      >
-        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-      </motion.p>
+        {/* Ambient Warm Tint */}
+        <div className="absolute inset-0 tint-invitation pointer-events-none opacity-40" />
 
-      {/* Pulsing Tap Indicator */}
-      <div className="relative mb-6">
-        {/* Outer ring pulses */}
-        <motion.div
-          animate={{
-            scale: [1, 1.6, 1],
-            opacity: [0.5, 0, 0.5],
-          }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute inset-0 w-16 h-16 -m-2 rounded-full border-2 border-gold-400/40"
-        />
-        {/* Inner circle */}
-        <motion.div
-          animate={{
-            scale: [1, 1.15, 1],
-            opacity: [0.7, 1, 0.7],
-          }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-12 h-12 rounded-full bg-gold-500/20 border border-gold-400/60 flex items-center justify-center"
-        >
-          <motion.div
-            animate={{ scale: [0.9, 1.1, 0.9] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-3 h-3 rounded-full bg-gold-400"
-          />
-        </motion.div>
-      </div>
+        {/* Modal Inner Content */}
+        <div className="relative z-10 flex flex-col items-center">
+          {/* Top Flourish */}
+          <div className="gold-ornament mb-2">
+            <span className="text-[#855e1a] text-xs">✦ ✦ ✦</span>
+          </div>
 
-      {/* Instruction Text */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0.5, 1, 0.5] }}
-        transition={{ delay: 0.8, duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-        className="text-[11px] sm:text-xs font-serif uppercase tracking-[0.3em] text-gold-300/80"
-      >
-        Tap to enter
-      </motion.p>
+          {/* Invitation Label */}
+          <p className="text-[10px] sm:text-[11px] font-display tracking-[0.25em] uppercase text-[#2c4227] font-bold">
+            The Wedding Celebration Of
+          </p>
 
-      {/* Bottom flourish */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 0.8 }}
-        className="absolute bottom-12 text-gold-400/40 text-xs tracking-[0.5em] font-serif"
-      >
-        ✦ ✦ ✦
+          {/* Couple Names */}
+          <div className="my-2.5 space-y-0.5">
+            <h2 className="font-display text-2xl sm:text-3xl text-[#12200f] font-semibold tracking-wide">
+              {WEDDING_DATA.brideName}
+            </h2>
+            <div className="flex items-center justify-center gap-2.5 py-0.5">
+              <div className="h-[0.5px] w-8 bg-gradient-to-r from-transparent to-[#bfa378]" />
+              <span className="font-script text-2xl sm:text-3xl text-[#855e1a] italic">&</span>
+              <div className="h-[0.5px] w-8 bg-gradient-to-l from-transparent to-[#bfa378]" />
+            </div>
+            <h2 className="font-display text-2xl sm:text-3xl text-[#12200f] font-semibold tracking-wide">
+              {WEDDING_DATA.groomName}
+            </h2>
+          </div>
+
+          {/* Subtitle Message */}
+          <p className="font-serif italic text-xs sm:text-[13px] text-[#2c3d28] mt-1 mb-5 leading-relaxed max-w-[260px]">
+            You are cordially invited to celebrate this sacred union
+          </p>
+
+          {/* Enter Button */}
+          <button
+            type="button"
+            onClick={onEnter}
+            className="w-full py-2.5 sm:py-3 px-5 rounded-xl bg-gradient-to-r from-[#23351f] via-[#182615] to-[#23351f] text-[#faeed1] border border-[#c5a880]/70 shadow-md hover:shadow-lg hover:border-gold-400 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer group"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-gold-400 group-hover:rotate-12 transition-transform" />
+            <span className="font-serif text-xs uppercase tracking-[0.2em] font-semibold text-gold-200">
+              Open Invitation
+            </span>
+            <Sparkles className="w-3.5 h-3.5 text-gold-400 group-hover:-rotate-12 transition-transform" />
+          </button>
+
+          {/* Audio hint */}
+          <div className="mt-3 flex items-center gap-1.5 text-[10px] font-serif italic text-[#6d7e67]">
+            <Music className="w-3 h-3 text-[#855e1a]" />
+            <span>Sound & animations enabled</span>
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   );
