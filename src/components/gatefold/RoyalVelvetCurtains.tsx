@@ -17,9 +17,9 @@ export const RoyalVelvetCurtains: React.FC<RoyalVelvetCurtainsProps> = ({ isOpen
         animate={
           isOpening
             ? {
-                scaleX: [1, 0.12],
-                x: ['0%', '-45%'],
-                opacity: [1, 0.95, 0.7],
+                scaleX: [1, 0.08],
+                x: ['0%', '-48%'],
+                opacity: [1, 0.9, 0.4],
               }
             : {
                 scaleX: 1,
@@ -28,14 +28,17 @@ export const RoyalVelvetCurtains: React.FC<RoyalVelvetCurtainsProps> = ({ isOpen
               }
         }
         transition={{
-          duration: 2.8,
-          delay: 0.6, // Starts as the outer gatefold doors begin parting
-          ease: [0.25, 1, 0.5, 1], // Realistic heavy velvet gather
+          duration: 1.8,
+          delay: 0.15, // Starts swiftly as the outer doors swing open
+          ease: [0.22, 1, 0.36, 1],
         }}
         style={{
           transformOrigin: 'left center',
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
         }}
-        className="absolute top-0 left-0 bottom-0 w-1/2 h-full overflow-hidden [filter:drop-shadow(15px_0_30px_rgba(0,0,0,0.9))]"
+        className="absolute top-0 left-0 bottom-0 w-1/2 h-full overflow-hidden shadow-[12px_0_35px_rgba(0,0,0,0.85)]"
       >
         <img
           src={curtainLeftImg}
@@ -52,9 +55,9 @@ export const RoyalVelvetCurtains: React.FC<RoyalVelvetCurtainsProps> = ({ isOpen
         animate={
           isOpening
             ? {
-                scaleX: [1, 0.12],
-                x: ['0%', '45%'],
-                opacity: [1, 0.95, 0.7],
+                scaleX: [1, 0.08],
+                x: ['0%', '48%'],
+                opacity: [1, 0.9, 0.4],
               }
             : {
                 scaleX: 1,
@@ -63,14 +66,17 @@ export const RoyalVelvetCurtains: React.FC<RoyalVelvetCurtainsProps> = ({ isOpen
               }
         }
         transition={{
-          duration: 2.8,
-          delay: 0.6,
-          ease: [0.25, 1, 0.5, 1],
+          duration: 1.8,
+          delay: 0.15,
+          ease: [0.22, 1, 0.36, 1],
         }}
         style={{
           transformOrigin: 'right center',
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
         }}
-        className="absolute top-0 right-0 bottom-0 w-1/2 h-full overflow-hidden [filter:drop-shadow(-15px_0_30px_rgba(0,0,0,0.9))]"
+        className="absolute top-0 right-0 bottom-0 w-1/2 h-full overflow-hidden shadow-[-12px_0_35px_rgba(0,0,0,0.85)]"
       >
         <img
           src={curtainRightImg}

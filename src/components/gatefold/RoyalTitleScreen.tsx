@@ -70,7 +70,10 @@ export const RoyalTitleScreen: React.FC<RoyalTitleScreenProps> = ({
             ? { opacity: 1, scale: 1, y: 0 }
             : { opacity: 0, scale: 0.94, y: 15 }
         }
-        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1.0, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          willChange: 'transform, opacity',
+        }}
         className="relative z-10 max-w-[420px] w-full flex flex-col items-center py-6"
       >
         {/* Delicate Golden Top Flourish */}
