@@ -1,6 +1,12 @@
 import introMusic from '../assets/audio/indila_15s_intro.mp3';
 import mainMusic from '../assets/audio/indila_1min.mp3';
 
+export interface ItineraryItem {
+  time: string;
+  title: string;
+  description?: string;
+}
+
 export interface WeddingDetails {
   brideName: string;
   groomName: string;
@@ -20,6 +26,7 @@ export interface WeddingDetails {
   mapsUrl: string;
   introAudioUrl: string;
   audioUrl: string;
+  itinerary: ItineraryItem[];
 }
 
 export const WEDDING_DATA: WeddingDetails = {
@@ -38,8 +45,14 @@ export const WEDDING_DATA: WeddingDetails = {
   venueName: 'NESCOM Officers Mess',
   venueHall: 'Hall 2 (2nd Floor)',
   venueAddress: 'Sector H-11, Islamabad',
-  mapsUrl: 'https://maps.google.com/?q=NESCOM+Officers+Mess+H-11+Islamabad',
+  mapsUrl: 'https://maps.app.goo.gl/GkSKfzZUW6q7tQ817',
   // Atmospheric, royal instrumental oud & strings
   introAudioUrl: introMusic,
   audioUrl: mainMusic,
+  itinerary: [
+    { time: '7:00 PM', title: 'Arrival of Guests', description: 'Welcome refreshments & seating' },
+    { time: '7:45 PM', title: 'Nikkah Ceremony', description: 'Solemnization & Ijab-o-Qubool' },
+    { time: '8:30 PM', title: 'Royal Dinner', description: 'Celebratory traditional feast' },
+    { time: '9:45 PM', title: 'Dua & Farewell', description: 'Prayers and blessings for the couple' },
+  ],
 };

@@ -4,7 +4,7 @@ import { RotateCcw } from 'lucide-react';
 import { WEDDING_DATA } from './config/weddingData';
 import { getGuestNameFromUrl } from './utils/urlHelper';
 import { GatefoldCover } from './components/gatefold/GatefoldCover';
-import { CreamInnerCard } from './components/gatefold/CreamInnerCard';
+import { InnerCardSuite } from './components/gatefold/InnerCardSuite';
 import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
 
 const MAIN_TARGET_VOLUME = 0.7;
@@ -147,13 +147,13 @@ export function App() {
             </motion.div>
           ) : (
             <motion.div
-              key="cream-inner-card"
+              key="inner-card-suite"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full py-4 sm:py-8 flex items-center justify-center"
+              className="w-full py-2 sm:py-6 flex items-center justify-center"
             >
-              <CreamInnerCard
+              <InnerCardSuite
                 wedding={WEDDING_DATA}
                 guestName={guestName}
               />
@@ -168,9 +168,9 @@ export function App() {
           <button
             type="button"
             onClick={handleReset}
-            className="px-4 py-1.5 rounded-full bg-white/40 border border-white/60 shadow-md backdrop-blur-md text-[#2e3827] hover:bg-white/60 text-[10px] font-serif uppercase tracking-[0.2em] flex items-center gap-1.5 transition-all cursor-pointer"
+            className="px-4 py-1.5 rounded-full bg-[#182615]/85 hover:bg-[#182615] border border-gold-400/50 shadow-lg backdrop-blur-md text-gold-200 hover:text-gold-100 text-[10px] font-serif uppercase tracking-[0.2em] flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
           >
-            <RotateCcw className="w-3 h-3 text-[#4d5c41]" />
+            <RotateCcw className="w-3 h-3 text-gold-400" />
             <span>Close & Replay</span>
           </button>
         </aside>
