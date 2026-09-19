@@ -6,11 +6,13 @@ import { getGuestNameFromUrl } from './utils/urlHelper';
 import { GatefoldCover } from './components/gatefold/GatefoldCover';
 import { InnerCardSuite } from './components/gatefold/InnerCardSuite';
 import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
+import { SplashOverlay } from './components/gatefold/SplashOverlay';
 import bgPic from './assets/images/pic10.jpg';
 
 const MAIN_TARGET_VOLUME = 0.7;
 
 export function App() {
+  const [hasEntered, setHasEntered] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [guestName, setGuestName] = useState<string | null>(null);
@@ -39,6 +41,25 @@ export function App() {
       main.pause();
     };
   }, []);
+
+  const handleEnter = () => {
+    // Try fullscreen
+    try {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } catch {}
+
+    // Play intro music
+    const intro = introAudioRef.current;
+    if (intro) {
+      intro.currentTime = 0;
+      intro.volume = 1.0;
+      intro.play().then(() => {
+        setIsPlayingAudio(true);
+      }).catch(() => {});
+    }
+
+    setHasEntered(true);
+  };
 
   const handleOpenStart = () => {
     const intro = introAudioRef.current;
@@ -120,8 +141,15 @@ export function App() {
   return (
     <div className="relative min-h-[100dvh] w-full bg-[#5e6f51] text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between">
       
+      {/* Splash Overlay — blocks everything until user taps */}
+      <AnimatePresence>
+        {!hasEntered && (
+          <SplashOverlay onEnter={handleEnter} />
+        )}
+      </AnimatePresence>
+
       {/* Audio Controls (Top-Right) — hidden after gatefold opens */}
-      {!isOpened && (
+      {!isOpened && hasEntered && (
         <GatefoldAudioPlayer
           isPlaying={isPlayingAudio}
           onToggle={handleToggleAudio}
@@ -131,7 +159,7 @@ export function App() {
       {/* Main Full-Screen Experience */}
       <main className="relative z-20 flex-1 flex items-center justify-center min-h-[100dvh] w-full">
         <AnimatePresence mode="wait">
-          {!isOpened ? (
+          {hasEntered && !isOpened ? (
             <motion.div
               key="gatefold-cover"
               initial={{ opacity: 0 }}
@@ -146,7 +174,7 @@ export function App() {
                 onOpenComplete={handleOpenComplete}
               />
             </motion.div>
-          ) : (
+          ) : hasEntered && isOpened ? (
             <motion.div
               key="inner-card-suite"
               initial={{ opacity: 0, scale: 0.96 }}
@@ -160,7 +188,7 @@ export function App() {
                 guestName={guestName}
               />
             </motion.div>
-          )}
+          ) : null}
         </AnimatePresence>
       </main>
 
