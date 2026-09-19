@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import gateLeft from '../../assets/images/gate2_left.webp';
 import gateRight from '../../assets/images/gate2_right.webp';
 import sealImage from '../../assets/images/tap_to_open_seal.webp';
@@ -43,6 +44,26 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
     e.stopPropagation();
     if (openingState !== 'closed') return;
 
+    // Trigger subtle celebratory gold micro-sparkles at the seal center
+    try {
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+      confetti({
+        particleCount: 30,
+        spread: 65,
+        origin: { x: x || 0.5, y: y || 0.5 },
+        colors: ['#faeed1', '#d4af37', '#aa841e', '#e7ca6d', '#ffffff'],
+        ticks: 90,
+        gravity: 0.8,
+        scalar: 0.75,
+        shapes: ['circle'],
+      });
+    } catch {
+      // Fallback safely
+    }
+
     setOpeningState('opening');
 
     setTimeout(() => {
@@ -79,6 +100,21 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
       className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#5e6f51] z-30"
       style={{ perspective: '2600px' }}
     >
+      {/* AMBIENT PULSING GOLDEN HALO (Constant visibility during idle, expands & contracts with bounce) */}
+      {openingState === 'closed' && (
+        <motion.div
+          animate={{
+            scale: [0.92, 1.1, 0.95, 1.06, 0.92],
+            opacity: [0.35, 0.65, 0.42, 0.58, 0.35],
+          }}
+          transition={{
+            duration: 2.4,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 sm:w-56 h-48 sm:h-56 rounded-full bg-radial from-gold-400/40 via-gold-500/10 to-transparent blur-xl pointer-events-none z-15"
+        />
+      )}
 
       {/* LEFT GATEFOLD PANEL */}
       <motion.div
@@ -137,20 +173,22 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
       </motion.div>
 
       {/* CENTER HAIRLINE GOLD VERTICAL SEAM */}
-      <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-linear-to-b from-gold-200 via-gold-400 to-gold-200 shadow-[0_0_15px_rgba(212,175,55,0.95)] z-20 pointer-events-none" />
+      {openingState === 'closed' && (
+        <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-linear-to-b from-gold-200 via-gold-400 to-gold-200 shadow-[0_0_15px_rgba(212,175,55,0.95)] z-20 pointer-events-none" />
+      )}
 
       {/* CENTRAL 3D SCALLOPED DIE-CUT GOLD PLAQUE SEAL ("TAP TO OPEN") */}
       <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
+        initial={false}
         animate={
           openingState === 'opening'
-            ? { scale: [1, 1.25, 0], opacity: [1, 1, 0] }
-            : { scale: [1, 1.025, 1], opacity: 1 }
+            ? { scale: [1, 1.18, 0.85], opacity: [1, 0.8, 0] }
+            : { scale: [0.94, 1.08, 0.96, 1.04, 0.94], opacity: 1 }
         }
         transition={
           openingState === 'opening'
-            ? { duration: 0.45, ease: 'easeInOut' }
-            : { duration: 4, repeat: Infinity, ease: 'easeInOut' }
+            ? { duration: 0.45, ease: 'easeOut' }
+            : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }
         }
         className="relative z-30 w-44 sm:w-52 aspect-square flex items-center justify-center cursor-pointer select-none [filter:drop-shadow(0_20px_35px_rgba(0,0,0,0.85))_drop-shadow(0_0_15px_rgba(212,175,55,0.4))]"
       >
