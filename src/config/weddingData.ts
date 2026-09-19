@@ -41,7 +41,7 @@ export const WEDDING_DATA: WeddingDetails = {
   invitationText: 'Under the grace of Almighty Allah and with the blessings of our beloved parents, we cordially invite you to share in the joy of our Nikkah ceremony & wedding celebration.',
   eventDateFormatted: 'Saturday, October 3, 2026',
   eventTimeFormatted: '7:00 PM – 10:00 PM',
-  islamicDateFormatted: '20 Rabi\' al-Awwal 1448 AH',
+  islamicDateFormatted: '21 Rabi\' al-Thani 1448 AH',
   venueName: 'NESCOM Officers Mess',
   venueHall: 'Hall 2 (2nd Floor)',
   venueAddress: 'Sector H-11, Islamabad',
