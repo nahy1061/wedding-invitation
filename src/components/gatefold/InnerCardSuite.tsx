@@ -43,7 +43,7 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
     { label: 'Invite', fullLabel: 'Invitation', index: 0 },
     { label: 'Date', fullLabel: 'Date', index: 1 },
     { label: 'Venue', fullLabel: 'Venue', index: 2 },
-    { label: 'Hosts', fullLabel: 'Reception', index: 3 },
+    { label: 'Reception', fullLabel: 'Reception', index: 3 },
     { label: 'Dua', fullLabel: 'Dua', index: 4 },
   ];
 
