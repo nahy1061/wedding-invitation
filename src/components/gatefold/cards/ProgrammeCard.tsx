@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Check, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { openGoogleCalendar } from '../../../utils/calendar';
 import type { WeddingDetails } from '../../../config/weddingData';
 
 interface ProgrammeCardProps {
@@ -36,15 +37,6 @@ export const ProgrammeCard: React.FC<ProgrammeCardProps> = ({ wedding, onPrev, o
   }, []);
 
   const handleCalendar = () => {
-    const startDate = '20261003T140000Z';
-    const endDate = '20261003T170000Z';
-    const title = encodeURIComponent(`Nikkah Ceremony: ${wedding.brideName} & ${wedding.groomName}`);
-    const details = encodeURIComponent(
-      `Nikkah Ceremony & Reception of ${wedding.brideName} & ${wedding.groomName}.\n\nVenue: ${wedding.venueHall}, ${wedding.venueName}, ${wedding.venueAddress}\nTiming: 7:00 PM – 10:00 PM`
-    );
-    const location = encodeURIComponent(`${wedding.venueHall}, ${wedding.venueName}, ${wedding.venueAddress}`);
-    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
-
     try {
       confetti({
         particleCount: 35,
@@ -58,7 +50,7 @@ export const ProgrammeCard: React.FC<ProgrammeCardProps> = ({ wedding, onPrev, o
 
     setCalendarAdded(true);
     setTimeout(() => setCalendarAdded(false), 3000);
-    window.open(url, '_blank', 'noopener,noreferrer');
+    openGoogleCalendar(wedding);
   };
 
   return (

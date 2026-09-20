@@ -7,6 +7,12 @@ export interface ItineraryItem {
   description?: string;
 }
 
+export interface ReceptionHost {
+  name: string;
+  phone: string;
+  whatsappNumber: string;
+}
+
 export interface WeddingDetails {
   brideName: string;
   groomName: string;
@@ -27,6 +33,7 @@ export interface WeddingDetails {
   introAudioUrl: string;
   audioUrl: string;
   itinerary: ItineraryItem[];
+  receptionHosts: ReceptionHost[];
 }
 
 export const WEDDING_DATA: WeddingDetails = {
@@ -54,5 +61,22 @@ export const WEDDING_DATA: WeddingDetails = {
     { time: '7:45 PM', title: 'Nikkah Ceremony', description: 'Solemnization & Ijab-o-Qubool' },
     { time: '8:30 PM', title: 'Royal Dinner', description: 'Celebratory traditional feast' },
     { time: '9:45 PM', title: 'Dua & Farewell', description: 'Prayers and blessings for the couple' },
+  ],
+  receptionHosts: [
+    {
+      name: 'Shahina Hayat',
+      phone: '0336-0548198',
+      whatsappNumber: '923360548198',
+    },
+    {
+      name: 'Rizwan Saeed',
+      phone: '0315-0596175',
+      whatsappNumber: '923150596175',
+    },
+    {
+      name: 'Shahid Hayat',
+      phone: '0334-5444678',
+      whatsappNumber: '923345444678',
+    },
   ],
 };

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { InvitationFrontCard } from './cards/InvitationFrontCard';
 import { CountdownCard } from './cards/CountdownCard';
 import { VenueCard } from './cards/VenueCard';
+import { ReceptionCard } from './cards/ReceptionCard';
 import { DuaCard } from './cards/DuaCard';
 import type { WeddingDetails } from '../../config/weddingData';
 
@@ -15,13 +16,13 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
   const [activeIndex, setActiveIndex] = useState(0);
 
   const goTo = (index: number) => {
-    if (index >= 0 && index <= 3) {
+    if (index >= 0 && index <= 4) {
       setActiveIndex(index);
     }
   };
 
   const nextCard = () => {
-    if (activeIndex < 3) setActiveIndex(activeIndex + 1);
+    if (activeIndex < 4) setActiveIndex(activeIndex + 1);
   };
 
   const prevCard = () => {
@@ -42,7 +43,8 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
     { label: 'Invitation', index: 0 },
     { label: 'Date', index: 1 },
     { label: 'Venue', index: 2 },
-    { label: 'Dua', index: 3 },
+    { label: 'Reception', index: 3 },
+    { label: 'Dua', index: 4 },
   ];
 
   const cards = [
@@ -66,6 +68,14 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       id: 'venue',
       component: (
         <VenueCard
+          wedding={wedding}
+        />
+      ),
+    },
+    {
+      id: 'reception',
+      component: (
+        <ReceptionCard
           wedding={wedding}
         />
       ),

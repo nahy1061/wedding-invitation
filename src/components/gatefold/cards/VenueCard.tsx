@@ -81,7 +81,7 @@ export const VenueCard: React.FC<VenueCardProps> = ({ wedding }) => {
           <span className="text-[#855e1a] text-[9px]">✦ ✦ ✦</span>
         </div>
         <p className="text-[9px] font-serif uppercase tracking-[0.2em] text-[#8a9985]">
-          Swipe for blessings →
+          Swipe for reception & hosts →
         </p>
       </div>
     </div>

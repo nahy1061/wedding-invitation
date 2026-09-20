@@ -6,7 +6,7 @@ import { IslamicArch } from '../ui/IslamicArch';
 import { CountdownTimer } from './CountdownTimer';
 import { EventSchedule } from './EventSchedule';
 import { GoldButton } from '../ui/GoldButton';
-import { generateGoogleCalendarUrl, downloadIcsFile } from '../../utils/calendar';
+import { openGoogleCalendar, downloadIcsFile } from '../../utils/calendar';
 import type { WeddingConfig } from '../../types/invitation';
 
 interface InvitationCardProps {
@@ -207,21 +207,15 @@ export const InvitationCard: React.FC<InvitationCardProps> = ({ config, guestNam
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             {/* Google Calendar */}
-            <a
-              href={generateGoogleCalendarUrl(config)}
-              target="_blank"
-              rel="noopener noreferrer"
+            <GoldButton
+              variant="outline"
+              size="sm"
               className="w-full sm:w-auto"
+              onClick={() => openGoogleCalendar(config)}
+              icon={<Calendar className="w-4 h-4" />}
             >
-              <GoldButton
-                variant="outline"
-                size="sm"
-                className="w-full"
-                icon={<Calendar className="w-4 h-4" />}
-              >
-                Google Calendar
-              </GoldButton>
-            </a>
+              Google Calendar
+            </GoldButton>
 
             {/* Apple Calendar .ics */}
             <GoldButton

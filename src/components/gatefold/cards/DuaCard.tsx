@@ -44,17 +44,39 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
     'May Allah bless this union ❤️',
   ];
 
-  // Fetch live duas from API on mount
+  // Fetch live duas from API on mount without wiping local cache
   useEffect(() => {
+    let isMounted = true;
     const fetchDuas = async () => {
       try {
         const res = await fetch('/api/duas');
         if (res.ok) {
           const liveDuas = await res.json();
-          if (Array.isArray(liveDuas)) {
-            const cleanList = liveDuas.filter((d: DuaItem) => !d.id.startsWith('seed-'));
-            setDuas(cleanList);
-            localStorage.setItem('wedding_duas_list', JSON.stringify(cleanList));
+          if (Array.isArray(liveDuas) && liveDuas.length > 0 && isMounted) {
+            setDuas((prev) => {
+              const map = new Map<string, DuaItem>();
+              // Add remote items
+              liveDuas.forEach((d: DuaItem) => {
+                if (d && d.id && !d.id.startsWith('seed-')) {
+                  map.set(d.id, d);
+                }
+              });
+              // Add locally cached items not in remote
+              prev.forEach((d: DuaItem) => {
+                if (d && d.id && !d.id.startsWith('seed-')) {
+                  if (!map.has(d.id)) {
+                    map.set(d.id, d);
+                  }
+                }
+              });
+              const merged = Array.from(map.values()).sort(
+                (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+              );
+              try {
+                localStorage.setItem('wedding_duas_list', JSON.stringify(merged));
+              } catch {}
+              return merged;
+            });
           }
         }
       } catch (err) {
@@ -63,6 +85,9 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
     };
 
     fetchDuas();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Auto-cycle live ticker every 5 seconds
@@ -97,11 +122,15 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
       createdAt: new Date().toISOString(),
     };
 
-    // 1. Optimistic UI update
-    const updated = [newDua, ...duas.filter((d) => d.id !== newDua.id)];
-    setDuas(updated);
+    // 1. Optimistic UI update & guaranteed LocalStorage persistence
+    setDuas((prev) => {
+      const updated = [newDua, ...prev.filter((d) => d.id !== newDua.id)];
+      try {
+        localStorage.setItem('wedding_duas_list', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
     setActiveDuaIndex(0);
-    localStorage.setItem('wedding_duas_list', JSON.stringify(updated));
 
     // 2. Confetti celebration
     try {
@@ -113,7 +142,7 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
       });
     } catch {}
 
-    // 3. API POST
+    // 3. API POST to /api/duas
     try {
       await fetch('/api/duas', {
         method: 'POST',
@@ -123,6 +152,19 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
     } catch (err) {
       console.warn('Saved locally (network offline):', err);
     }
+
+    // 4. Background submission to Netlify Forms (if deployed on Netlify)
+    try {
+      const formData = new URLSearchParams();
+      formData.append('form-name', 'wedding-duas');
+      formData.append('name', senderName);
+      formData.append('message', messageText);
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString(),
+      }).catch(() => {});
+    } catch {}
 
     setIsSubmitting(false);
     setShowNameModal(false);

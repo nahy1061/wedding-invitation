@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { openGoogleCalendar } from '../../../utils/calendar';
 import type { WeddingDetails } from '../../../config/weddingData';
 
 interface CountdownCardProps {
@@ -30,16 +31,6 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
   }, []);
 
   const handleCalendar = () => {
-    const startDate = '20261003T140000Z';
-    const endDate = '20261003T170000Z';
-    const title = encodeURIComponent(`Nikkah Ceremony: ${wedding.brideName} & ${wedding.groomName}`);
-    const details = encodeURIComponent(
-      `Nikkah Ceremony of ${wedding.brideName} & ${wedding.groomName}.\n\nVenue: ${wedding.venueHall}, ${wedding.venueName}, ${wedding.venueAddress}\nTiming: 7:00 PM – 10:00 PM`
-    );
-    const location = encodeURIComponent(`${wedding.venueHall}, ${wedding.venueName}, ${wedding.venueAddress}`);
-    const webUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
-    const appUrl = `googlecalendar://render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
-
     try {
       confetti({
         particleCount: 35,
@@ -52,12 +43,8 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
     setCalendarAdded(true);
     setTimeout(() => setCalendarAdded(false), 3000);
 
-    // Try opening the Google Calendar app first, fall back to browser
-    const appWindow = window.open(appUrl, '_blank');
-    setTimeout(() => {
-      if (appWindow && !appWindow.closed) return;
-      window.open(webUrl, '_blank', 'noopener,noreferrer');
-    }, 1500);
+    // Open Google Calendar synchronously
+    openGoogleCalendar(wedding);
   };
 
   return (
@@ -103,7 +90,7 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
           ✦ Counting Down To The Sacred Union ✦
         </p>
 
-        <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-[300px] mx-auto">
+        <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-75 mx-auto">
           {[
             { label: 'Days', value: timeLeft.days },
             { label: 'Hours', value: timeLeft.hours },
@@ -129,7 +116,7 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
           <button
             type="button"
             onClick={handleCalendar}
-            className="mt-5 w-full max-w-[240px] py-2.5 px-4 rounded-full bg-gradient-to-r from-[#243620] to-[#162413] hover:from-[#2e4429] hover:to-[#1e301a] text-[#faeed1] border border-gold-500/50 text-xs font-serif font-semibold tracking-[0.15em] uppercase flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95 transition-all"
+            className="mt-5 w-full max-w-60 py-2.5 px-4 rounded-full bg-linear-to-r from-[#243620] to-[#162413] hover:from-[#2e4429] hover:to-[#1e301a] text-[#faeed1] border border-gold-500/50 text-xs font-serif font-semibold tracking-[0.15em] uppercase flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95 transition-all"
           >
             {calendarAdded ? (
               <Check className="w-3.5 h-3.5 text-gold-300" />
