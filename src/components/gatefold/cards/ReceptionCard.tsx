@@ -20,17 +20,18 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
       <div className="absolute inset-0 filigree-corners pointer-events-none" />
       <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
 
-      {/* ── TOP: Header ── */}
-      <div className="relative z-10 pt-1.5 card-content-enter">
-        <span className="font-arabic text-2xl sm:text-3xl text-[#7a531e] font-bold block leading-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
+      {/* ── TOP: Header with Balanced Spacing ── */}
+      <div className="relative z-10 pt-3 sm:pt-4 pb-1 card-content-enter">
+        <span className="font-arabic text-2xl sm:text-3xl text-[#7a531e] font-bold block leading-normal drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
           استقبالیہ
         </span>
 
-        <h2 className="font-display text-[11px] sm:text-xs tracking-[0.26em] uppercase text-[#1b2e18] font-bold mt-1">
+        <h2 className="font-display text-[11px] sm:text-xs tracking-[0.26em] uppercase text-[#1b2e18] font-bold mt-1.5">
           Reception Committee
         </h2>
 
-        <div className="gold-ornament my-2">
+        {/* Elegant Gold Divider with proper vertical spacing */}
+        <div className="gold-ornament my-2.5 sm:my-3">
           <span className="text-[#855e1a] text-[10px]">✦</span>
         </div>
 
@@ -40,14 +41,14 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
       </div>
 
       {/* ── CENTER: 3 Bespoke Host Contact Cards ── */}
-      <div className="relative z-10 my-auto space-y-3 max-w-[335px] mx-auto w-full card-content-enter card-content-enter-delay-1">
+      <div className="relative z-10 my-auto py-1 space-y-2.5 sm:space-y-3 max-w-[340px] mx-auto w-full card-content-enter card-content-enter-delay-1">
         {wedding.receptionHosts.map((host, idx) => (
           <div
             key={idx}
             className="relative group rounded-2xl bg-gradient-to-b from-[#fbf8f1]/95 to-[#f3ebd9]/95 border border-[#c5a880]/80 shadow-[0_4px_16px_rgba(4,20,12,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] p-2.5 sm:p-3 backdrop-blur-xs flex items-center justify-between transition-all duration-300 hover:border-[#a88242] hover:shadow-[0_6px_22px_rgba(4,20,12,0.12)]"
           >
             {/* Left: Monogram Crest & Host Details */}
-            <div className="flex items-center gap-2.5 min-w-0 flex-1 text-left pl-1">
+            <div className="flex items-center gap-3 min-w-0 flex-1 text-left pl-1">
               {/* Monogram Seal */}
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#f8f1e5] to-[#e4d4b3] border border-[#c5a880]/70 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_1px_3px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#7a531e] font-serif font-bold text-sm sm:text-base shrink-0">
                 {host.name.charAt(0)}
@@ -65,7 +66,7 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
             </div>
 
             {/* Right: Dual Jewel Action Buttons */}
-            <div className="flex items-center gap-1.5 shrink-0 pr-0.5">
+            <div className="flex items-center gap-2 shrink-0 pr-0.5">
               {/* Call Button */}
               <a
                 href={`tel:${host.phone.replace(/[^0-9+]/g, '')}`}
@@ -92,9 +93,9 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
         ))}
       </div>
 
-      {/* ── BOTTOM: Swipe Hint ── */}
-      <div className="relative z-10 pt-1 card-content-enter card-content-enter-delay-2">
-        <div className="gold-ornament mb-1">
+      {/* ── BOTTOM: Swipe Hint with Proper Clearance ── */}
+      <div className="relative z-10 pt-1 pb-1 sm:pb-2 card-content-enter card-content-enter-delay-2">
+        <div className="gold-ornament mb-1.5">
           <span className="text-[#855e1a] text-[9px]">✦ ✦ ✦</span>
         </div>
         <p className="text-[9px] font-serif uppercase tracking-[0.22em] text-[#7d8f78]">
