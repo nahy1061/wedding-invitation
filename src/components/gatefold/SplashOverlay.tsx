@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Music } from 'lucide-react';
+import { Sparkles, Volume2 } from 'lucide-react';
 import { WEDDING_DATA } from '../../config/weddingData';
 
 interface SplashOverlayProps {
@@ -15,14 +15,28 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
       onClick={onEnter}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs select-none cursor-pointer"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs select-none cursor-pointer"
     >
-      {/* Centered Modal Card */}
+      {/* Centered Modal Card with Gentle Breathing Pulse */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 14 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.92, y: 14 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          scale: [1, 1.018, 1],
+          boxShadow: [
+            '0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(197,168,128,0.4)',
+            '0 25px 60px rgba(212,175,55,0.22), 0 0 16px rgba(212,175,55,0.3), 0 0 0 1px rgba(197,168,128,0.7)',
+            '0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(197,168,128,0.4)',
+          ],
+        }}
         exit={{ opacity: 0, scale: 0.93, y: 8 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        transition={{
+          opacity: { duration: 0.4 },
+          y: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+          scale: { repeat: Infinity, duration: 3.5, ease: 'easeInOut' },
+          boxShadow: { repeat: Infinity, duration: 3.5, ease: 'easeInOut' },
+        }}
         onClick={(e) => {
           e.stopPropagation();
           onEnter();
@@ -82,10 +96,10 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
             <Sparkles className="w-3.5 h-3.5 text-gold-400 group-hover:-rotate-12 transition-transform" />
           </button>
 
-          {/* Audio hint */}
-          <div className="mt-3 flex items-center gap-1.5 text-[10px] font-serif italic text-[#6d7e67]">
-            <Music className="w-3 h-3 text-[#855e1a]" />
-            <span>Sound & animations enabled</span>
+          {/* Clear Volume Instruction */}
+          <div className="mt-3.5 flex items-center justify-center gap-1.5 text-[10.5px] sm:text-[11px] font-serif italic text-[#4a5f44]">
+            <Volume2 className="w-3.5 h-3.5 text-[#855e1a] animate-pulse" />
+            <span>Please turn up your volume for music</span>
           </div>
         </div>
       </motion.div>

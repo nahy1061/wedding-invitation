@@ -62,7 +62,7 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
                 <h3 className="font-display text-[13px] sm:text-[14px] text-[#12200f] font-semibold tracking-wide leading-snug truncate">
                   {host.name}
                 </h3>
-                <p className="text-[9.5px] sm:text-[10.5px] font-numerals font-light text-[#6b7e65] tracking-wide mt-0.5">
+                <p className="text-[9.5px] sm:text-[10.5px] font-numerals font-light text-[#455241c1] tracking-wide mt-0.5">
                   {host.phone}
                 </p>
               </div>
