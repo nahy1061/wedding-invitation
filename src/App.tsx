@@ -5,7 +5,6 @@ import { WEDDING_DATA } from './config/weddingData';
 import { getGuestNameFromUrl } from './utils/urlHelper';
 import { GatefoldCover } from './components/gatefold/GatefoldCover';
 import { InnerCardSuite } from './components/gatefold/InnerCardSuite';
-import { GatefoldAudioPlayer } from './components/gatefold/GatefoldAudioPlayer';
 import { SplashOverlay } from './components/gatefold/SplashOverlay';
 import bgPic from './assets/images/pic10.webp';
 
@@ -14,7 +13,6 @@ const MAIN_TARGET_VOLUME = 0.7;
 export function App() {
   const [hasEntered, setHasEntered] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [guestName, setGuestName] = useState<string | null>(null);
   const introAudioRef = useRef<HTMLAudioElement | null>(null);
   const mainAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -53,9 +51,7 @@ export function App() {
     if (intro) {
       intro.currentTime = 0;
       intro.volume = 1.0;
-      intro.play().then(() => {
-        setIsPlayingAudio(true);
-      }).catch(() => {});
+      intro.play().catch(() => {});
     }
 
     setHasEntered(true);
@@ -69,9 +65,7 @@ export function App() {
     if (main) {
       main.currentTime = 0;
       main.volume = MAIN_TARGET_VOLUME;
-      main.play().then(() => {
-        setIsPlayingAudio(true);
-      }).catch(() => {});
+      main.play().catch(() => {});
     }
 
     // Play intro briefly, then fade it out quickly
@@ -101,23 +95,6 @@ export function App() {
     setIsOpened(true);
   };
 
-  const handleToggleAudio = () => {
-    const active = activeTrackRef.current === 'intro'
-      ? introAudioRef.current
-      : mainAudioRef.current;
-
-    if (!active) return;
-
-    if (isPlayingAudio) {
-      active.pause();
-      setIsPlayingAudio(false);
-    } else {
-      active.play().then(() => {
-        setIsPlayingAudio(true);
-      }).catch(() => {});
-    }
-  };
-
   const handleReset = () => {
     const intro = introAudioRef.current;
     const main = mainAudioRef.current;
@@ -135,7 +112,6 @@ export function App() {
 
     activeTrackRef.current = 'intro';
     setIsOpened(false);
-    setIsPlayingAudio(true);
   };
 
   return (
@@ -148,16 +124,8 @@ export function App() {
         )}
       </AnimatePresence>
 
-      {/* Audio Controls (Top-Right) — hidden after gatefold opens */}
-      {!isOpened && hasEntered && (
-        <GatefoldAudioPlayer
-          isPlaying={isPlayingAudio}
-          onToggle={handleToggleAudio}
-        />
-      )}
-
       {/* Main Full-Screen Experience */}
-      <main className="relative z-20 flex-1 flex items-center justify-center min-h-[100dvh] w-full">
+      <main className="relative z-30 flex-1 flex items-center justify-center min-h-[100dvh] w-full">
         <AnimatePresence mode="wait">
           {!isOpened ? (
             <motion.div
