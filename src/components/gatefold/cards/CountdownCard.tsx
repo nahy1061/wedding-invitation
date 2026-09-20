@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Check, Sparkles, Heart } from 'lucide-react';
+import { Calendar, Check, Sparkles, Heart, Eye, RotateCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { openGoogleCalendar } from '../../../utils/calendar';
 import type { WeddingDetails } from '../../../config/weddingData';
@@ -10,11 +10,12 @@ interface CountdownCardProps {
 
 export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
   const [calendarAdded, setCalendarAdded] = useState(false);
+  const [previewZeroState, setPreviewZeroState] = useState(false);
 
   const calculateTimeLeft = () => {
     const target = new Date('2026-10-03T19:00:00+05:00').getTime();
     const diff = target - new Date().getTime();
-    const isArrived = diff <= 0;
+    const isArrived = previewZeroState || (diff <= 0);
 
     if (isArrived) {
       return { days: 0, hours: 0, minutes: 0, seconds: 0, isArrived: true };
@@ -32,9 +33,10 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
+    setTimeLeft(calculateTimeLeft());
     const timer = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [previewZeroState]);
 
   const triggerCelebrationConfetti = () => {
     try {
@@ -69,7 +71,7 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
       <div className="absolute inset-0 filigree-corners pointer-events-none" />
       <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
 
-      {/* TOP: Date Header */}
+      {/* TOP: Date Header (Always Visible in Both States) */}
       <div className="relative z-10 pt-2 card-content-enter">
         <p className="text-[11px] sm:text-xs font-display tracking-[0.22em] uppercase text-[#2c4227] font-bold">
           The Auspicious Date
@@ -95,7 +97,7 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
       {/* CENTER: Countdown OR Celebration Mode */}
       <div className="relative z-10 my-2 card-content-enter card-content-enter-delay-1">
         {!timeLeft.isArrived ? (
-          /* ACTIVE COUNTDOWN */
+          /* ACTIVE COUNTDOWN STATE */
           <>
             <p className="text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.25em] text-[#3d5238] font-semibold mb-4">
               ✦ Counting Down To The Sacred Union ✦
@@ -139,7 +141,7 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
             </div>
           </>
         ) : (
-          /* CELEBRATION ZERO-STATE (Event Arrived) */
+          /* CELEBRATION ZERO-STATE (When Event Day Arrives) */
           <div className="max-w-[325px] mx-auto space-y-3 py-1">
             <div className="p-4 rounded-2xl bg-gradient-to-b from-[#fdfbf6]/95 to-[#f3ebd9]/95 border border-[#a88242]/80 shadow-[0_4px_16px_rgba(4,20,12,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xs space-y-2">
               <span className="font-arabic text-lg sm:text-xl text-[#7a531e] font-bold block leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
@@ -169,9 +171,31 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
         )}
       </div>
 
-      {/* BOTTOM: Swipe Hint */}
-      <div className="relative z-10 pt-2 card-content-enter card-content-enter-delay-2">
-        <div className="gold-ornament mb-2">
+      {/* BOTTOM: Temporary Preview Toggle Switch + Swipe Hint */}
+      <div className="relative z-10 pt-1 pb-0.5 card-content-enter card-content-enter-delay-2">
+        {/* Temporary Preview Toggle Pill */}
+        <div className="mb-2 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setPreviewZeroState(!previewZeroState)}
+            className="px-3 py-1 rounded-full bg-[#182615]/85 hover:bg-[#182615] border border-gold-400/60 shadow-xs text-gold-200 hover:text-gold-100 text-[9px] font-serif uppercase tracking-[0.12em] flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
+            title="Click to toggle between Countdown and Celebration Zero-State"
+          >
+            {previewZeroState ? (
+              <>
+                <RotateCcw className="w-2.5 h-2.5 text-gold-300" />
+                <span>Previewing: Celebration State (Click to switch back)</span>
+              </>
+            ) : (
+              <>
+                <Eye className="w-2.5 h-2.5 text-gold-300" />
+                <span>Preview Celebration State</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        <div className="gold-ornament mb-1">
           <span className="text-[#855e1a] text-[9px]">✦ ✦ ✦</span>
         </div>
         <p className="text-[9px] font-serif uppercase tracking-[0.2em] text-[#8a9985]">
