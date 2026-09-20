@@ -96,7 +96,7 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       {/* Top Deck Navigation Tabs */}
       <nav
         aria-label="Invitation Sections"
-        className="mb-2.5 sm:mb-3 flex items-center justify-center gap-0.5 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-[#0e1a0b]/92 border border-gold-400/70 shadow-[0_4px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,175,55,0.15)] backdrop-blur-md z-30 max-w-[98vw] sm:max-w-fit mx-auto"
+        className="mb-4 sm:mb-5 flex items-center justify-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-full bg-[#0e1a0b]/92 border border-gold-400/70 shadow-[0_4px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,175,55,0.15)] backdrop-blur-md z-30 max-w-[98vw] sm:max-w-fit mx-auto"
       >
         {tabs.map((tab) => {
           const isActive = activeIndex === tab.index;
