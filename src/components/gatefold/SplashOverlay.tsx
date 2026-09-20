@@ -17,31 +17,25 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
       onClick={onEnter}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs select-none cursor-pointer"
     >
-      {/* Centered Modal Card with Gentle Breathing Pulse */}
+      {/* Centered Modal Card with Steady Glow & Slow Swelling Animation */}
       <motion.div
         initial={{ opacity: 0, scale: 0.92, y: 14 }}
         animate={{
           opacity: 1,
           y: 0,
-          scale: [1, 1.018, 1],
-          boxShadow: [
-            '0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(197,168,128,0.4)',
-            '0 25px 60px rgba(212,175,55,0.22), 0 0 16px rgba(212,175,55,0.3), 0 0 0 1px rgba(197,168,128,0.7)',
-            '0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(197,168,128,0.4)',
-          ],
+          scale: [1, 1.03, 1],
         }}
         exit={{ opacity: 0, scale: 0.93, y: 8 }}
         transition={{
           opacity: { duration: 0.4 },
           y: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
-          scale: { repeat: Infinity, duration: 3.5, ease: 'easeInOut' },
-          boxShadow: { repeat: Infinity, duration: 3.5, ease: 'easeInOut' },
+          scale: { repeat: Infinity, duration: 4.5, ease: 'easeInOut' },
         }}
         onClick={(e) => {
           e.stopPropagation();
           onEnter();
         }}
-        className="relative w-full max-w-[330px] sm:max-w-[360px] cream-paper-texture rounded-2xl p-6 sm:p-7 text-center shadow-2xl overflow-hidden cursor-pointer active:scale-[0.99] transition-transform"
+        className="relative w-full max-w-[330px] sm:max-w-[360px] cream-paper-texture rounded-2xl p-6 sm:p-7 text-center shadow-[0_25px_60px_rgba(0,0,0,0.6),0_0_24px_rgba(212,175,55,0.22),0_0_0_1px_rgba(197,168,128,0.6)] overflow-hidden cursor-pointer active:scale-[0.99] transition-transform"
       >
         {/* Ornate Frame & Corner Filigrees */}
         <div className="absolute inset-2.5 border border-[#c5a880]/70 rounded-xl ornate-card-frame pointer-events-none" />
@@ -98,7 +92,7 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
 
           {/* Clear Volume Instruction */}
           <div className="mt-3.5 flex items-center justify-center gap-1.5 text-[10.5px] sm:text-[11px] font-serif italic text-[#4a5f44]">
-            <Volume2 className="w-3.5 h-3.5 text-[#855e1a] animate-pulse" />
+            <Volume2 className="w-3.5 h-3.5 text-[#855e1a]" />
             <span>Please turn up your volume for music</span>
           </div>
         </div>
