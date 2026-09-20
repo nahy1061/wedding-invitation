@@ -44,7 +44,7 @@ export const WEDDING_DATA: WeddingDetails = {
   islamicDateFormatted: '21 Rabi\' al-Thani 1448 AH',
   venueName: 'NESCOM Officers Mess',
   venueHall: 'Hall 2 (2nd Floor)',
-  venueAddress: 'Sector H-11, Islamabad',
+  venueAddress: 'Sector H-11/4, Islamabad',
   mapsUrl: 'https://maps.app.goo.gl/GkSKfzZUW6q7tQ817',
   // Atmospheric, royal instrumental oud & strings
   introAudioUrl: introMusic,

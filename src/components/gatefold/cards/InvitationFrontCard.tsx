@@ -64,7 +64,7 @@ export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({
         </div>
 
         <p className="text-[11px] font-serif text-[#2c3d28] max-w-xs mx-auto mt-3 leading-relaxed italic">
-          Together with their beloved parents, we request the honor of your presence and prayers.
+          Together with their beloved ones, we request the honor of your presence and prayers.
         </p>
       </div>
 
