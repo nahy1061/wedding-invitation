@@ -46,9 +46,9 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
         <div className="absolute inset-0 tint-invitation pointer-events-none opacity-40" />
 
         {/* Modal Inner Content */}
-        <div className="relative z-10 flex flex-col items-center">
+        <div className="relative z-10 flex flex-col items-center pt-2.5 sm:pt-3.5">
           {/* Top Flourish */}
-          <div className="gold-ornament mb-2">
+          <div className="gold-ornament mt-1 mb-2.5">
             <span className="text-[#855e1a] text-xs">✦ ✦ ✦</span>
           </div>
 
