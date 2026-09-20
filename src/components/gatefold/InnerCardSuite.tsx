@@ -40,11 +40,11 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
   }, [activeIndex]);
 
   const tabs = [
-    { label: 'Invitation', index: 0 },
-    { label: 'Date', index: 1 },
-    { label: 'Venue', index: 2 },
-    { label: 'Reception', index: 3 },
-    { label: 'Dua', index: 4 },
+    { label: 'Invite', fullLabel: 'Invitation', index: 0 },
+    { label: 'Date', fullLabel: 'Date', index: 1 },
+    { label: 'Venue', fullLabel: 'Venue', index: 2 },
+    { label: 'Hosts', fullLabel: 'Reception', index: 3 },
+    { label: 'Dua', fullLabel: 'Dua', index: 4 },
   ];
 
   const cards = [
@@ -96,7 +96,7 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
       {/* Top Deck Navigation Tabs */}
       <nav
         aria-label="Invitation Sections"
-        className="mb-3 flex items-center justify-center gap-1.5 p-1.5 rounded-full bg-[#0e1a0b]/90 border border-gold-400/70 shadow-[0_4px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,175,55,0.15)] backdrop-blur-md z-30"
+        className="mb-2.5 sm:mb-3 flex items-center justify-center gap-0.5 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-[#0e1a0b]/92 border border-gold-400/70 shadow-[0_4px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,175,55,0.15)] backdrop-blur-md z-30 max-w-[98vw] sm:max-w-fit mx-auto"
       >
         {tabs.map((tab) => {
           const isActive = activeIndex === tab.index;
@@ -105,13 +105,14 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
               key={tab.index}
               type="button"
               onClick={() => goTo(tab.index)}
-              className={`relative px-3.5 sm:px-4.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-serif uppercase tracking-[0.14em] transition-all cursor-pointer ${
+              className={`relative px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[11px] font-serif uppercase tracking-[0.06em] sm:tracking-[0.14em] transition-all cursor-pointer whitespace-nowrap ${
                 isActive
                   ? 'text-gold-100 font-bold bg-[#2d4229] shadow-[0_0_10px_rgba(212,175,55,0.2)]'
                   : 'text-gold-400/80 hover:text-gold-200 hover:bg-[#1a2d16]/60 font-medium'
               }`}
             >
-              {tab.label}
+              <span className="sm:hidden">{tab.label}</span>
+              <span className="hidden sm:inline">{tab.fullLabel}</span>
               {isActive && (
                 <motion.div
                   layoutId="active-cover-indicator"

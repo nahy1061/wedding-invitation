@@ -45,36 +45,39 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
         {wedding.receptionHosts.map((host, idx) => (
           <div
             key={idx}
-            className="relative group rounded-2xl bg-gradient-to-b from-[#fbf8f1]/95 to-[#f3ebd9]/95 border border-[#c5a880]/80 shadow-[0_4px_16px_rgba(4,20,12,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] p-2.5 sm:p-3 backdrop-blur-xs flex items-center justify-between transition-all duration-300 hover:border-[#a88242] hover:shadow-[0_6px_22px_rgba(4,20,12,0.12)]"
+            className="relative group rounded-2xl bg-gradient-to-b from-[#fbf8f1]/95 to-[#f3ebd9]/95 border border-[#c5a880]/60 shadow-[0_2px_12px_rgba(4,20,12,0.05),inset_0_1px_0_rgba(255,255,255,0.9)] pl-[7px] pr-2.5 py-2.5 sm:pr-3 sm:py-3 backdrop-blur-xs flex items-center justify-between transition-all duration-300 hover:border-[#c5a880]/90 hover:shadow-[0_4px_20px_rgba(180,150,80,0.12)]"
           >
+            {/* Soft gold left accent bar */}
+            <div className="absolute left-0 top-2.5 bottom-2.5 w-[2px] rounded-full bg-gradient-to-b from-[#d4af37]/50 via-[#c5a880]/70 to-[#d4af37]/50" />
+
             {/* Left: Monogram Crest & Host Details */}
-            <div className="flex items-center gap-3 min-w-0 flex-1 text-left pl-1">
+            <div className="flex items-center gap-2.5 min-w-0 flex-1 text-left pl-1.5">
               {/* Monogram Seal */}
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#f8f1e5] to-[#e4d4b3] border border-[#c5a880]/70 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_1px_3px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#7a531e] font-serif font-bold text-sm sm:text-base shrink-0">
+              <div className="w-9 h-9 sm:w-[38px] sm:h-[38px] rounded-full bg-gradient-to-br from-[#faf5ea] to-[#e8dcc4] border border-[#d4c49a]/80 shadow-[0_1px_4px_rgba(140,110,45,0.12),inset_0_1px 2px_rgba(255,255,255,0.95)] flex items-center justify-center text-[#7a531e] font-serif font-bold text-[13px] sm:text-sm shrink-0 transition-shadow duration-300 group-hover:shadow-[0_2px_8px_rgba(212,175,55,0.2)]">
                 {host.name.charAt(0)}
               </div>
 
               {/* Name & Phone */}
               <div className="min-w-0 flex-1">
-                <h3 className="font-display text-[14px] sm:text-[15px] text-[#12200f] font-semibold tracking-wide leading-snug truncate">
+                <h3 className="font-display text-[13px] sm:text-[14px] text-[#12200f] font-semibold tracking-wide leading-snug truncate">
                   {host.name}
                 </h3>
-                <p className="text-[11px] sm:text-xs font-sans font-medium text-[#465f40] tracking-wider mt-0.5">
+                <p className="text-[9.5px] sm:text-[10.5px] font-numerals font-light text-[#6b7e65] tracking-wide mt-0.5">
                   {host.phone}
                 </p>
               </div>
             </div>
 
-            {/* Right: Dual Jewel Action Buttons */}
-            <div className="flex items-center gap-2 shrink-0 pr-0.5">
+            {/* Right: Jewel Action Buttons */}
+            <div className="flex items-center gap-1.5 shrink-0 pr-0.5">
               {/* Call Button */}
               <a
                 href={`tel:${host.phone.replace(/[^0-9+]/g, '')}`}
                 title={`Call ${host.name}`}
                 aria-label={`Call ${host.name}`}
-                className="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-gradient-to-b from-[#253921] to-[#142312] hover:from-[#324d2c] hover:to-[#1d331a] text-gold-200 hover:text-white border border-gold-400/60 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] flex items-center justify-center transition-all duration-200 hover:scale-108 active:scale-95 cursor-pointer"
+                className="w-8 h-8 sm:w-[34px] sm:h-[34px] rounded-full bg-gradient-to-b from-[#253921] to-[#142312] hover:from-[#324d2c] hover:to-[#1d331a] text-gold-200 hover:text-white border border-gold-400/60 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
               >
-                <Phone className="w-3.5 h-3.5 text-gold-300 drop-shadow-xs" />
+                <Phone className="w-3.5 h-3.5 sm:w-[15px] sm:h-[15px] text-gold-300 drop-shadow-xs" />
               </a>
 
               {/* WhatsApp Button */}
@@ -84,9 +87,9 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
                 rel="noopener noreferrer"
                 title={`WhatsApp ${host.name}`}
                 aria-label={`WhatsApp ${host.name}`}
-                className="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-gradient-to-b from-[#1b431e] to-[#102b12] hover:from-[#265e2b] hover:to-[#173e1a] text-gold-200 hover:text-white border border-gold-400/60 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] flex items-center justify-center transition-all duration-200 hover:scale-108 active:scale-95 cursor-pointer"
+                className="w-8 h-8 sm:w-[34px] sm:h-[34px] rounded-full bg-gradient-to-b from-[#1b431e] to-[#102b12] hover:from-[#265e2b] hover:to-[#173e1a] text-gold-200 hover:text-white border border-gold-400/60 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-gold-300 drop-shadow-xs" />
+                <MessageCircle className="w-3.5 h-3.5 sm:w-[15px] sm:h-[15px] text-gold-300 drop-shadow-xs" />
               </a>
             </div>
           </div>
