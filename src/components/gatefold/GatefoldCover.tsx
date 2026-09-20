@@ -21,41 +21,31 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   const [openingState, setOpeningState] = useState<'closed' | 'opening'>('closed');
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
-  // Preload all cover images before showing the gatefold with instant safety fallback
+  // Preload all cover images before showing the gatefold
   useEffect(() => {
     const imageSources = [gateLeft, gateRight, sealImage];
     let loadedCount = 0;
 
-    const checkComplete = () => {
-      loadedCount++;
-      if (loadedCount >= imageSources.length) {
-        setImagesLoaded(true);
-      }
-    };
-
     imageSources.forEach((src) => {
       const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === imageSources.length) {
+          setImagesLoaded(true);
+        }
+      };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === imageSources.length) {
+          setImagesLoaded(true);
+        }
+      };
       img.src = src;
-      if (img.complete) {
-        checkComplete();
-      } else {
-        img.onload = checkComplete;
-        img.onerror = checkComplete;
-      }
     });
-
-    // Safety timeout: never block the user if image is cached or network is slow
-    const fallbackTimer = setTimeout(() => {
-      setImagesLoaded(true);
-    }, 500);
-
-    return () => clearTimeout(fallbackTimer);
   }, []);
 
-  const handleOpen = (e?: React.MouseEvent | React.TouchEvent) => {
-    if (e && typeof e.stopPropagation === 'function') {
-      e.stopPropagation();
-    }
+  const handleOpen = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (openingState === 'opening') {
       // Allow user to tap to skip directly to inner card
       onOpenComplete();
@@ -97,8 +87,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
   return (
     <div
       onClick={handleOpen}
-      onTouchEnd={handleOpen}
-      className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#141e12] z-30 touch-manipulation"
+      className="fixed inset-0 w-full h-full min-h-dvh overflow-hidden flex items-center justify-center cursor-pointer select-none bg-[#141e12] z-30"
       style={{ perspective: '2000px' }}
     >
       {/* 1. ROYAL TITLE SCREEN (Unveiled as velvet curtains part) */}
@@ -155,9 +144,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
-        onClick={handleOpen}
-        onTouchEnd={handleOpen}
-        className="absolute top-0 left-0 w-1/2 h-full border-r border-gold-400/80 shadow-[15px_0_40px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col justify-between p-4 sm:p-6 z-10 cursor-pointer touch-manipulation"
+        className="absolute top-0 left-0 w-1/2 h-full border-r border-gold-400/80 shadow-[15px_0_40px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col justify-between p-4 sm:p-6 z-10"
       >
         {/* Soft Vignette Overlay */}
         <div className="absolute inset-0 bg-linear-to-r from-black/50 via-transparent to-black/30 pointer-events-none" />
@@ -194,9 +181,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
-        onClick={handleOpen}
-        onTouchEnd={handleOpen}
-        className="absolute top-0 right-0 w-1/2 h-full border-l border-gold-400/80 shadow-[-15px_0_40px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col justify-between p-4 sm:p-6 z-10 cursor-pointer touch-manipulation"
+        className="absolute top-0 right-0 w-1/2 h-full border-l border-gold-400/80 shadow-[-15px_0_40px_rgba(0,0,0,0.7)] overflow-hidden flex flex-col justify-between p-4 sm:p-6 z-10"
       >
         {/* Soft Vignette Overlay */}
         <div className="absolute inset-0 bg-linear-to-l from-black/50 via-transparent to-black/30 pointer-events-none" />
@@ -212,14 +197,6 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
 
       {/* CENTRAL 3D SCALLOPED DIE-CUT GOLD PLAQUE SEAL ("TAP TO OPEN") */}
       <motion.div
-        role="button"
-        tabIndex={0}
-        aria-label="Tap to open invitation"
-        onClick={handleOpen}
-        onTouchEnd={handleOpen}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') handleOpen();
-        }}
         initial={false}
         animate={
           openingState === 'opening'
@@ -234,7 +211,7 @@ export const GatefoldCover: React.FC<GatefoldCoverProps> = ({
         style={{
           willChange: 'transform, opacity',
         }}
-        className="relative z-30 w-44 sm:w-52 aspect-square flex items-center justify-center cursor-pointer select-none touch-manipulation pointer-events-auto [filter:drop-shadow(0_20px_35px_rgba(0,0,0,0.85))_drop-shadow(0_0_15px_rgba(212,175,55,0.4))]"
+        className="relative z-30 w-44 sm:w-52 aspect-square flex items-center justify-center cursor-pointer select-none [filter:drop-shadow(0_20px_35px_rgba(0,0,0,0.85))_drop-shadow(0_0_15px_rgba(212,175,55,0.4))]"
       >
         <img
           src={sealImage}

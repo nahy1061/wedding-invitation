@@ -12,8 +12,8 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4 }}
+      exit={{ opacity: 0, pointerEvents: 'none' as const }}
+      transition={{ duration: 0.3 }}
       onClick={onEnter}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs select-none cursor-pointer"
     >
