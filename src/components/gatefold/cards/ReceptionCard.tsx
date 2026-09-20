@@ -45,7 +45,7 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
         {wedding.receptionHosts.map((host, idx) => (
           <div
             key={idx}
-            className="relative group rounded-2xl bg-gradient-to-b from-[#fbf8f1]/95 to-[#f3ebd9]/95 border border-[#c5a880]/60 shadow-[0_2px_12px_rgba(4,20,12,0.05),inset_0_1px_0_rgba(255,255,255,0.9)] pl-[7px] pr-2.5 py-2.5 sm:pr-3 sm:py-3 backdrop-blur-xs flex items-center justify-between transition-all duration-300 hover:border-[#c5a880]/90 hover:shadow-[0_4px_20px_rgba(180,150,80,0.12)]"
+            className="relative group rounded-2xl bg-gradient-to-b from-[#fbf8f1]/95 to-[#f3ebd9]/95 border border-[#a88242]/85 shadow-[0_2px_12px_rgba(4,20,12,0.05),inset_0_1px_0_rgba(255,255,255,0.9)] pl-[7px] pr-2.5 py-2.5 sm:pr-3 sm:py-3 backdrop-blur-xs flex items-center justify-between transition-all duration-300 hover:border-[#7a531e] hover:shadow-[0_4px_20px_rgba(180,150,80,0.14)]"
           >
             {/* Soft gold left accent bar */}
             <div className="absolute left-0 top-2.5 bottom-2.5 w-[2px] rounded-full bg-gradient-to-b from-[#d4af37]/50 via-[#c5a880]/70 to-[#d4af37]/50" />
