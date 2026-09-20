@@ -2,13 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Heart, Send, CheckCircle2, X, MessageSquareHeart, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-
-export interface DuaItem {
-  id: string;
-  name: string;
-  message: string;
-  createdAt: string;
-}
+import { CardFrame } from '../../common/CardFrame';
+import { WEDDING_DATA, type DuaItem } from '../../../config/weddingData';
 
 interface DuaCardProps {
   guestName: string | null;
@@ -20,7 +15,6 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
       const cached = localStorage.getItem('wedding_duas_list');
       if (cached) {
         const parsed = JSON.parse(cached);
-        // Filter out any leftover seed items from testing
         if (Array.isArray(parsed)) {
           return parsed.filter((d: DuaItem) => !d.id.startsWith('seed-'));
         }
@@ -38,13 +32,13 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
   const [justSubmitted, setJustSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const quickChips = [
+  const quickChips = WEDDING_DATA.quickDuaChips || [
     'بارك الله لكما 🤲',
     'Mabrook & Endless Joy! ✨',
     'May Allah bless this union ❤️',
   ];
 
-  // Fetch live duas from API on mount without wiping local cache
+  // Fetch live duas from API on mount and merge with local cache
   useEffect(() => {
     let isMounted = true;
     const fetchDuas = async () => {
@@ -55,18 +49,14 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
           if (Array.isArray(liveDuas) && liveDuas.length > 0 && isMounted) {
             setDuas((prev) => {
               const map = new Map<string, DuaItem>();
-              // Add remote items
               liveDuas.forEach((d: DuaItem) => {
                 if (d && d.id && !d.id.startsWith('seed-')) {
                   map.set(d.id, d);
                 }
               });
-              // Add locally cached items not in remote
               prev.forEach((d: DuaItem) => {
-                if (d && d.id && !d.id.startsWith('seed-')) {
-                  if (!map.has(d.id)) {
-                    map.set(d.id, d);
-                  }
+                if (d && d.id && !d.id.startsWith('seed-') && !map.has(d.id)) {
+                  map.set(d.id, d);
                 }
               });
               const merged = Array.from(map.values()).sort(
@@ -90,12 +80,12 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
     };
   }, []);
 
-  // Auto-cycle live ticker every 5 seconds
+  // Auto-cycle live ticker every 5.5 seconds smoothly
   useEffect(() => {
     if (duas.length <= 1) return;
     const interval = setInterval(() => {
       setActiveDuaIndex((prev) => (prev + 1) % duas.length);
-    }, 5000);
+    }, 5500);
     return () => clearInterval(interval);
   }, [duas.length]);
 
@@ -105,7 +95,6 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
     setPendingMessage(text);
     setDuaInput('');
 
-    // If guest name is known from URL, submit directly without asking
     if (guestName) {
       executeSubmit(text, guestName);
     } else {
@@ -183,18 +172,7 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
   const activeDua = duas[activeDuaIndex] || duas[0];
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-5 sm:p-7 text-center select-none overflow-hidden">
-      {/* Soft Violet Tint */}
-      <div className="absolute inset-0 tint-dua pointer-events-none" />
-
-      {/* Star Watermark */}
-      <div className="card-watermark">☽</div>
-
-      {/* Ornate Frame + Filigree Corners */}
-      <div className="absolute inset-3 border border-[#c5a880]/70 rounded-xl ornate-card-frame pointer-events-none" />
-      <div className="absolute inset-0 filigree-corners pointer-events-none" />
-      <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
-
+    <CardFrame tint="dua" watermark="☽">
       {/* TOP: Header */}
       <div className="relative z-10 pt-1 card-content-enter">
         <div className="flex items-center justify-center gap-1.5 text-[#2c4227]">
@@ -248,10 +226,10 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeDua.id}
-                  initial={{ opacity: 0, y: 4 }}
+                  initial={{ opacity: 0, y: 3 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.35 }}
+                  exit={{ opacity: 0, y: -3 }}
+                  transition={{ duration: 0.28 }}
                 >
                   <p className="font-serif italic text-[11px] sm:text-xs text-[#1c2e19] line-clamp-2 leading-snug">
                     "{activeDua.message}"
@@ -494,6 +472,6 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
           </motion.div>
         </div>
       )}
-    </div>
+    </CardFrame>
   );
 };

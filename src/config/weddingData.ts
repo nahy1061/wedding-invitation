@@ -13,6 +13,13 @@ export interface ReceptionHost {
   whatsappNumber: string;
 }
 
+export interface DuaItem {
+  id: string;
+  name: string;
+  message: string;
+  createdAt: string;
+}
+
 export interface WeddingDetails {
   brideName: string;
   groomName: string;
@@ -23,6 +30,7 @@ export interface WeddingDetails {
   subVerseArabic: string;
   subVerseEnglish: string;
   invitationText: string;
+  eventDateISO: string;
   eventDateFormatted: string;
   eventTimeFormatted: string;
   islamicDateFormatted: string;
@@ -34,6 +42,7 @@ export interface WeddingDetails {
   audioUrl: string;
   itinerary: ItineraryItem[];
   receptionHosts: ReceptionHost[];
+  quickDuaChips: string[];
 }
 
 export const WEDDING_DATA: WeddingDetails = {
@@ -46,14 +55,14 @@ export const WEDDING_DATA: WeddingDetails = {
   subVerseArabic: 'وَخَلَقْنَاكُمْ أَزْوَاجًا',
   subVerseEnglish: '"And We created you in pairs"',
   invitationText: 'Under the grace of Almighty Allah and with the blessings of our beloved parents, we cordially invite you to share in the joy of our Nikkah ceremony & wedding celebration.',
+  eventDateISO: '2026-10-03T19:00:00+05:00',
   eventDateFormatted: 'Saturday, October 3, 2026',
   eventTimeFormatted: '7:00 PM – 10:00 PM',
-  islamicDateFormatted: '21 Rabi\' al-Thani 1448 AH',
+  islamicDateFormatted: "21 Rabi' al-Thani 1448 AH",
   venueName: 'NESCOM Officers Mess',
   venueHall: 'Hall 2 (2nd Floor)',
   venueAddress: 'Sector H-11/4, Islamabad',
   mapsUrl: 'https://maps.app.goo.gl/GkSKfzZUW6q7tQ817',
-  // Atmospheric, royal instrumental oud & strings
   introAudioUrl: introMusic,
   audioUrl: mainMusic,
   itinerary: [
@@ -78,5 +87,10 @@ export const WEDDING_DATA: WeddingDetails = {
       phone: '0334-5444678',
       whatsappNumber: '923345444678',
     },
+  ],
+  quickDuaChips: [
+    'بارك الله لكما 🤲',
+    'Mabrook & Endless Joy! ✨',
+    'May Allah bless this union ❤️',
   ],
 };

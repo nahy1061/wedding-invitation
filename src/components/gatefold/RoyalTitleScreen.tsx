@@ -74,35 +74,45 @@ export const RoyalTitleScreen: React.FC<RoyalTitleScreenProps> = ({
         style={{
           willChange: 'transform, opacity',
         }}
-        className="relative z-10 max-w-[420px] w-full flex flex-col items-center py-6"
+        className="relative z-10 max-w-[480px] w-full flex flex-col items-center py-6 px-4"
       >
         {/* Delicate Golden Top Flourish */}
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="h-[0.5px] w-14 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
-          <span className="text-gold-300 text-sm">✦</span>
-          <div className="h-[0.5px] w-14 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
+        <div className="flex items-center justify-center gap-3 mb-5">
+          <div className="h-[1px] w-16 sm:w-20 bg-gradient-to-r from-transparent via-gold-400/80 to-transparent" />
+          <span className="text-gold-300 text-xs sm:text-sm tracking-widest drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]">✦ ❖ ✦</span>
+          <div className="h-[1px] w-16 sm:w-20 bg-gradient-to-r from-transparent via-gold-400/80 to-transparent" />
         </div>
 
-        {/* Grand Title */}
-        <h1 className="font-display text-2xl sm:text-3xl tracking-[0.3em] uppercase text-gold-100 font-medium drop-shadow-[0_2px_16px_rgba(212,175,55,0.6)] drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
-          Nikkah Ceremony<br />
-          <span className="text-xl sm:text-2xl tracking-[0.25em] text-gold-200 font-light block mt-1">
+        {/* Grand Royal Title */}
+        <div className="flex flex-col items-center select-none text-center">
+          <h1
+            style={{ fontFamily: "'Cinzel Decorative', 'Cinzel', serif" }}
+            className="text-2xl sm:text-3.5xl md:text-4xl tracking-[0.22em] sm:tracking-[0.26em] uppercase font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#fffaf0] via-[#eed58a] to-[#a88220] drop-shadow-[0_2px_14px_rgba(212,175,55,0.7)] drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)] leading-tight"
+          >
+            Nikkah Ceremony
+          </h1>
+
+          <span
+            style={{ fontFamily: "'Cinzel', 'Cormorant Garamond', serif" }}
+            className="text-sm sm:text-base md:text-lg tracking-[0.45em] uppercase font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#e7ca6d] via-[#faeed1] to-[#c59c35] mt-3 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]"
+          >
             Invitation
           </span>
-        </h1>
-
-        {/* Delicate Golden Bottom Flourish */}
-        <div className="flex items-center justify-center gap-3 mt-4 mb-2">
-          <div className="h-[0.5px] w-14 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
-          <span className="text-gold-300 text-sm">✦</span>
-          <div className="h-[0.5px] w-14 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
         </div>
 
-        {/* Subtle Bottom Indicator */}
+        {/* Delicate Golden Bottom Flourish */}
+        <div className="flex items-center justify-center gap-3 mt-5 mb-2">
+          <div className="h-[1px] w-16 sm:w-20 bg-gradient-to-r from-transparent via-gold-400/80 to-transparent" />
+          <span className="text-gold-300 text-xs sm:text-sm tracking-widest drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]">✦ ❖ ✦</span>
+          <div className="h-[1px] w-16 sm:w-20 bg-gradient-to-r from-transparent via-gold-400/80 to-transparent" />
+        </div>
+
+        {/* Subtle Bottom Status Indicator */}
         <motion.p
-          animate={{ opacity: [0.4, 0.9, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="mt-6 text-[10px] font-serif uppercase tracking-[0.28em] text-gold-300/80 font-medium"
+          animate={{ opacity: [0.45, 0.95, 0.45] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          className="mt-6 text-xs sm:text-sm uppercase tracking-[0.3em] text-gold-300/85 font-medium drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]"
         >
           ✦ Opening Invitation ✦
         </motion.p>

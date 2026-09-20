@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapPin, ExternalLink, Navigation } from 'lucide-react';
+import { CardFrame } from '../../common/CardFrame';
 import venueImg from '../../../assets/images/venue5.webp';
 import type { WeddingDetails } from '../../../config/weddingData';
 
@@ -9,18 +10,7 @@ interface VenueCardProps {
 
 export const VenueCard: React.FC<VenueCardProps> = ({ wedding }) => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-5 sm:p-7 text-center select-none overflow-hidden">
-      {/* Earthy Tint */}
-      <div className="absolute inset-0 tint-venue pointer-events-none" />
-
-      {/* Pin Watermark */}
-      <div className="card-watermark">♩</div>
-
-      {/* Ornate Frame + Corners */}
-      <div className="absolute inset-3 border border-[#c5a880]/70 rounded-xl ornate-card-frame pointer-events-none" />
-      <div className="absolute inset-0 filigree-corners pointer-events-none" />
-      <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
-
+    <CardFrame tint="venue" watermark="♩">
       {/* TOP: Venue Header */}
       <div className="relative z-10 pt-1 card-content-enter">
         <p className="text-[11px] sm:text-xs font-display tracking-[0.22em] uppercase text-[#2c4227] font-bold">
@@ -84,6 +74,6 @@ export const VenueCard: React.FC<VenueCardProps> = ({ wedding }) => {
           Swipe for reception & hosts →
         </p>
       </div>
-    </div>
+    </CardFrame>
   );
 };

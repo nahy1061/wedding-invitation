@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { InvitationFrontCard } from './cards/InvitationFrontCard';
 import { CountdownCard } from './cards/CountdownCard';
@@ -12,22 +12,30 @@ interface InnerCardSuiteProps {
   guestName: string | null;
 }
 
+const TABS = [
+  { label: 'Invite', fullLabel: 'Invitation', index: 0 },
+  { label: 'Date', fullLabel: 'Date', index: 1 },
+  { label: 'Venue', fullLabel: 'Venue', index: 2 },
+  { label: 'Reception', fullLabel: 'Reception', index: 3 },
+  { label: 'Dua', fullLabel: 'Dua', index: 4 },
+];
+
 export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestName }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const goTo = (index: number) => {
+  const goTo = useCallback((index: number) => {
     if (index >= 0 && index <= 4) {
       setActiveIndex(index);
     }
-  };
+  }, []);
 
-  const nextCard = () => {
-    if (activeIndex < 4) setActiveIndex(activeIndex + 1);
-  };
+  const nextCard = useCallback(() => {
+    setActiveIndex((prev) => (prev < 4 ? prev + 1 : prev));
+  }, []);
 
-  const prevCard = () => {
-    if (activeIndex > 0) setActiveIndex(activeIndex - 1);
-  };
+  const prevCard = useCallback(() => {
+    setActiveIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  }, []);
 
   // Keyboard navigation support (ArrowLeft / ArrowRight)
   useEffect(() => {
@@ -37,68 +45,42 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIndex]);
+  }, [nextCard, prevCard]);
 
-  const tabs = [
-    { label: 'Invite', fullLabel: 'Invitation', index: 0 },
-    { label: 'Date', fullLabel: 'Date', index: 1 },
-    { label: 'Venue', fullLabel: 'Venue', index: 2 },
-    { label: 'Reception', fullLabel: 'Reception', index: 3 },
-    { label: 'Dua', fullLabel: 'Dua', index: 4 },
-  ];
-
-  const cards = [
-    {
-      id: 'invitation',
-      component: (
-        <InvitationFrontCard
-          wedding={wedding}
-        />
-      ),
-    },
-    {
-      id: 'countdown',
-      component: (
-        <CountdownCard
-          wedding={wedding}
-        />
-      ),
-    },
-    {
-      id: 'venue',
-      component: (
-        <VenueCard
-          wedding={wedding}
-        />
-      ),
-    },
-    {
-      id: 'reception',
-      component: (
-        <ReceptionCard
-          wedding={wedding}
-        />
-      ),
-    },
-    {
-      id: 'dua',
-      component: (
-        <DuaCard
-          guestName={guestName}
-        />
-      ),
-    },
-  ];
+  const cards = useMemo(
+    () => [
+      {
+        id: 'invitation',
+        component: <InvitationFrontCard wedding={wedding} />,
+      },
+      {
+        id: 'countdown',
+        component: <CountdownCard wedding={wedding} />,
+      },
+      {
+        id: 'venue',
+        component: <VenueCard wedding={wedding} />,
+      },
+      {
+        id: 'reception',
+        component: <ReceptionCard wedding={wedding} />,
+      },
+      {
+        id: 'dua',
+        component: <DuaCard guestName={guestName} />,
+      },
+    ],
+    [wedding, guestName]
+  );
 
   return (
     <div className="relative w-full max-w-[100vw] sm:max-w-[560px] mx-auto px-2 select-none flex flex-col items-center overflow-hidden">
-      
       {/* Top Deck Navigation Tabs */}
       <nav
         aria-label="Invitation Sections"
         className="mb-4 sm:mb-5 flex items-center justify-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-full bg-[#0e1a0b]/92 border border-gold-400/70 shadow-[0_4px_24px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,175,55,0.15)] backdrop-blur-md z-30 max-w-[98vw] sm:max-w-fit mx-auto"
       >
-        {tabs.map((tab) => {
+        {TABS.map((tab) => {
           const isActive = activeIndex === tab.index;
           return (
             <button
@@ -191,9 +173,9 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
               }}
               transition={{
                 type: 'spring',
-                stiffness: 320,
-                damping: 30,
-                mass: 0.85,
+                stiffness: 340,
+                damping: 32,
+                mass: 0.8,
               }}
               onClick={() => {
                 if (!isActive) goTo(i);
@@ -245,7 +227,7 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
 
       {/* Bottom Pagination Dots */}
       <div className="mt-5 flex items-center justify-center gap-2 pointer-events-none">
-        {tabs.map((tab) => (
+        {TABS.map((tab) => (
           <button
             key={tab.index}
             type="button"
@@ -259,7 +241,6 @@ export const InnerCardSuite: React.FC<InnerCardSuiteProps> = ({ wedding, guestNa
           />
         ))}
       </div>
-
     </div>
   );
 };

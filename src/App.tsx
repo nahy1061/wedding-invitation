@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { RotateCcw } from 'lucide-react';
 import { WEDDING_DATA } from './config/weddingData';
@@ -14,9 +14,17 @@ export function App() {
   const [hasEntered, setHasEntered] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
   const [guestName, setGuestName] = useState<string | null>(null);
+
   const introAudioRef = useRef<HTMLAudioElement | null>(null);
   const mainAudioRef = useRef<HTMLAudioElement | null>(null);
-  const activeTrackRef = useRef<'intro' | 'main'>('intro');
+  const fadeIntervalRef = useRef<number | null>(null);
+
+  const clearFadeTimer = useCallback(() => {
+    if (fadeIntervalRef.current !== null) {
+      clearInterval(fadeIntervalRef.current);
+      fadeIntervalRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     const extractedGuest = getGuestNameFromUrl();
@@ -35,10 +43,11 @@ export function App() {
     mainAudioRef.current = main;
 
     return () => {
+      clearFadeTimer();
       intro.pause();
       main.pause();
     };
-  }, []);
+  }, [clearFadeTimer]);
 
   const handleEnter = () => {
     // Try fullscreen
@@ -58,10 +67,11 @@ export function App() {
   };
 
   const handleOpenStart = () => {
+    clearFadeTimer();
     const intro = introAudioRef.current;
     const main = mainAudioRef.current;
 
-    // Start main track immediately at full volume on tap
+    // Start main track immediately at target volume on tap
     if (main) {
       main.currentTime = 0;
       main.volume = MAIN_TARGET_VOLUME;
@@ -70,20 +80,20 @@ export function App() {
 
     // Play intro briefly, then fade it out quickly
     if (intro) {
-      intro.currentTime = 0;
       intro.volume = 1.0;
-      intro.play().catch(() => {});
 
-      // Fade intro out over 2 seconds while main is already playing
+      // Fade intro out over 2 seconds while main is playing
       let step = 0;
       const fadeSteps = 40;
       const fadeInterval = 2000 / fadeSteps;
-      const timer = setInterval(() => {
+
+      fadeIntervalRef.current = window.setInterval(() => {
         step++;
         const progress = step / fadeSteps;
         intro.volume = Math.max(0, 1 - progress);
+
         if (step >= fadeSteps) {
-          clearInterval(timer);
+          clearFadeTimer();
           intro.pause();
           intro.volume = 1.0;
         }
@@ -96,11 +106,12 @@ export function App() {
   };
 
   const handleReset = () => {
+    clearFadeTimer();
     const intro = introAudioRef.current;
     const main = mainAudioRef.current;
     if (!intro || !main) return;
 
-    // Stop both
+    // Stop main
     main.pause();
     main.volume = 0;
     main.currentTime = 0;
@@ -110,18 +121,17 @@ export function App() {
     intro.currentTime = 0;
     intro.play().catch(() => {});
 
-    activeTrackRef.current = 'intro';
     setIsOpened(false);
   };
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-cover bg-center bg-no-repeat text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between" style={{ backgroundImage: `url(${bgPic})` }}>
-      
+    <div
+      className="relative min-h-[100dvh] w-full bg-cover bg-center bg-no-repeat text-[#2c2724] selection:bg-gold-500/30 selection:text-[#2c2724] overflow-x-hidden flex flex-col justify-between"
+      style={{ backgroundImage: `url(${bgPic})` }}
+    >
       {/* Splash Overlay — blocks everything until user taps */}
       <AnimatePresence>
-        {!hasEntered && (
-          <SplashOverlay onEnter={handleEnter} />
-        )}
+        {!hasEntered && <SplashOverlay onEnter={handleEnter} />}
       </AnimatePresence>
 
       {/* Main Full-Screen Experience */}
@@ -147,13 +157,10 @@ export function App() {
               key="inner-card-suite"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               className="w-full py-2 sm:py-6 flex items-center justify-center"
             >
-              <InnerCardSuite
-                wedding={WEDDING_DATA}
-                guestName={guestName}
-              />
+              <InnerCardSuite wedding={WEDDING_DATA} guestName={guestName} />
             </motion.div>
           )}
         </AnimatePresence>

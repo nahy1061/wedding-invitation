@@ -1,27 +1,14 @@
 import React from 'react';
+import { CardFrame } from '../../common/CardFrame';
 import type { WeddingDetails } from '../../../config/weddingData';
 
 interface InvitationFrontCardProps {
   wedding: WeddingDetails;
 }
 
-export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({
-  wedding,
-}) => {
+export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({ wedding }) => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-6 sm:p-8 text-center select-none overflow-hidden">
-
-      {/* Warm Invitation Tint */}
-      <div className="absolute inset-0 tint-invitation pointer-events-none" />
-
-      {/* Floral Watermark */}
-      <div className="card-watermark">✿</div>
-
-      {/* Ornate Frame + Filigree Corners */}
-      <div className="absolute inset-3 border border-[#c5a880]/70 rounded-xl ornate-card-frame pointer-events-none" />
-      <div className="absolute inset-0 filigree-corners pointer-events-none" />
-      <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
-
+    <CardFrame tint="invitation" watermark="✿">
       {/* TOP: Bismillah & Verse */}
       <div className="relative z-10 pt-2 card-content-enter">
         <p className="font-arabic text-xl sm:text-2xl text-[#6e4f1c] font-semibold leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
@@ -77,6 +64,6 @@ export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({
           Swipe to view details →
         </p>
       </div>
-    </div>
+    </CardFrame>
   );
 };

@@ -1,7 +1,4 @@
-import type { WeddingConfig } from '../types/invitation';
 import type { WeddingDetails } from '../config/weddingData';
-
-export type CalendarEventData = WeddingConfig | WeddingDetails;
 
 interface NormalizedEvent {
   title: string;
@@ -13,25 +10,22 @@ interface NormalizedEvent {
 }
 
 /**
- * Normalizes event data whether passed as WeddingDetails (gatefold/palace) or WeddingConfig
+ * Normalizes event data from master WeddingDetails
  */
-export function normalizeCalendarEvent(data: CalendarEventData): NormalizedEvent {
+export function normalizeCalendarEvent(data: WeddingDetails): NormalizedEvent {
   const bride = data.brideName || 'Bride';
   const groom = data.groomName || 'Groom';
   const title = `Nikkah Ceremony: ${bride} & ${groom}`;
 
-  let location = '';
-  if ('venueHall' in data && data.venueHall) {
-    location = `${data.venueHall}, ${data.venueName}, ${data.venueAddress}`;
-  } else {
-    location = `${data.venueName}, ${data.venueAddress}`;
-  }
+  const location = data.venueHall
+    ? `${data.venueHall}, ${data.venueName}, ${data.venueAddress}`
+    : `${data.venueName}, ${data.venueAddress}`;
 
   let description = `You are warmly invited to celebrate the Nikkah & Wedding of ${bride} & ${groom}.\n\nVenue: ${location}\nDate: ${data.eventDateFormatted}`;
-  if ('eventTimeFormatted' in data && data.eventTimeFormatted) {
+  if (data.eventTimeFormatted) {
     description += `\nTiming: ${data.eventTimeFormatted}`;
   }
-  if ('mapsUrl' in data && data.mapsUrl) {
+  if (data.mapsUrl) {
     description += `\nMap: ${data.mapsUrl}`;
   }
 
@@ -39,17 +33,17 @@ export function normalizeCalendarEvent(data: CalendarEventData): NormalizedEvent
   let startDateUtc = '20261003T140000Z';
   let endDateUtc = '20261003T170000Z';
 
-  if ('eventDate' in data && data.eventDate) {
+  if (data.eventDateISO) {
     try {
-      const d = new Date(data.eventDate);
+      const d = new Date(data.eventDateISO);
       if (!isNaN(d.getTime())) {
-        const endD = new Date(d.getTime() + 4 * 60 * 60 * 1000);
+        const endD = new Date(d.getTime() + 3 * 60 * 60 * 1000); // 3 hour duration
         const formatIso = (date: Date) => date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
         startDateUtc = formatIso(d);
         endDateUtc = formatIso(endD);
       }
     } catch {
-      // fallback to default
+      // fallback
     }
   }
 
@@ -69,7 +63,7 @@ export function normalizeCalendarEvent(data: CalendarEventData): NormalizedEvent
 /**
  * Generates the standard Google Calendar web URL
  */
-export function generateGoogleCalendarUrl(data: CalendarEventData): string {
+export function generateGoogleCalendarUrl(data: WeddingDetails): string {
   const event = normalizeCalendarEvent(data);
   const text = encodeURIComponent(event.title);
   const details = encodeURIComponent(event.description);
@@ -80,22 +74,9 @@ export function generateGoogleCalendarUrl(data: CalendarEventData): string {
 }
 
 /**
- * Generates the Android Intent URI for Google Calendar
- */
-export function generateAndroidCalendarIntentUrl(data: CalendarEventData): string {
-  const event = normalizeCalendarEvent(data);
-  const text = encodeURIComponent(event.title);
-  const details = encodeURIComponent(event.description);
-  const location = encodeURIComponent(event.location);
-  const dates = `${event.startDateUtc}/${event.endDateUtc}`;
-
-  return `intent://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&details=${details}&location=${location}#Intent;scheme=https;package=com.google.android.calendar;end`;
-}
-
-/**
  * Generates and triggers download of an .ics calendar file (for Apple Calendar, Outlook, iOS, macOS, Windows)
  */
-export function downloadIcsFile(data: CalendarEventData): void {
+export function downloadIcsFile(data: WeddingDetails): void {
   const event = normalizeCalendarEvent(data);
   const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 
@@ -132,20 +113,17 @@ export function downloadIcsFile(data: CalendarEventData): void {
 /**
  * Smart Calendar Handler:
  * Synchronously triggers the optimal calendar method based on device.
- * On Android: tries intent/direct Google Calendar app link.
- * On iOS/Desktop: opens Google Calendar web URL in new tab directly without popup blocker delay.
+ * On Android: direct navigation lets Android system prompt "Open with Calendar".
+ * On iOS/Desktop: opens Google Calendar web URL directly.
  */
-export function openGoogleCalendar(data: CalendarEventData): void {
+export function openGoogleCalendar(data: WeddingDetails): void {
   const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent || '' : '';
   const isAndroid = /android/i.test(userAgent);
   const webUrl = generateGoogleCalendarUrl(data);
 
   if (isAndroid) {
-    // Android Chrome supports direct navigation or intent
-    // Direct link to calendar.google.com lets Android system prompt "Open with Calendar"
     window.location.href = webUrl;
   } else {
-    // iOS / Desktop: Open directly in user gesture
     window.open(webUrl, '_blank', 'noopener,noreferrer');
   }
 }

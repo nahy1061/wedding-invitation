@@ -1,5 +1,6 @@
 import React from 'react';
 import { Phone, MessageCircle } from 'lucide-react';
+import { CardFrame } from '../../common/CardFrame';
 import type { WeddingDetails } from '../../../config/weddingData';
 
 interface ReceptionCardProps {
@@ -8,18 +9,11 @@ interface ReceptionCardProps {
 
 export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-5 sm:p-7 text-center select-none overflow-hidden">
-      {/* Warm Tint Background */}
-      <div className="absolute inset-0 tint-invitation pointer-events-none" />
-
-      {/* Ornate Watermark */}
-      <div className="card-watermark select-none text-[130px] opacity-[0.035]">✿</div>
-
-      {/* Ornate Double Frame + Filigree Corners */}
-      <div className="absolute inset-3 border border-[#c5a880]/70 rounded-xl ornate-card-frame pointer-events-none" />
-      <div className="absolute inset-0 filigree-corners pointer-events-none" />
-      <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
-
+    <CardFrame
+      tint="invitation"
+      watermark="✿"
+      watermarkClassName="select-none text-[130px] opacity-[0.035]"
+    >
       {/* ── TOP: Header with Balanced Spacing ── */}
       <div className="relative z-10 pt-3 sm:pt-4 pb-1 card-content-enter">
         <span className="font-arabic text-2xl sm:text-3xl text-[#7a531e] font-bold block leading-normal drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
@@ -53,7 +47,7 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
             {/* Left: Monogram Crest & Host Details */}
             <div className="flex items-center gap-2.5 min-w-0 flex-1 text-left pl-1.5">
               {/* Monogram Seal */}
-              <div className="w-9 h-9 sm:w-[38px] sm:h-[38px] rounded-full bg-gradient-to-br from-[#faf5ea] to-[#e8dcc4] border border-[#d4c49a]/80 shadow-[0_1px_4px_rgba(140,110,45,0.12),inset_0_1px 2px_rgba(255,255,255,0.95)] flex items-center justify-center text-[#7a531e] font-serif font-bold text-[13px] sm:text-sm shrink-0 transition-shadow duration-300 group-hover:shadow-[0_2px_8px_rgba(212,175,55,0.2)]">
+              <div className="w-9 h-9 sm:w-[38px] sm:h-[38px] rounded-full bg-gradient-to-br from-[#faf5ea] to-[#e8dcc4] border border-[#d4c49a]/80 shadow-[0_1px_4px_rgba(140,110,45,0.12),inset_0_1px_2px_rgba(255,255,255,0.95)] flex items-center justify-center text-[#7a531e] font-serif font-bold text-[13px] sm:text-sm shrink-0 transition-shadow duration-300 group-hover:shadow-[0_2px_8px_rgba(212,175,55,0.2)]">
                 {host.name.charAt(0)}
               </div>
 
@@ -105,6 +99,6 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
           Swipe for prayer blessings →
         </p>
       </div>
-    </div>
+    </CardFrame>
   );
 };
