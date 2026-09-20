@@ -12,81 +12,92 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
       {/* Warm Tint Background */}
       <div className="absolute inset-0 tint-invitation pointer-events-none" />
 
-      {/* Watermark */}
-      <div className="card-watermark">✿</div>
+      {/* Ornate Watermark */}
+      <div className="card-watermark select-none text-[130px] opacity-[0.035]">✿</div>
 
-      {/* Ornate Frame + Corners */}
+      {/* Ornate Double Frame + Filigree Corners */}
       <div className="absolute inset-3 border border-[#c5a880]/70 rounded-xl ornate-card-frame pointer-events-none" />
       <div className="absolute inset-0 filigree-corners pointer-events-none" />
       <div className="absolute inset-0 filigree-corners-reverse pointer-events-none" />
 
-      {/* TOP: Header */}
-      <div className="relative z-10 pt-1 card-content-enter">
-        <span className="font-arabic text-xl sm:text-2xl text-[#6e4f1c] font-semibold block leading-tight">
+      {/* ── TOP: Header ── */}
+      <div className="relative z-10 pt-1.5 card-content-enter">
+        <span className="font-arabic text-2xl sm:text-3xl text-[#7a531e] font-bold block leading-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
           استقبالیہ
         </span>
-        <p className="text-[10px] sm:text-[11px] font-display tracking-[0.22em] uppercase text-[#2c4227] font-bold mt-1">
-          Awaiting to Welcome You
-        </p>
+
+        <h2 className="font-display text-[11px] sm:text-xs tracking-[0.26em] uppercase text-[#1b2e18] font-bold mt-1">
+          Reception Committee
+        </h2>
+
         <div className="gold-ornament my-2">
           <span className="text-[#855e1a] text-[10px]">✦</span>
         </div>
-        <p className="text-[10px] sm:text-[11px] font-serif italic text-[#3d5238] max-w-[260px] mx-auto leading-relaxed">
-          For any assistance, directions, or queries at the venue, please feel free to reach out to our hosts.
+
+        <p className="font-serif italic text-[11px] sm:text-xs text-[#3a4d35] max-w-[280px] mx-auto leading-relaxed px-1">
+          "Awaiting with joy to receive and welcome you to our celebration"
         </p>
       </div>
 
-      {/* CENTER: 3 Host Contact Tiles */}
-      <div className="relative z-10 my-auto space-y-2.5 max-w-[320px] mx-auto w-full card-content-enter card-content-enter-delay-1">
+      {/* ── CENTER: 3 Bespoke Host Contact Cards ── */}
+      <div className="relative z-10 my-auto space-y-3 max-w-[335px] mx-auto w-full card-content-enter card-content-enter-delay-1">
         {wedding.receptionHosts.map((host, idx) => (
           <div
             key={idx}
-            className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#f5efe4]/90 border border-[#c5a880]/60 shadow-xs backdrop-blur-xs transition-all hover:border-[#b08d55] hover:shadow-sm"
+            className="relative group rounded-2xl bg-gradient-to-b from-[#fbf8f1]/95 to-[#f3ebd9]/95 border border-[#c5a880]/80 shadow-[0_4px_16px_rgba(4,20,12,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] p-2.5 sm:p-3 backdrop-blur-xs flex items-center justify-between transition-all duration-300 hover:border-[#a88242] hover:shadow-[0_6px_22px_rgba(4,20,12,0.12)]"
           >
-            {/* Host Details */}
-            <div className="text-left">
-              <p className="font-serif font-bold text-sm sm:text-[15px] text-[#12200f] leading-tight">
-                {host.name}
-              </p>
-              <p className="text-[11px] sm:text-xs font-mono text-[#2e4627] font-semibold tracking-wider mt-0.5">
-                {host.phone}
-              </p>
+            {/* Left: Monogram Crest & Host Details */}
+            <div className="flex items-center gap-2.5 min-w-0 flex-1 text-left pl-1">
+              {/* Monogram Seal */}
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#f8f1e5] to-[#e4d4b3] border border-[#c5a880]/70 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_1px_3px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#7a531e] font-serif font-bold text-sm sm:text-base shrink-0">
+                {host.name.charAt(0)}
+              </div>
+
+              {/* Name & Phone */}
+              <div className="min-w-0 flex-1">
+                <h3 className="font-display text-[14px] sm:text-[15px] text-[#12200f] font-semibold tracking-wide leading-snug truncate">
+                  {host.name}
+                </h3>
+                <p className="text-[11px] sm:text-xs font-sans font-medium text-[#465f40] tracking-wider mt-0.5">
+                  {host.phone}
+                </p>
+              </div>
             </div>
 
-            {/* Quick Action Buttons */}
-            <div className="flex items-center gap-2">
-              {/* Direct Phone Call Button */}
+            {/* Right: Dual Jewel Action Buttons */}
+            <div className="flex items-center gap-1.5 shrink-0 pr-0.5">
+              {/* Call Button */}
               <a
                 href={`tel:${host.phone.replace(/[^0-9+]/g, '')}`}
                 title={`Call ${host.name}`}
-                className="px-2.5 py-1.5 rounded-full bg-gradient-to-r from-[#20331c] to-[#152312] hover:from-[#2a4425] hover:to-[#1e301a] text-gold-200 hover:text-white border border-gold-400/50 shadow-xs text-[10px] font-serif uppercase tracking-wider flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                aria-label={`Call ${host.name}`}
+                className="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-gradient-to-b from-[#253921] to-[#142312] hover:from-[#324d2c] hover:to-[#1d331a] text-gold-200 hover:text-white border border-gold-400/60 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] flex items-center justify-center transition-all duration-200 hover:scale-108 active:scale-95 cursor-pointer"
               >
-                <Phone className="w-3 h-3 text-gold-300" />
-                <span className="hidden sm:inline">Call</span>
+                <Phone className="w-3.5 h-3.5 text-gold-300 drop-shadow-xs" />
               </a>
 
-              {/* Direct WhatsApp Button */}
+              {/* WhatsApp Button */}
               <a
                 href={`https://wa.me/${host.whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 title={`WhatsApp ${host.name}`}
-                className="px-2.5 py-1.5 rounded-full bg-gradient-to-r from-[#1c421e] to-[#133014] hover:from-[#255727] hover:to-[#1b3f1c] text-gold-200 hover:text-white border border-gold-400/50 shadow-xs text-[10px] font-serif uppercase tracking-wider flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                aria-label={`WhatsApp ${host.name}`}
+                className="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-gradient-to-b from-[#1b431e] to-[#102b12] hover:from-[#265e2b] hover:to-[#173e1a] text-gold-200 hover:text-white border border-gold-400/60 shadow-[0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] flex items-center justify-center transition-all duration-200 hover:scale-108 active:scale-95 cursor-pointer"
               >
-                <MessageCircle className="w-3 h-3 text-gold-300" />
-                <span className="hidden sm:inline">Chat</span>
+                <MessageCircle className="w-3.5 h-3.5 text-gold-300 drop-shadow-xs" />
               </a>
             </div>
           </div>
         ))}
       </div>
 
-      {/* BOTTOM: Swipe Hint */}
+      {/* ── BOTTOM: Swipe Hint ── */}
       <div className="relative z-10 pt-1 card-content-enter card-content-enter-delay-2">
         <div className="gold-ornament mb-1">
           <span className="text-[#855e1a] text-[9px]">✦ ✦ ✦</span>
         </div>
-        <p className="text-[9px] font-serif uppercase tracking-[0.2em] text-[#8a9985]">
+        <p className="text-[9px] font-serif uppercase tracking-[0.22em] text-[#7d8f78]">
           Swipe for prayer blessings →
         </p>
       </div>
