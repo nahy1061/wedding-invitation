@@ -3,7 +3,7 @@ import { Calendar, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { CardFrame } from '../../common/CardFrame';
 import { useCountdown } from '../../../hooks/useCountdown';
-import { openGoogleCalendar } from '../../../utils/calendar';
+import { addToCalendar } from '../../../utils/calendar';
 import type { WeddingDetails } from '../../../config/weddingData';
 
 interface CountdownCardProps {
@@ -27,8 +27,8 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
     setCalendarAdded(true);
     setTimeout(() => setCalendarAdded(false), 3000);
 
-    // Open Google Calendar synchronously
-    openGoogleCalendar(wedding);
+    // Open Calendar natively on phone / web on desktop
+    addToCalendar(wedding);
   };
 
   return (
@@ -95,7 +95,7 @@ export const CountdownCard: React.FC<CountdownCardProps> = ({ wedding }) => {
             ) : (
               <Calendar className="w-3.5 h-3.5 text-gold-300" />
             )}
-            <span>{calendarAdded ? 'Calendar Opened' : 'Add to Google Calendar'}</span>
+            <span>{calendarAdded ? 'Added to Calendar' : 'Add to Calendar'}</span>
           </button>
         </div>
       </div>
