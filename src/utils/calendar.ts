@@ -61,7 +61,7 @@ export function normalizeCalendarEvent(data: WeddingDetails): NormalizedEvent {
 }
 
 /**
- * Generates the standard Google Calendar web URL (ideal for web browsers)
+ * Generates the standard Google Calendar URL
  */
 export function generateGoogleCalendarUrl(data: WeddingDetails): string {
   const event = normalizeCalendarEvent(data);
@@ -74,41 +74,8 @@ export function generateGoogleCalendarUrl(data: WeddingDetails): string {
 }
 
 /**
- * Generates an Android Intent URI that opens the native Calendar app directly on Android phones
- * (Samsung Calendar on Samsung devices, Google Calendar on Pixel/others).
- */
-export function generateAndroidCalendarIntent(data: WeddingDetails): string {
-  const event = normalizeCalendarEvent(data);
-  let beginTime = 0;
-  let endTime = 0;
-
-  if (data.eventDateISO) {
-    try {
-      const d = new Date(data.eventDateISO);
-      if (!isNaN(d.getTime())) {
-        beginTime = d.getTime();
-        endTime = beginTime + 3 * 60 * 60 * 1000;
-      }
-    } catch {
-      // fallback
-    }
-  }
-
-  if (!beginTime) {
-    beginTime = Date.parse('2026-10-03T19:00:00+05:00');
-    endTime = beginTime + 3 * 60 * 60 * 1000;
-  }
-
-  const title = encodeURIComponent(event.title);
-  const description = encodeURIComponent(event.description);
-  const location = encodeURIComponent(event.location);
-
-  return `intent://#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/event;S.title=${title};S.description=${description};S.eventLocation=${location};l.beginTime=${beginTime};l.endTime=${endTime};end`;
-}
-
-/**
  * Generates and triggers download of an .ics calendar file
- * Opens native Apple Calendar on iOS (iPhone/iPad) and calendar applications on macOS/Windows.
+ * Opens native Apple Calendar on iOS (iPhone/iPad) and desktop calendar applications.
  */
 export function downloadIcsFile(data: WeddingDetails): void {
   const event = normalizeCalendarEvent(data);
@@ -145,10 +112,10 @@ export function downloadIcsFile(data: WeddingDetails): void {
 }
 
 /**
- * Smart Universal Calendar Handler:
+ * Smart Universal Calendar Handler (100% Reliable):
  * - On iPhone / iPad (iOS): triggers .ics to open the native Apple Calendar event sheet.
- * - On Android phones (Samsung Galaxy, Google Pixel, Xiaomi, etc.): launches Android Calendar intent to open installed Calendar app.
- * - On Desktop / Laptop browsers: opens Google Calendar web in a new tab.
+ * - On Android phones (Samsung, Pixel, Xiaomi, etc.): navigates to Google Calendar (1-tap Save, syncs to Samsung Calendar).
+ * - On Desktop / Laptop browsers: opens Google Calendar in a new tab.
  */
 export function addToCalendar(data: WeddingDetails): void {
   if (typeof window === 'undefined' || typeof navigator === 'undefined') return;
@@ -156,16 +123,19 @@ export function addToCalendar(data: WeddingDetails): void {
   const ua = navigator.userAgent || '';
   const isIOS = /iPad|iPhone|iPod/.test(ua) || 
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const isAndroid = /Android/i.test(ua);
 
   if (isIOS) {
+    // Triggers native Apple Calendar sheet on iOS
     downloadIcsFile(data);
-  } else if (isAndroid) {
-    const intentUrl = generateAndroidCalendarIntent(data);
-    window.location.href = intentUrl;
   } else {
+    // Google Calendar URL on Android & Desktop
     const webUrl = generateGoogleCalendarUrl(data);
-    window.open(webUrl, '_blank', 'noopener,noreferrer');
+    const isAndroid = /Android/i.test(ua);
+    if (isAndroid) {
+      window.location.href = webUrl;
+    } else {
+      window.open(webUrl, '_blank', 'noopener,noreferrer');
+    }
   }
 }
 
