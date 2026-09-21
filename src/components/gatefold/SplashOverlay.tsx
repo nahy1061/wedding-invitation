@@ -53,8 +53,8 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
           </div>
 
           {/* Invitation Label */}
-          <p className="text-[10px] sm:text-[11px] font-display tracking-[0.25em] uppercase text-[#2c4227] font-bold">
-            The Wedding Celebration Of
+          <p className="text-[11px] sm:text-[12px] font-display tracking-[0.25em] uppercase text-[#2c4227] font-bold">
+            The Nikkah Ceremony Of
           </p>
 
           {/* Couple Names */}
@@ -74,7 +74,7 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
 
           {/* Subtitle Message */}
           <p className="font-serif italic text-xs sm:text-[13px] text-[#2c3d28] mt-1 mb-5 leading-relaxed max-w-[260px]">
-            You are cordially invited to celebrate this sacred union
+            You are cordially invited to share in the joy of this blessed occasion
           </p>
 
           {/* Enter Button */}
