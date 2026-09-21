@@ -30,7 +30,7 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ wedding }) => {
         </div>
 
         <p className="font-serif italic text-[11px] sm:text-xs text-[#3a4d35] max-w-[280px] mx-auto leading-relaxed px-1">
-          "Awaiting with joy to receive and welcome you to our celebration"
+          "Looking forward to warmly welcoming you with joy and honour"
         </p>
       </div>
 
