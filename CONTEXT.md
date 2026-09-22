@@ -26,8 +26,8 @@ All central wedding details are managed in [`src/config/weddingData.ts`](./src/c
 
 | Field | Configured Value |
 | :--- | :--- |
-| **Bride** | **Hafsa Salman** |
 | **Groom** | **Abdul Rehman** |
+| **Bride** | **Hafsa Salman** |
 | **Date** | **Saturday, October 3, 2026** |
 | **Islamic Hijri Date** | **20 Rabi' al-Awwal 1448 AH** |
 | **Timing** | **7:00 PM – 10:00 PM** |
@@ -92,7 +92,7 @@ nikkah-invitation/
 - **Sections:**
   1. Arabic *Bismillah* & *"And We created you in pairs"*.
   2. *"Nikkah Ceremony"* in clean serif tracking.
-  3. **Hafsa Salman & Abdul Rehman** in glowing serif typography with a gold script ampersand.
+  3. **Abdul Rehman & Hafsa Salman** in glowing serif typography with a gold script ampersand.
   4. **Date & Time Section:** *Saturday, October 3, 2026* • *7:00 PM – 10:00 PM* (*20 Rabi' al-Awwal 1448 AH*).
   5. **Venue Section:** *Hall 2 (2nd Floor), NESCOM Officers Mess, Sector H-11, Islamabad*.
   6. **Interactive Enclosures:**

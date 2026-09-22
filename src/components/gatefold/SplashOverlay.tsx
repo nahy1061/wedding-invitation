@@ -60,7 +60,7 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
           {/* Couple Names */}
           <div className="my-2.5 space-y-0.5">
             <h2 className="font-display text-2xl sm:text-3xl text-[#12200f] font-semibold tracking-wide">
-              {WEDDING_DATA.brideName}
+              {WEDDING_DATA.groomName}
             </h2>
             <div className="flex items-center justify-center gap-2.5 py-0.5">
               <div className="h-[0.5px] w-8 bg-gradient-to-r from-transparent to-[#bfa378]" />
@@ -68,7 +68,7 @@ export const SplashOverlay: React.FC<SplashOverlayProps> = ({ onEnter }) => {
               <div className="h-[0.5px] w-8 bg-gradient-to-l from-transparent to-[#bfa378]" />
             </div>
             <h2 className="font-display text-2xl sm:text-3xl text-[#12200f] font-semibold tracking-wide">
-              {WEDDING_DATA.groomName}
+              {WEDDING_DATA.brideName}
             </h2>
           </div>
 

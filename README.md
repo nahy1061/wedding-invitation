@@ -22,7 +22,7 @@ A digital Nikkah invitation modeled directly after luxury physical stationery fo
   - Warm cream/ivory handmade paper with gold hairline borders and corner accents.
   - Classical Arabic *Bismillah* & *"And We created you in pairs"* (*Surah An-Naba 78:8*).
   - Main Heading: **"Nikkah Ceremony"**.
-  - **Hafsa Salman & Abdul Rehman** in spacious serif typography.
+  - **Abdul Rehman & Hafsa Salman** in spacious serif typography.
   - Clean, minimal sections for Date (*Saturday, October 3, 2026* • *7:00 PM – 10:00 PM* • *20 Rabi' al-Awwal 1448 AH*) and Venue (*Hall 2, 2nd Floor, NESCOM Officers Mess, Sector H-11, Islamabad*).
   - Enclosure tags: **Add to Calendar** & **Venue Directions (Google Maps)**.
 

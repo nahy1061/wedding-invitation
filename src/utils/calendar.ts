@@ -13,15 +13,15 @@ interface NormalizedEvent {
  * Normalizes event data from master WeddingDetails
  */
 export function normalizeCalendarEvent(data: WeddingDetails): NormalizedEvent {
-  const bride = data.brideName || 'Bride';
   const groom = data.groomName || 'Groom';
-  const title = `Nikkah Ceremony: ${bride} & ${groom}`;
+  const bride = data.brideName || 'Bride';
+  const title = `Nikkah Ceremony: ${groom} & ${bride}`;
 
   const location = data.venueHall
     ? `${data.venueHall}, ${data.venueName}, ${data.venueAddress}`
     : `${data.venueName}, ${data.venueAddress}`;
 
-  let description = `You are warmly invited to celebrate the Nikkah & Wedding of ${bride} & ${groom}.\n\nVenue: ${location}\nDate: ${data.eventDateFormatted}`;
+  let description = `You are warmly invited to celebrate the Nikkah & Wedding of ${groom} & ${bride}.\n\nVenue: ${location}\nDate: ${data.eventDateFormatted}`;
   if (data.eventTimeFormatted) {
     description += `\nTiming: ${data.eventTimeFormatted}`;
   }
@@ -47,8 +47,8 @@ export function normalizeCalendarEvent(data: WeddingDetails): NormalizedEvent {
     }
   }
 
-  const brideFirst = bride.split(' ')[0] || 'Bride';
   const groomFirst = groom.split(' ')[0] || 'Groom';
+  const brideFirst = bride.split(' ')[0] || 'Bride';
 
   return {
     title,
@@ -56,7 +56,7 @@ export function normalizeCalendarEvent(data: WeddingDetails): NormalizedEvent {
     location,
     startDateUtc,
     endDateUtc,
-    fileName: `Nikkah-${brideFirst}-${groomFirst}.ics`,
+    fileName: `Nikkah-${groomFirst}-${brideFirst}.ics`,
   };
 }
 

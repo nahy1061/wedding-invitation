@@ -36,7 +36,7 @@ export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({ weddin
 
         <div className="my-2 space-y-1">
           <h1 className="font-display text-3xl sm:text-4xl text-[#12200f] font-semibold tracking-wide drop-shadow-xs">
-            {wedding.brideName}
+            {wedding.groomName}
           </h1>
 
           <div className="my-1.5 flex items-center justify-center gap-3">
@@ -46,7 +46,7 @@ export const InvitationFrontCard: React.FC<InvitationFrontCardProps> = ({ weddin
           </div>
 
           <h1 className="font-display text-3xl sm:text-4xl text-[#12200f] font-semibold tracking-wide drop-shadow-xs">
-            {wedding.groomName}
+            {wedding.brideName}
           </h1>
         </div>
 

@@ -25,10 +25,10 @@ export function buildPersonalizedUrl(guestName: string): string {
  */
 export function generateWhatsAppShareLink(
   guestName: string,
-  brideName: string,
-  groomName: string
+  groomName: string,
+  brideName: string
 ): string {
   const personalizedLink = buildPersonalizedUrl(guestName);
-  const message = `✨ *Special Invitation* ✨\n\nDear ${guestName.trim()},\n\nYou are cordially invited to celebrate the Nikkah & Wedding ceremony of *${brideName}* & *${groomName}*.\n\nPlease open your personalized digital invitation card here:\n🔗 ${personalizedLink}\n\nWe look forward to celebrating with you! 🤍`;
+  const message = `✨ *Special Invitation* ✨\n\nDear ${guestName.trim()},\n\nYou are cordially invited to celebrate the Nikkah & Wedding ceremony of *${groomName}* & *${brideName}*.\n\nPlease open your personalized digital invitation card here:\n🔗 ${personalizedLink}\n\nWe look forward to celebrating with you! 🤍`;
   return `https://wa.me/?text=${encodeURIComponent(message)}`;
 }

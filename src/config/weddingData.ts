@@ -21,8 +21,8 @@ export interface DuaItem {
 }
 
 export interface WeddingDetails {
-  brideName: string;
   groomName: string;
+  brideName: string;
   bismillahArabic: string;
   quranVerseArabic: string;
   quranVerseEnglish: string;
@@ -46,8 +46,8 @@ export interface WeddingDetails {
 }
 
 export const WEDDING_DATA: WeddingDetails = {
-  brideName: 'Hafsa Salman',
   groomName: 'Abdul Rehman',
+  brideName: 'Hafsa Salman',
   bismillahArabic: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
   quranVerseArabic: 'وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً',
   quranVerseEnglish: '"And among His signs is that He created for you mates from among yourselves, that you may find peace in them; and He placed between you affection and mercy."',

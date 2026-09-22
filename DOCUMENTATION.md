@@ -1,6 +1,6 @@
 # ✨ Haute Couture Nikkah Stationery — Technical Documentation
 
-Welcome to the internal engineering and product documentation for the **Hafsa & Abdul Rehman Nikkah Digital Stationery** experience.
+Welcome to the internal engineering and product documentation for the **Abdul Rehman & Hafsa Nikkah Digital Stationery** experience.
 
 ---
 
