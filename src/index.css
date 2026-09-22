@@ -175,3 +175,28 @@ html, body, #root {
 .tint-dua {
   background: linear-gradient(175deg, rgba(240, 235, 250, 0.25) 0%, rgba(225, 218, 240, 0.1) 50%, transparent 100%);
 }
+
+/* ── Custom Scrollbar for Modals & Guestbook ── */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #c5a880 rgba(220, 210, 195, 0.3);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(220, 210, 195, 0.2);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c5a880;
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a8885b;
+}
+

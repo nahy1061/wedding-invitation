@@ -346,12 +346,20 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
 
       {/* MODAL 1: SENDER NAME PROMPT */}
       {showNameModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 select-none">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 select-none"
+          onClick={() => {
+            setShowNameModal(false);
+            setPendingMessage(null);
+            setNameInput('');
+          }}
+        >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="w-full max-w-xs cream-paper-texture border border-[#c5a880]/70 rounded-2xl shadow-2xl p-5 space-y-3 relative overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-[285px] sm:max-w-[340px] cream-paper-texture border border-[#c5a880]/70 rounded-2xl shadow-2xl p-4 sm:p-5 space-y-3 relative overflow-hidden"
           >
             <div className="flex justify-between items-center">
               <p className="font-display text-sm font-semibold text-[#12200f] tracking-wide">
@@ -401,18 +409,22 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
 
       {/* MODAL 2: VIEW ALL BLESSINGS GUESTBOOK */}
       {showAllModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 select-none">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 select-none"
+          onClick={() => setShowAllModal(false)}
+        >
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            className="w-full max-w-sm max-h-[82vh] flex flex-col cream-paper-texture border border-[#c5a880]/80 rounded-2xl shadow-2xl p-5 relative overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-[285px] sm:max-w-[340px] max-h-[440px] sm:max-h-[480px] max-h-[70dvh] flex flex-col cream-paper-texture border border-[#c5a880]/80 rounded-2xl shadow-2xl p-4 sm:p-5 relative overflow-hidden"
           >
             {/* Modal Header */}
-            <div className="flex justify-between items-center pb-2.5 border-b border-[#c5a880]/40">
+            <div className="flex justify-between items-center pb-2 border-b border-[#c5a880]/40 shrink-0">
               <div className="flex items-center gap-1.5">
                 <MessageSquareHeart className="w-4 h-4 text-[#855e1a]" />
-                <h3 className="font-display text-sm font-bold text-[#12200f] tracking-wide">
+                <h3 className="font-display text-xs sm:text-sm font-bold text-[#12200f] tracking-wide">
                   Guestbook of Blessings
                 </h3>
               </div>
@@ -427,14 +439,14 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
             </div>
 
             {/* Modal Subtitle */}
-            <p className="text-[10px] font-serif italic text-[#384e32] my-2">
+            <p className="text-[10px] font-serif italic text-[#384e32] my-1.5 shrink-0">
               {duas.length > 0
                 ? `${duas.length} prayers & heartfelt wishes from family and friends`
                 : 'No blessings submitted yet'}
             </p>
 
             {/* Scrollable Dua Cards / Empty State */}
-            <div className="flex-1 overflow-y-auto space-y-2.5 pr-1 my-1 custom-scrollbar">
+            <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-1.5 my-1 custom-scrollbar">
               {duas.length === 0 ? (
                 <div className="py-8 text-center space-y-1">
                   <p className="font-serif italic text-xs text-[#5e6f51]">
@@ -448,12 +460,12 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
                 duas.map((item) => (
                   <div
                     key={item.id}
-                    className="p-3 rounded-xl bg-white/70 border border-[#c5a880]/40 text-left space-y-1 shadow-2xs"
+                    className="p-2.5 sm:p-3 rounded-xl bg-white/70 border border-[#c5a880]/40 text-left space-y-1 shadow-2xs"
                   >
-                    <p className="font-serif italic text-xs text-[#1c2e19] leading-relaxed">
+                    <p className="font-serif italic text-[11px] sm:text-xs text-[#1c2e19] leading-relaxed break-words">
                       "{item.message}"
                     </p>
-                    <div className="flex items-center justify-between text-[10px] text-[#855e1a] font-display font-semibold pt-1 border-t border-[#c5a880]/20">
+                    <div className="flex items-center justify-between text-[9.5px] sm:text-[10px] text-[#855e1a] font-display font-semibold pt-1 border-t border-[#c5a880]/20">
                       <span>— {item.name}</span>
                     </div>
                   </div>
@@ -465,7 +477,7 @@ export const DuaCard: React.FC<DuaCardProps> = ({ guestName }) => {
             <button
               type="button"
               onClick={() => setShowAllModal(false)}
-              className="mt-3 w-full py-2 rounded-full bg-[#f0e8d8] border border-[#c5a880]/60 text-xs font-serif font-semibold text-[#142312] hover:bg-[#e6dccb] cursor-pointer transition-colors"
+              className="mt-2.5 shrink-0 w-full py-2 rounded-full bg-[#f0e8d8] hover:bg-[#e6dccb] border border-[#c5a880]/60 text-xs font-serif font-semibold text-[#142312] cursor-pointer transition-colors active:scale-98"
             >
               Close
             </button>
